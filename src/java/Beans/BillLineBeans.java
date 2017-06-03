@@ -16,7 +16,9 @@ import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
+import org.primefaces.context.RequestContext;
 import org.primefaces.event.RowEditEvent;
+import pojo.Person;
 import pojo.Pets;
 
 /**
@@ -69,9 +71,9 @@ public class BillLineBeans {
     }
 
     public void DeleteLine(int idprod, int idpet) throws SQLException {
-        
+
         for (BillLines line : listalineasfac) {
-            if(line.getIdpet() == idpet && line.getIdprod() == idprod){
+            if (line.getIdpet() == idpet && line.getIdprod() == idprod) {
                 listalineasfac.remove(line);
             }
         }
@@ -80,16 +82,45 @@ public class BillLineBeans {
     }
 
     public void Addcart() {
+
+        FacesContext fcontext = FacesContext.getCurrentInstance();
+
         StringTokenizer st = new StringTokenizer(prod, "-");
         this.idprod = Integer.parseInt(st.nextToken());
         this.nameprod = st.nextToken();
-        
-        StringTokenizer ft = new StringTokenizer(pet, "-");
-        this.idpet = Integer.parseInt(ft.nextToken());
-        this.namepet = ft.nextToken();
-              
+
+        try {
+            Pets petf = (Pets) fcontext.getExternalContext().getSessionMap().get("mascotaFac");
+            this.idpet = petf.getIdpets();
+            this.namepet = petf.getNamepet();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         BillLines fact = new BillLines(this.idpet, this.namepet, this.idprod, this.nameprod, this.quantity, this.price, this.taxes, this.discount);
         this.listalineasfac.add(fact);
+    }
+
+    public void KeepSelection(String idpers) {
+        RequestContext context = RequestContext.getCurrentInstance();
+        FacesContext fcontext = FacesContext.getCurrentInstance();
+
+        FacesMessage message = new FacesMessage("Mascota Fijada");
+        Person pers = new Person();
+
+        try {
+
+            StringTokenizer ft = new StringTokenizer(this.pet, "-");
+            this.idpet = Integer.parseInt(ft.nextToken());
+            this.namepet = ft.nextToken();
+            Pets pets = new Pets(idpers, idpet, namepet);
+
+            if ((pets.getIdpets()) != 0) {
+                fcontext.getExternalContext().getSessionMap().put("mascotaFac", pets);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        FacesContext.getCurrentInstance().addMessage(null, message);
     }
 
     public int getId() {
@@ -212,5 +243,4 @@ public class BillLineBeans {
         this.blines = blines;
     }
 
-    
 }

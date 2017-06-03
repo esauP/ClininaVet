@@ -66,14 +66,15 @@
                                             <p:growl id = "msgs" showDetail = "true" />
                                             <h:panelGrid columns="12" cellpadding="5">
                                                 <p:autoComplete value="#{billBean.idper}" completeMethod="#{personBean.AutocompletarID}" placeholder="* Nombre Apellidos"  onclick="#{petsBean.BuscaMascotas(billBean.idper)}"/>
-                                                <p:commandButton value="Buscar" actionListener="#{petsBean.BuscaMascotas(billBean.idper)}" icon="ui-icon-check" update="ComboMascotas"/>
-                                                <p:selectOneMenu id="ComboMascotas" value="#{billLineBeans.pet}" >
+                                                <p:commandButton value="Buscar" actionListener="#{petsBean.BuscaMascotas(billBean.idper)}" icon="ui-icon-check" update="ComboMascotas" />
+                                                <p:selectOneMenu id="ComboMascotas" value="#{billLineBeans.pet}" required="true" >
                                                     <f:selectItems value="#{petsBean.listamascotasPers}" />
                                                 </p:selectOneMenu>
+                                                <p:commandButton value="Fijar" actionListener="#{billLineBeans.KeepSelection(billBean.idper)}"/>
                                                 <h:outputText value="Factura:" />
                                                 <h:outputText id = "idBill" value = "#{billBean.idbill}" />
                                                 <!-- fecha del día para la factura -->
-                                                <h:outputText value="#{now}" >
+                                                <h:outputText id="Datebill" value="#{now}" >
                                                     <f:convertDateTime pattern="dd/MM/yyyy" type="date" />
                                                 </h:outputText>
                                                 <!-- fin de la fecha -->
@@ -95,9 +96,10 @@
                                                 <p:inputText id="Precio-Producto" value="#{billLineBeans.price}" placeholder="* Precio" required="true" />
                                                 <p:inputText id="Impuestos-Producto" value="#{billLineBeans.taxes}" placeholder="* IVA" required="true" />
                                                 <p:inputText id="Descuento-Producto" value="#{billLineBeans.discount}" placeholder="* Descuento" required="true" />
-                                                <p:commandButton value="Añadir Linea" action="#{billLineBeans.Addcart()}"  />
+                                                <h:commandButton value="Añadir Linea"  actionListener="#{billLineBeans.Addcart()}"  />
 
                                             </p:panelGrid>
+
 
                                             <p:dataTable id="Facturas" var="fact" value="#{billLineBeans.listalineasfac}" editable="true" style="margin-bottom:20px" paginator = "true"
                                                          paginatorTemplate = "{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
