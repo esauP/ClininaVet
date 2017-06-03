@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="es" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <meta charset="utf-8"/>
+        <title>Historial Clínico</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="description" content="" />
+        <!-- css -->
+        <link href="css/bootstrap.min.css" rel="stylesheet" />
+
+        <link href="css/flexslider.css" rel="stylesheet" />
+        <link href="css/style.css" rel="stylesheet" />
+        <f:event type="preRenderView" listener="#{loginBean.validarSesionConsultation()}"/>
+    </h:head>
+    <h:body>
+        <div id="wrapper">
+            <!-- start header -->
+            <header>
+                <div class="navbar navbar-default navbar-static-top"  >
+                    <div class="container" >
+                        <div class="navbar-header">
+                            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                            </button>
+                            <a class="navbar-brand" href="adminHome.html"><img src="img/logo.png" alt="logo"/></a>
+                        </div>
+                        <div class="navbar-collapse collapse ">
+                            <ul class="nav navbar-nav">
+                                <li><a href="pets.xhtml">Mascotas</a></li>
+                                <li class="active"><a href="consultations.xhtml">Consulta | Historial</a></li>
+                                <li><a href="dates.xhtml">Citas</a></li>
+                                <li><a href="bills.xhtml">Facturación</a></li>
+                                <li><a href="vaccines.xhtml">Vacunas</a></li>
+                                <li>
+                                    <a>
+                                        <h:form>
+                                            <p:commandButton actionListener="#{loginBean.desloguear(event)}" image="fa-user-times" value="Desconectar" iconPos="left"/>
+                                        </h:form>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </header>
+        </div>
+        <!-- end header -->
+
+        <section id="content">
+            <div class="row">
+                <div class="skill-home">
+                    <div class="skill-home-solid clearfix">
+                        <div class="col-md-2 text-center">
+                            <p:growl autoUpdate="true" id="regisC" showDetail="true" />
+                            <h:form>
+                                <p:commandButton value="Añadir"  icon="ui-icon-plus" onclick="PF('wdlgDatos').show();" />
+                            </h:form>
+                            <h:form>
+                                <p:commandButton value="Listar" icon="ui-icon-refresh" actionListener="#{consultationBean.listar()}"  update=":tablaC:Consultas"/>
+                            </h:form>
+
+                            <p:dialog header="Datos" widgetVar="wdlgDatos" id="dlgDatos">
+                                <h:form id="formularioA">
+
+                                    <table>
+
+                                        <tr>
+                                            <td>
+                                                <p:outputLabel value="Idpets" />
+                                                <p:selectOneMenu value="#{consultationBean.consult.idpets}">
+                                                    <f:selectItems value="#{consultationBean.listapets}"/>
+                                                </p:selectOneMenu>
+                                                <!--
+                                   <p:outputLabel for="txtidpet" value="IdPet" />
+                                   <p:inputText id="txtidpet" value="#{consultationBean.consult.idpets}" required="true" />
+                                                -->
+                                            </td>
+                                            <td>
+                                                <p:outputLabel for="txtfecha" value="Fecha" />
+                                                <p:inputMask id="txtfecha" value="#{consultationBean.consult.date}" required="true" mask="99-99-9999"/>
+                                            </td>
+                                            <td>
+                                                <p:outputLabel for="txtreason" value="Motivo" />
+                                                <p:inputText id="txtreason" value="#{consultationBean.consult.reason}" required="true" />
+                                            </td>
+                                        </tr>
+                                        <tr>
+
+                                            <td>
+                                                <p:outputLabel for="txtdiagnosis" value="Diagnóstico" />
+                                                <p:inputText id="txtdiagnosis" value="#{consultationBean.consult.diagnosis}" required="true" />
+                                            </td>
+
+                                            <td>
+                                                <p:outputLabel for="txttreatment" value="Tratamiento" />
+                                                <p:inputText id="txttreatment" value="#{consultationBean.consult.treatment}" required="false" />
+                                            </td>
+
+                                            <td>
+                                                <p:outputLabel for="txtobservation" value="Observaciones" />
+                                                <p:inputText id="txtobservation" value="#{consultationBean.consult.observation}" required="false" />
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    <p:commandButton value="Añadir nueva consulta" actionListener="#{consultationBean.AddConsultation()}" update=":tablaC:Consultas" />
+                                    <p:commandButton value="Cerrar Ventana" actionListener="#{consultationBean.listar()}" oncomplete="PF('wdlgDatos').hide()" update=":tablaC:Consultas"/>
+                                </h:form>
+                            </p:dialog>
+                        </div>
+                        <div class="col-md-10 text-center">
+                            <h:form id="tablaC">
+                                <p:dataTable id="Consultas" var="conslt" value="#{consultationBean.listaconsultas}" editable="true" style="margin-bottom:20px">
+                                    <f:facet name="header">Historial Clínico</f:facet>
+
+                                    <p:ajax event="rowEdit" listener="#{consultationBean.onRowEdit}"  />
+                                    <p:ajax event="rowEditCancel" listener="#{consultationBean.onRowCancel}" />
+
+                                    <p:column headerText="IdConsulta">
+                                        <h:outputText value="#{conslt.idcons}" />
+                                    </p:column>
+
+                                    <p:column headerText="idMascota" filterBy="#{conslt.idpets}"  filterMatchMode="contains">
+                                        <p:cellEditor>
+                                            <f:facet name="output"><h:outputText value="#{conslt.idpets}" /></f:facet>
+                                            <f:facet name="input"><p:inputText value="#{conslt.idpets}" style="width:100%" label="idPet"/></f:facet>
+                                        </p:cellEditor>
+                                    </p:column>
+
+                                    <p:column headerText="Fecha_Consulta">
+                                        <p:cellEditor>
+                                            <f:facet name="output"><h:outputText value="#{conslt.date}" /></f:facet>
+                                            <f:facet name="input">  <p:inputMask id="txtfecha" value="#{consult.date}" required="true" mask="99-99-9999" style="width: 100%" label="Fecha_Consulta"/></f:facet>
+                                        </p:cellEditor>
+                                    </p:column>
+
+                                    <p:column headerText="Motivo">
+                                        <p:cellEditor>
+                                            <f:facet name="output"><h:outputText value="#{conslt.reason}" /></f:facet>
+                                            <f:facet name="input"><p:inputText value="#{conslt.reason}" style="width:100%" label="reason"/></f:facet>
+                                        </p:cellEditor>
+                                    </p:column>
+
+                                    <p:column headerText="Diagnóstico">
+                                        <p:cellEditor>
+                                            <f:facet name="output"><h:outputText value="#{conslt.diagnosis}" /></f:facet>
+                                            <f:facet name="input"><p:inputText value="#{conslt.diagnosis}" style="width:100%" label="diagnosis"/></f:facet>
+                                        </p:cellEditor>
+                                    </p:column>
+
+                                    <p:column headerText="Tratamiento">
+                                        <p:cellEditor>
+                                            <f:facet name="output"><h:outputText value="#{conslt.treatment}" /></f:facet>
+                                            <f:facet name="input"><p:inputText value="#{conslt.treatment}" style="width:100%" label="treatment"/></f:facet>
+                                        </p:cellEditor>
+                                    </p:column>
+
+                                    <p:column headerText="Observaciones">
+                                        <p:cellEditor>
+                                            <f:facet name="output"><h:outputText value="#{conslt.observation}" /></f:facet>
+                                            <f:facet name="input"><p:inputText value="#{conslt.observation}" style="width:100%" label="observation"/></f:facet>
+                                        </p:cellEditor>
+                                    </p:column>
+
+
+                                    <p:column style="width:32px">
+                                        <p:rowEditor />
+                                    </p:column>
+
+                                    <p:column headerText="Eliminar">
+                                        <p:commandLink value="Eliminar"  actionListener="#{consultationBean.eliminarConsultation(conslt.idcons)}" update=":tablaC:Consultas"/>
+                                    </p:column>
+
+                                </p:dataTable>
+                            </h:form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- DOCUMENTOS -->
+
+            <div class="row">
+                <div class="skill-home">
+                    <div class="skill-home-solid clearfix">
+                        <div class="col-md-2 text-center">
+                            <p:growl autoUpdate="true" id="regisD" showDetail="true" />
+                            <h:form>
+                                <p:commandButton value="Añadir"  icon="ui-icon-plus" onclick="PF('wdlgDatosd').show();" />
+                            </h:form>
+                            <h:form>
+                                <p:commandButton value="Listar" actionListener="#{docBean.listar}" update=":tablaD:ConsultasD" />
+                            </h:form>
+
+                            <p:dialog header="Datos" widgetVar="wdlgDatosd" id="dlgDatosd">
+                                <h:form id="formularioD" enctype="multipart/form-data">
+
+                                    <table>
+                                        <tr>
+                                            <td>
+                                                <p:outputLabel value="idCons" />
+                                                <p:selectOneMenu value="#{docBean.docu.idcons}">
+                                                    <f:selectItems value="#{docBean.listaconsult}"/>
+                                                </p:selectOneMenu>
+                                                <!--
+                                  <p:outputLabel for="txtidconsd" value="IdConsulta" />
+                                  <p:inputText id="txtidconsd" value="#{docBean.docu.idcons}" required="true" />
+                                                -->
+                                            </td>
+                                            <td>
+                                                <p:outputLabel for="datedoc" value="Fecha_documento" />
+                                                <p:inputMask id="datedoc" value="#{docBean.docu.date_doc}" required="false" mask="99-99-9999" style="width: 100%" label="datedoc"/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <p:outputLabel for="descripd" value="Descripcion" />
+                                                <p:inputText id="descripd" value="#{docBean.docu.description}" required="false" />
+                                            </td>
+                                            <td>
+                                                <p:outputLabel for="filed" value="Fichero adjunto" />
+                                                <p:fileUpload id="filed" value="#{docBean.file}" mode="simple" required="true"/>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    <p:commandButton value="Añadir nuevo doc" actionListener="#{docBean.addDoc()}"  />
+                                    <p:commandButton value="Cerrar Ventana" actionListener="#{docBean.listar}" oncomplete="PF('wdlgDatosd').hide()" update=":tablaD:ConsultasD"/>
+                                </h:form>
+                            </p:dialog>
+                        </div>
+                        <div class="col-md-10 text-center">
+                            <h:form id="tablaD">
+                                <p:dataTable id="ConsultasD" var="docs" value="#{docBean.listadoc}" editable="true" style="margin-bottom:20px">
+                                    <f:facet name="header">Documentacion asociada</f:facet>
+
+                                    <p:ajax event="rowEdit" listener="#{docBean.onRowEdit}"  />
+                                    <p:ajax event="rowEditCancel" listener="#{docBean.onRowCancel}" />
+
+                                    <p:column headerText="IdDocumento">
+                                        <h:outputText value="#{docs.iddoc}" />
+                                    </p:column>
+
+                                    <p:column headerText="idConsulta" filterBy="#{docs.idcons}"  filterMatchMode="contains">
+                                        <p:cellEditor>
+                                            <f:facet name="output"><h:outputText value="#{docs.idcons}" /></f:facet>
+                                            <f:facet name="input"><p:inputText value="#{docs.idcons}" style="width:100%" label="idConsulta"/></f:facet>
+                                        </p:cellEditor>
+                                    </p:column>
+
+                                    <p:column headerText="date_doc">
+                                        <p:cellEditor>
+                                            <f:facet name="output"><h:outputText value="#{docs.date_doc}" /></f:facet>
+                                            <f:facet name="input"><p:inputMask value="#{docs.date_doc}" required="true" mask="99-99-9999" style="width: 100%" label="date_doc"/></f:facet>
+                                        </p:cellEditor>
+                                    </p:column>
+
+                                    <p:column headerText="descripcion">
+                                        <p:cellEditor>
+                                            <f:facet name="output"><h:outputText value="#{docs.description}" /></f:facet>
+                                            <f:facet name="input"><p:inputText value="#{docs.description}" style="width:100%" label="descripcion"/></f:facet>
+                                        </p:cellEditor>
+                                    </p:column>
+                                    <p:column headerText="File">
+                                        <p:commandLink value="Abrir" actionListener="#{docBean.viewDoc(docs.fileattached)}"/>                                        
+                                    </p:column>
+                                    <!-- <p:column>
+                                        <p:cellEditor>
+                                            <f:facet name="input">
+                                                <p:inputText value="#{docs.fileattached}" style="width:100%" label="descripcion"/>
+                                            </f:facet>
+                                        </p:cellEditor>
+                                    </p:column> -->
+                                    <p:column style="width:50px">
+                                        <p:rowEditor />
+                                    </p:column>
+
+                                    <p:column headerText="Eliminar">
+                                        <p:commandLink value="Eliminar"  actionListener="#{docBean.deleteDoc(docs.iddoc)}" update=":tablaD:ConsultasD"/>
+                                    </p:column>
+
+                                </p:dataTable>
+                            </h:form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- VACUNAS -->
+            <div class="row">
+                <div class="skill-home">
+                    <div class="skill-home-solid clearfix">
+                        <div class="col-md-2 text-center">
+                            <p:growl autoUpdate="true" id="regisV" showDetail="true" />
+                            <h:form>
+                                <p:commandButton value="Añadir"  icon="ui-icon-plus" onclick="PF('wdlgDatosV').show();" />
+                            </h:form>
+                            <h:form>
+                                <p:commandButton value="Listar" actionListener="#{vaccinesBean.listar()}"  update=":tablaV"/>
+                            </h:form>
+
+                            <p:dialog header="DatosV" widgetVar="wdlgDatosV" id="dlgDatosV">
+                                <h:form id="formularioV">
+                                    <table>
+                                        <tr>
+                                            <td>
+                                                <p:outputLabel for="txtidpet" value="idPet" />
+                                                <p:inputText id="txtidpet" value="#{vaccinesBean.vacuna.idpet}" required="true" />
+                                            </td>
+                                            <td>
+                                                <!--
+                                    <p:outputLabel for="txtnamevaccine" value="Nombre vacuna" />
+                                    <p:inputText id="txtnamevaccine" value="#{vaccinesBean.vacuna.name_vaccine}" required="false" />
+                                                -->
+
+                                                <p:outputLabel value="Vacuna aplicada" />
+                                                <p:selectOneMenu value="#{vaccinesBean.vacuna.name_vaccine}">
+                                                    <f:selectItems value="#{vaccinesBean.listlistamaestra}"/>
+                                                </p:selectOneMenu>
+                                            </td>
+
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <p:outputLabel for="txtdatevaccine" value="Fecha vacuna" />
+                                                <p:inputMask id="txtdatevaccine" value="#{vaccinesBean.vacuna.date_vaccine}" required="true" mask="99-99-9999" style="width: 100%"/>
+
+                                            </td>
+                                            <td>
+                                                <p:outputLabel for="txtobserV" value="Observaciones" />
+                                                <p:inputText id="txtobserV" value="#{vaccinesBean.vacuna.observaciones}" required="false" />
+                                            </td>
+                                        </tr>
+                                    </table>
+
+                                    <p:commandButton value="Añadir vacuna" actionListener="#{vaccinesBean.addVaccine()}" update=":tablaV:ConsultasV" />
+                                    <p:commandButton value="Cerrar Ventana" actionListener="#{vaccinesBean.listar()}" oncomplete="PF('wdlgDatosV').hide()" update=":tablaV:ConsultasV"/>
+                                </h:form>
+                            </p:dialog>
+                        </div>
+
+                        <div class="col-md-10 text-center">
+                            <h:form id="tablaV">
+                                <p:dataTable id="ConsultasV" var="vacc" value="#{vaccinesBean.listvaccines}" editable="true" style="margin-bottom:20px">
+                                    <f:facet name="header">Historial vacunas aplicadas</f:facet>
+
+                                    <p:ajax event="rowEdit" listener="#{vaccinesBean.onRowEdit}"  />
+                                    <p:ajax event="rowEditCancel" listener="#{vaccinesBean.onRowCancel}" />
+
+                                    <p:column headerText="idVacuna">
+                                        <h:outputText value="#{vacc.idvac}" />
+                                    </p:column>
+
+                                    <p:column headerText="idMascota" filterBy="#{vacc.idpet}"  filterMatchMode="contains">
+                                        <p:cellEditor>
+                                            <f:facet name="output"><h:outputText value="#{vacc.idpet}" /></f:facet>
+                                            <f:facet name="input"><p:inputText value="#{vacc.idpet}" style="width:100%" label="idPet"/></f:facet>
+                                        </p:cellEditor>
+                                    </p:column>
+
+                                    <p:column headerText="Nombre Vacuna">
+                                        <p:cellEditor>
+                                            <f:facet name="output"><h:outputText value="#{vacc.name_vaccine}" /></f:facet>
+                                            <f:facet name="input"><p:inputText value="#{vacc.name_vaccine}" style="width:100%" label="nameVaccine"/></f:facet>
+                                        </p:cellEditor>
+                                    </p:column>
+
+                                    <p:column headerText="Fecha Vacuna">
+                                        <p:cellEditor>
+                                            <f:facet name="output"><h:outputText value="#{vacc.date_vaccine}" /></f:facet>
+                                            <f:facet name="input">  <p:inputMask id="txtfecha" value="#{vacc.date_vaccine}" mask="99-99-9999" style="width: 100%" label="dateVaccine"/></f:facet>
+                                        </p:cellEditor>
+                                    </p:column>
+
+                                    <p:column headerText="Observaciones">
+                                        <p:cellEditor>
+                                            <f:facet name="output"><h:outputText value="#{vacc.observaciones}" /></f:facet>
+                                            <f:facet name="input"><p:inputText value="#{vacc.observaciones}" style="width:100%" label="observations"/></f:facet>
+                                        </p:cellEditor>
+                                    </p:column>
+
+                                    <p:column style="width:32px">
+                                        <p:rowEditor />
+                                    </p:column>
+
+                                    <p:column headerText="Eliminar">
+                                        <p:commandLink value="Eliminar"  actionListener="#{vaccinesBean.deleteVaccine(vacc.idvac)}" update=":tablaV:ConsultasV"/>
+                                    </p:column>
+
+                                </p:dataTable>
+                            </h:form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <footer>
+
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <ul class="social-network">
+                            <li><a href="#" data-placement="top" title="Facebook"><i class="fa fa-facebook"></i></a></li>
+                            <li><a href="#" data-placement="top" title="Twitter"><i class="fa fa-twitter"></i></a></li>
+                            <li><a href="#" data-placement="top" title="Google plus"><i class="fa fa-google-plus"></i></a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+        </footer>
+    </h:body>
+</html>

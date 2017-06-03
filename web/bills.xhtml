@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="es"  xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <meta charset="utf-8" />
+        <title>Clínica Veterinaria</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="description" content="" />
+        <!-- css -->
+        <link href="css/bootstrap.min.css" rel="stylesheet" />
+        <link href="css/fancybox/jquery.fancybox.css" rel="stylesheet" />
+        <link href="css/jcarousel.css" rel="stylesheet" />
+        <link href="css/flexslider.css" rel="stylesheet" />
+        <link href="js/owl-carousel/owl.carousel.css" rel="stylesheet" />
+        <link href="css/style.css" rel="stylesheet" />
+        <f:event type="preRenderView" listener="#{loginBean.validarSesionBills()}"/>
+    </h:head>
+    <h:body>
+        <div id="wrapper">
+            <!-- start header -->
+            <header>
+                <div class="navbar navbar-default navbar-static-top"  >
+                    <div class="container" >
+                        <div class="navbar-header">
+                            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                            </button>
+                            <a class="navbar-brand" href="adminHome.xhtml"><img src="img/logo.png" alt="logo"/></a>
+                        </div>
+                        <div class="navbar-collapse collapse ">
+                            <ul class="nav navbar-nav">
+                                <li><a href="pets.xhtml">Mascotas</a></li>
+                                <li><a href="consultations.xhtml">Consulta | Historial</a></li>
+                                <li><a href="dates.xhtml">Citas</a></li>
+                                <li class="active"><a href="bills.xhtml">Facturación</a></li>
+                                <li><a href="vaccines.xhtml">Vacunas</a></li>
+                                <li>
+                                    <a>
+                                        <h:form>
+                                            <p:commandButton actionListener="#{loginBean.desloguear(event)}" icon="fa-user-times" value="Desconectar" iconPos="left"/>
+                                        </h:form>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </header>
+        </div>
+        <!-- end header -->
+
+        <section id="content">
+            <div class="container">
+                <div class="row">
+                    <div class="skill-home"> <div class="skill-home-solid clearfix">
+
+                            <div class="col-md-12 text-center">
+                                <div class="billInfo">
+                                    <h:form id="tablaFacturas">
+                                        <p:panel>
+                                            <!-- combobox de mascotas  -->
+                                            <p:growl id = "msgs" showDetail = "true" />
+                                            <h:panelGrid columns="12" cellpadding="5">
+                                                <p:autoComplete value="#{billBean.idper}" completeMethod="#{personBean.AutocompletarID}" placeholder="* Nombre Apellidos"  onclick="#{petsBean.BuscaMascotas(billBean.idper)}"/>
+                                                <p:commandButton value="Buscar" actionListener="#{petsBean.BuscaMascotas(billBean.idper)}" icon="ui-icon-check" update="ComboMascotas"/>
+                                                <p:selectOneMenu id="ComboMascotas" value="#{billLineBeans.pet}" >
+                                                    <f:selectItems value="#{petsBean.listamascotasPers}" />
+                                                </p:selectOneMenu>
+                                                <h:outputText value="Factura:" />
+                                                <h:outputText id = "idBill" value = "#{billBean.idbill}" />
+                                                <!-- fecha del día para la factura -->
+                                                <h:outputText value="#{now}" >
+                                                    <f:convertDateTime pattern="dd/MM/yyyy" type="date" />
+                                                </h:outputText>
+                                                <!-- fin de la fecha -->
+                                            </h:panelGrid>
+
+                                            <p:spacer width="20"  height="0"/>
+                                            <!-- fin del combobox de mascotas-->
+
+                                            <h:outputText id = "description" value = "#{billBean.observations}" />
+
+
+                                        </p:panel>
+                                        <p:panel>
+                                            <p:panelGrid columns="5">
+                                                <p:selectOneMenu id="Producto" value="#{billLineBeans.prod}" filter="true" filterMatchMode="startsWith">
+                                                    <f:selectItems value="#{productBean.listproducts}" />
+                                                </p:selectOneMenu>
+                                                <p:inputText id="Cantidad-Producto" value="#{billLineBeans.quantity}" placeholder="* Cantidad" required="true" maxlength="3" />
+                                                <p:inputText id="Precio-Producto" value="#{billLineBeans.price}" placeholder="* Precio" required="true" />
+                                                <p:inputText id="Impuestos-Producto" value="#{billLineBeans.taxes}" placeholder="* IVA" required="true" />
+                                                <p:inputText id="Descuento-Producto" value="#{billLineBeans.discount}" placeholder="* Descuento" required="true" />
+                                                <p:commandButton value="Añadir Linea" action="#{billLineBeans.Addcart()}"  />
+
+                                            </p:panelGrid>
+
+                                            <p:dataTable id="Facturas" var="fact" value="#{billLineBeans.listalineasfac}" editable="true" style="margin-bottom:20px" paginator = "true"
+                                                         paginatorTemplate = "{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                                         rowsPerPageTemplate = "5,10,15,20,25">
+                                                <f:facet name="header">Factura</f:facet>
+
+                                                <p:ajax event="rowEdit" listener="#{billLineBeans.onRowEdit}"  update=":tablaFacturas:Facturas" />
+                                                <p:ajax event="rowEditCancel" listener="#{billLineBeans.onRowCancel}" update=":tablaFacturas:Facturas" />
+
+                                                <p:column headerText="Producto">             
+                                                    <h:outputText value="#{fact.nameprod}" />
+                                                </p:column>  
+
+                                                <p:column headerText="Mascota">             
+                                                    <h:outputText value="#{fact.namepet}" />
+                                                </p:column>
+
+                                                <p:column headerText="Cantidad">
+                                                    <p:cellEditor>
+                                                        <f:facet name="output"><h:outputText value="#{fact.quantity}" /></f:facet>
+                                                        <f:facet name="input"><p:inputText value="#{fact.quantity}" style="width:100%" label="quantity"/></f:facet>
+                                                    </p:cellEditor>
+                                                </p:column>
+
+                                                <p:column headerText="PVP">
+                                                    <p:cellEditor>
+                                                        <f:facet name="output"><h:outputText value="#{fact.price}" /></f:facet>
+                                                        <f:facet name="input"><p:inputText value="#{fact.price}" style="width:100%" label="price"/></f:facet>
+                                                    </p:cellEditor>
+                                                </p:column>
+
+                                                <p:column headerText="IVA">
+                                                    <p:cellEditor>
+                                                        <f:facet name="output"><h:outputText value="#{fact.taxes}" /></f:facet>
+                                                        <f:facet name="input"><p:inputText value="#{fact.taxes}" style="width:100%" label="tax"/></f:facet>
+                                                    </p:cellEditor>
+                                                </p:column>
+
+                                                <p:column headerText="Dcto">
+                                                    <p:cellEditor>
+                                                        <f:facet name="output"><h:outputText value="#{fact.discount}" /></f:facet>
+                                                        <f:facet name="input"><p:inputText value="#{fact.discount}" style="width:100%" label="descuento"/></f:facet>
+                                                    </p:cellEditor>
+                                                </p:column>
+
+                                                <p:column headerText="Obs.">
+                                                    <p:cellEditor>
+                                                        <f:facet name="output"><h:outputText value="#{fact.observations}" /></f:facet>
+                                                        <f:facet name="input"><p:inputText value="#{fact.observations}" style="width:100%" label="obs"/></f:facet>
+                                                    </p:cellEditor>
+                                                </p:column>
+
+                                                <p:column style="width:32px">
+                                                    <p:rowEditor />
+                                                </p:column>
+
+                                                <p:column headerText="Eliminar">
+                                                    <p:commandLink value="Eliminar"  actionListener="#{billLineBeans.DeleteLine(fact.idprod, fact.idpet)}" update=":tablaFacturas:Facturas"/>
+                                                </p:column>
+
+                                            </p:dataTable>
+                                            <p:commandButton value="Guardar" actionListener="#{billBean.AddBill()}" /><p:spacer width="20"  height="0"/>
+                                            <p:commandButton value="Imprimir Factura"  /><p:spacer width="20"  height="0"/>
+                                            <p:commandButton value="Salir sin guardar" /><p:spacer width="20"  height="0"/>
+                                        </p:panel>
+                                    </h:form>
+                                </div>
+                                <!-- fin de la tabla -->
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div id="sub-footer">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <ul class="social-network">
+                            <li><a href="#" data-placement="top" title="Facebook"><i class="fa fa-facebook"></i></a></li>
+                            <li><a href="#" data-placement="top" title="Twitter"><i class="fa fa-twitter"></i></a></li>
+                            <li><a href="#" data-placement="top" title="Google plus"><i class="fa fa-google-plus"></i></a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <a href="#" class="scrollup"><i class="fa fa-angle-up active"></i></a>
+        <!-- javascript
+        ================================================== -->
+        <!-- Placed at the end of the document so the pages load faster -->
+    </h:body>
+</html>

@@ -1,0 +1,125 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+        <div>
+            <h:form>
+                <div>
+                    <p:outputLabel for="txtnombre" value="Nombre" />
+                    <p:autoComplete id="txtnombre" value="#{personBean.pers.namePer}" completeMethod="#{personBean.AutocompletarNombre}" placeholder="* Nombre Apellidos" required="true"  />
+                    <p:outputLabel for="txtdni" value="Dni" />
+                    <p:inputText id="txtdni" value="#{personBean.pers.idperson}" required="true" placeholder="DNI" /> 
+                </div>
+                <div>
+                    <p:outputLabel for="txtaddres" value="Direccion" />
+                    <p:inputText id="txtaddres" value="#{personBean.pers.address}" required="true" />
+                    <p:outputLabel for="txtphone" value="Telefono" />
+                    <p:inputText id="txtphone" value="#{personBean.pers.phone}" required="true" />
+                    <p:outputLabel for="txtemail" value="Email" />
+                    <p:inputText id="txtemail" value="#{personBean.pers.email}" required="true" />
+                </div>
+                <p:commandButton value="Registrar" actionListener="#{personBean.AddPerson()}" />
+            </h:form>
+        </div>
+        <div>
+            <p:autoComplete value="#{personBean.namePer}" completeMethod="#{personBean.AutocompletarNombre}"/>
+        </div>
+        <div>
+            <p:autoComplete value="#{petsBean.idPerson}" completeMethod="#{petsBean.AutocompletarID}"/>
+        </div>
+        <div>
+            <h:form id="tabla">
+                <p:dataTable id="Clientes" var="per" value="#{personBean.listapersonas}" editable="true" style="margin-bottom:20px" styleClass="borderless">
+                    <f:facet name="header">Clientes</f:facet>
+
+                    <p:ajax event="rowEdit" listener="#{personBean.onRowEdit}"  />
+                    <p:ajax event="rowEditCancel" listener="#{personBean.onRowCancel}" />
+
+                    <p:column headerText="Id">
+                        <h:outputText value="#{per.idperson}"                 />
+                    </p:column>
+                    <p:column filterBy="#{per.namePer}" footerText="contains" filterMatchMode="contains"
+                              filterFunction="#{personBean.filterByName}"
+                              headerText="Nombre">
+                        <p:cellEditor>
+                            <f:facet name="output"><h:outputText value="#{per.namePer}" /></f:facet>
+                            <f:facet name="input"><p:inputText value="#{per.namePer}" style="width:100%" label="Nombre"/></f:facet>
+                        </p:cellEditor>
+                    </p:column>
+
+                    <p:column headerText="Correo" class="danger">
+                        <p:cellEditor>
+                            <f:facet name="output"><h:outputText value="#{per.email}" /></f:facet>
+                            <f:facet name="input"><p:inputText value="#{per.email}" style="width:100%" label="Correo"/></f:facet>
+                        </p:cellEditor>
+                    </p:column>
+
+                    <p:column headerText="Telefono">
+                        <p:cellEditor>
+                            <f:facet name="output"><h:outputText value="#{per.phone}" /></f:facet>
+                            <f:facet name="input"><p:inputText value="#{per.phone}" style="width:100%" label="Telefono"/></f:facet>
+                        </p:cellEditor>
+                    </p:column>
+
+                    <p:column style="width:32px">
+                        <p:rowEditor />
+                    </p:column>
+                </p:dataTable>
+            </h:form>
+        </div>
+        <div>
+            <h:form id="tablepets">
+                <p:dataTable id = "tablaHomeAdmin" var = "pet" value = "#{petsBean.listamascotas}" rows = "5" paginator = "true"
+                             paginatorTemplate = "{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             rowsPerPageTemplate = "5,10,15,20,25" editable="true">
+                    <f:facet name = "header">Listado de Mascotas</f:facet>
+
+                    <p:ajax event="rowEdit" listener="#{petsBean.onRowEdit}"  />
+                    <p:ajax event="rowEditCancel" listener="#{petsBean.onRowCancel}" />
+
+                    <p:column filterBy="#{pet.namepet}" filterMatchMode="contains"
+                              filterFunction="#{petsBean.filterCase}" headerText = "Mascota">
+                        <h:outputText value = "#{pet.namepet}"/>
+                    </p:column>
+                    <p:column headerText = "Tipo Animal" filterBy="#{pet.animal}" filterMatchMode="contains"
+                              filterFunction="#{petsBean.filterCase}">
+                        <p:cellEditor>
+                            <f:facet name="output"><h:outputText value="#{pet.animal}" /></f:facet>
+                            <f:facet name="input">    <p:inputMask id="txtfecha" value="#{consultationBean.consult.date}" required="true" mask="99-99-9999"/></f:facet>
+                        </p:cellEditor>
+                    </p:column>         
+                    <p:column headerText = "Responsable"  filterBy="#{pet.person.namePer}" filterMatchMode="contains"
+                              filterFunction="#{petsBean.filterCase}">
+                        <h:outputText value = "#{pet.person.namePer}"/>
+                    </p:column>
+                    <p:column headerText = "Telefono"  filterBy="#{pet.person.phone}" filterMatchMode="contains"
+                              filterFunction="#{petsBean.filterCase}">
+                        <p:cellEditor>
+                            <f:facet name="output"><h:outputText value="#{pet.person.phone}" /></f:facet>
+                            <f:facet name="input"><p:inputText value="#{pet.person.phone}" style="width:100%" label="Telefono"/></f:facet>
+                        </p:cellEditor>                                        
+                    </p:column>
+                    <p:column headerText = "Email"  filterBy="#{pet.person.email}" filterMatchMode="contains"
+                              filterFunction="#{petsBean.filterCase}">
+                        <p:cellEditor>
+                            <f:facet name="output"><h:outputText value="#{pet.person.email}" /></f:facet>
+                            <f:facet name="input"><p:inputText value="#{pet.person.email}" style="width:100%" label="Telefono"/></f:facet>
+                        </p:cellEditor>                                        
+                    </p:column>
+                    <p:column style="width:32px">
+                        <p:rowEditor />
+                    </p:column>
+                </p:dataTable>
+
+                <div><br/><button type="button" class="btn btn-default" data-toggle="modal" data-target="#myModal">Histórico Servicios</button></div>
+            </h:form>
+        </div>
+    </h:body>
+</html>
+
