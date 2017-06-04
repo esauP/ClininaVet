@@ -59,7 +59,7 @@ public class PetsBean implements Serializable {
     }
 
     public void BuscaMascotas(String IdPersona) throws SQLException {
-                listamascotasPers = LPets.getPets(IdPersona);
+        listamascotasPers = LPets.getPets(IdPersona);
     }
 
     /**

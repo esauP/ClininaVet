@@ -65,12 +65,13 @@
                                             <!-- combobox de mascotas  -->
                                             <p:growl id = "msgs" showDetail = "true" />
                                             <h:panelGrid columns="12" cellpadding="5">
-                                                <p:autoComplete value="#{billBean.idper}" completeMethod="#{personBean.AutocompletarID}" placeholder="* Nombre Apellidos"  onclick="#{petsBean.BuscaMascotas(billBean.idper)}"/>
-                                                <p:commandButton value="Buscar" actionListener="#{petsBean.BuscaMascotas(billBean.idper)}" icon="ui-icon-check" update="ComboMascotas" />
+                                                <p:autoComplete value="#{billBean.idper}" completeMethod="#{personBean.AutocompletarID}" placeholder="* Nombre Apellidos"  />
+                                                <p:commandButton value="Buscar" actionListener="#{petsBean.BuscaMascotas(billBean.idper)}" update="tablaFacturas" />
                                                 <p:selectOneMenu id="ComboMascotas" value="#{billLineBeans.pet}" required="true" >
+                                                    <f:selectItem itemLabel="- selecciona una mascota -" itemValue="0"/>
                                                     <f:selectItems value="#{petsBean.listamascotasPers}" />
                                                 </p:selectOneMenu>
-                                                <p:commandButton value="Fijar" actionListener="#{billLineBeans.KeepSelection(billBean.idper)}"/>
+                                                <p:commandButton value="Fijar" action="#{billLineBeans.KeepSelection(billBean.idper)}"/>
                                                 <h:outputText value="Factura:" />
                                                 <h:outputText id = "idBill" value = "#{billBean.idbill}" />
                                                 <!-- fecha del día para la factura -->

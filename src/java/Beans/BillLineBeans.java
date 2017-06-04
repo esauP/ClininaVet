@@ -98,14 +98,13 @@ public class BillLineBeans {
         }
         BillLines fact = new BillLines(this.idpet, this.namepet, this.idprod, this.nameprod, this.quantity, this.price, this.taxes, this.discount);
         this.listalineasfac.add(fact);
+        System.out.println("Añadir carrito");
     }
 
     public void KeepSelection(String idpers) {
-        RequestContext context = RequestContext.getCurrentInstance();
+        
         FacesContext fcontext = FacesContext.getCurrentInstance();
-
         FacesMessage message = new FacesMessage("Mascota Fijada");
-        Person pers = new Person();
 
         try {
 
@@ -121,6 +120,7 @@ public class BillLineBeans {
             e.printStackTrace();
         }
         FacesContext.getCurrentInstance().addMessage(null, message);
+        System.out.println("Fijar Mascota");
     }
 
     public int getId() {
