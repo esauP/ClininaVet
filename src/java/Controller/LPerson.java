@@ -113,19 +113,24 @@ public class LPerson {
         ConexionDB conn = new ConexionDB();
         try {
             //Llamada a la funcion
-            String sql = "{ call updatePerson (?,?,?,?,?,?,?) }";
+            String sql = "{ ? = call updatePerson (?,?,?,?,?,?,?) }";
             CallableStatement cStmt = conn.getConexion().prepareCall(sql);
+            cStmt.registerOutParameter(1, java.sql.Types.INTEGER);
+
             //establezco los parámetros de entrada
-            cStmt.setString(1, idperson);
-            cStmt.setString(2, name);
-            cStmt.setString(3, address);
-            cStmt.setString(4, phone);
-            cStmt.setString(5, email);
-            cStmt.setString(6, password);
-            cStmt.setInt(7, role);
+            cStmt.setString(2, idperson);
+            cStmt.setString(3, name);
+            cStmt.setString(4, address);
+            cStmt.setString(5, phone);
+            cStmt.setString(6, email);
+            cStmt.setString(7, password);
+            cStmt.setInt(8, role);
             //se ejecuta la funcion
             cStmt.execute();
 
+            if (cStmt.getInt(1) == 0) {
+                success = true;
+            }
         } catch (SQLException e) {
             System.err.println(e.getMessage());
         } finally {

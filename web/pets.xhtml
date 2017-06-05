@@ -63,8 +63,9 @@
 
                             <div class="col-md-12 text-left">
                                 <p:growl id="regis" showDetail="true" />
-                                <h:form id = "formPerson">
+                                <p:messages autoUpdate="true" closable="true"  />
 
+                                <h:form id = "formPerson">
                                     <h3>Datos del Responsable</h3>
                                     <p>
                                         <p:inputText id="nombreperson" value="#{personBean.pers.namePer}" placeholder="* Nombre y Apellidos" required="true"/>
@@ -80,11 +81,66 @@
                                     </p>
                                     <div>
                                         <p:commandButton value="Registrar" actionListener="#{personBean.AddPerson()}" update=":regis"/>
-                                        <p:commandButton value="Modificar" actionListener="#{personBean.UpdatePerson()}" update=":regis"/>
-                                        <p:commandButton value="Eliminar" actionListener="#{personBean.DeletePerson()}" update=":regis"/>
                                     </div>
                                 </h:form>
                                 <br/>
+                                <div>
+                                    <h:form id ="tablePers">     
+                                        <p:dataTable id = "tablaHomeAdminPers" var = "per" value = "#{personBean.listapersonas}" rows = "5" paginator = "true"
+                                                     paginatorTemplate = "{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                                     rowsPerPageTemplate = "5,10,15,20,25" editable="true" style="width: 100%">
+                                            <f:facet name = "header">Listado de Mascotas con relacion de Responsable</f:facet>
+
+                                            <p:ajax event="rowEdit" listener="#{personBean.onRowEdit}" />
+                                            <p:ajax event="rowEditCancel" listener="#{personBean.onRowCancel}" />
+
+                                            <p:column filterBy="#{per.namePer}"  filterMatchMode="contains"
+                                                      filterFunction="#{personBean.filterByName}"
+                                                      headerText="Nombre">
+                                                <p:cellEditor>
+                                                    <f:facet name="output"><h:outputText value="#{per.namePer}" /></f:facet>
+                                                    <f:facet name="input"><p:inputText value="#{per.namePer}" style="width:100%" label="Nombre"/></f:facet>
+                                                </p:cellEditor>
+                                            </p:column>
+                                            <p:column filterBy="#{per.idperson}"  filterMatchMode="contains"
+                                                      filterFunction="#{personBean.filterByName}"
+                                                      headerText="DNI">
+                                                <h:outputText value="#{per.idperson}" />
+                                            </p:column>
+                                            <p:column filterBy="#{per.phone}" filterMatchMode="contains"
+                                                      filterFunction="#{personBean.filterByName}"
+                                                      headerText="Teléfono">
+                                                <p:cellEditor>
+                                                    <f:facet name="output"><h:outputText value="#{per.phone}" /></f:facet>
+                                                    <f:facet name="input"><p:inputText value="#{per.phone}" style="width:100%" label="Raza"/></f:facet>
+                                                </p:cellEditor>
+                                            </p:column>
+                                            <p:column filterBy="#{per.email}" filterMatchMode="contains"
+                                                      filterFunction="#{personBean.filterByName}"
+                                                      headerText="Email">
+                                                <p:cellEditor>
+                                                    <f:facet name="output"><h:outputText value="#{per.email}" /></f:facet>
+                                                    <f:facet name="input"><p:inputText value="#{per.email}" style="width:100%" label="Color"/></f:facet>
+                                                </p:cellEditor>
+                                            </p:column>
+                                            <p:column filterBy="#{per.address}" filterMatchMode="contains"
+                                                      filterFunction="#{personBean.filterByName}"
+                                                      headerText="Dirección">
+                                                <p:cellEditor>
+                                                    <f:facet name="output"><h:outputText value="#{per.address}" /></f:facet>
+                                                    <f:facet name="input"><p:inputText value="#{per.address}" style="width:100%" label="Fecha Nacimiento"/></f:facet>
+                                                </p:cellEditor>
+                                            </p:column>
+
+                                            <p:column headerText="Opciones">
+
+                                                <p:rowEditor />
+                                                <p:commandLink value="Eliminar"  actionListener="#{personBean.DeletePerson(per.idperson)}" update=":regis" />
+
+                                            </p:column>
+                                        </p:dataTable>
+                                    </h:form>
+                                </div>
                                 <div>
                                     <h:form id = "formPet">
                                         <h3>Datos de la Mascota</h3>
@@ -111,18 +167,14 @@
                                         </p>
                                         <br/>
                                         <p>
-                                            <p:commandButton value="Registrar" actionListener="#{petsBean.addPet()}" update=":regis" />
-                                            <p:spacer width="20"  height="0"/>
-                                            <p:commandButton value="Modificar" actionListener="#{petsBean.updatePet()}" update=":regis" />
-                                            <p:spacer width="20"  height="0"/>
-                                            <p:commandButton value="Eliminar" actionListener="#{petsBean.deletePet()}" update=":regis" />
+                                            <p:commandButton value="Registrar" actionListener="#{petsBean.addPet()}" update=":regis" />         
                                         </p>
 
                                     </h:form>
                                 </div>
                                 <br/>
                                 <h:form id="tablepets">
-                                    <p:dataTable id = "tablaHomeAdmin" var = "pet" value = "#{petsBean.listamascotas}" rows = "5" paginator = "true"
+                                    <p:dataTable id = "tablaHomeAdminPets" var = "pet" value = "#{petsBean.listamascotas}" rows = "5" paginator = "true"
                                                  paginatorTemplate = "{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                                  rowsPerPageTemplate = "5,10,15,20,25" editable="true" style="width: 100%">
                                         <f:facet name = "header">Listado de Mascotas con relacion de Responsable</f:facet>
@@ -131,7 +183,7 @@
                                         <p:ajax event="rowEditCancel" listener="#{petsBean.onRowCancel}" />
 
                                         <p:column filterBy="#{pet.namepet}"  filterMatchMode="contains"
-                                                  filterFunction="#{personBean.filterByName}"
+                                                  filterFunction="#{petsBean.filterCase}"
                                                   headerText="Nombre Mascota">
                                             <p:cellEditor>
                                                 <f:facet name="output"><h:outputText value="#{pet.namepet}" /></f:facet>
@@ -170,9 +222,15 @@
                                                 <f:facet name="input"><p:inputText value="#{pet.birthDate}" style="width:100%" label="Fecha Nacimiento"/></f:facet>
                                             </p:cellEditor>
                                         </p:column>
+                                        <p:column filterBy="#{pet.person.namePer}" filterMatchMode="contains"
+                                                  filterFunction="#{personBean.filterByName}"
+                                                  headerText="Persona Responsable">
+                                            <h:outputText value="#{pet.person.namePer}" />
+                                        </p:column>
 
-                                        <p:column style="width:32px">
+                                        <p:column headerText="Opciones">
                                             <p:rowEditor />
+                                            <p:commandLink value="Eliminar" actionListener="#{petsBean.deletePet(pet.idpets)}" update=":regis"/>
                                         </p:column>
 
                                         <p:column headerText="Histórico">

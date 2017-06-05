@@ -7,6 +7,7 @@ package Beans;
 
 import Controller.LPerson;
 import Controller.LPets;
+import java.io.IOException;
 import javax.faces.event.ActionEvent;
 import java.io.Serializable;
 import java.sql.SQLException;
@@ -66,33 +67,43 @@ public class PetsBean implements Serializable {
      * Metodo para insertar mascota
      *
      * @throws SQLException
+     * @throws java.io.IOException
      */
-    public void addPet() throws SQLException {
+    public void addPet() throws SQLException, IOException {
         LPets.addPet(petM.getNamepet(), petM.getAnimal(), petM.getGender(), petM.getRace(), petM.getColour(), petM.getBirthDate(), IdPerson);
         FacesMessage msg = new FacesMessage("Mascota Insertada", petM.getNamepet());
         FacesContext.getCurrentInstance().addMessage(null, msg);
+        FacesContext.getCurrentInstance().getExternalContext().redirect("faces/pets.xhtml");
+
     }
 
     /**
      * Metodo para actualizar mascota
      *
      * @throws SQLException
+     * @throws java.io.IOException
      */
-    public void updatePet() throws SQLException {
+    public void updatePet() throws SQLException, IOException {
         LPets.updatePet(petM.getIdpets(), petM.getNamepet(), petM.getAnimal(), petM.getGender(), petM.getRace(), petM.getColour(), petM.getBirthDate());
         FacesMessage msg = new FacesMessage("Mascota Actualizada", petM.getNamepet());
         FacesContext.getCurrentInstance().addMessage(null, msg);
+        FacesContext.getCurrentInstance().getExternalContext().redirect("faces/pets.xhtml");
+
     }
 
     /**
      * Metodo para borrar una mascota
      *
+     * @param idpet
      * @throws SQLException
+     * @throws java.io.IOException
      */
-    public void deletePet() throws SQLException {
-        LPets.deletePet(petM.getIdpets());
+    public void deletePet(int idpet) throws SQLException, IOException {
+        LPets.deletePet(idpet);
         FacesMessage msg = new FacesMessage("Mascota Eliminada", petM.getNamepet());
         FacesContext.getCurrentInstance().addMessage(null, msg);
+        FacesContext.getCurrentInstance().getExternalContext().redirect("faces/pets.xhtml");
+
     }
 
     public void onRowEdit(RowEditEvent event) throws SQLException {

@@ -16,6 +16,7 @@ import javax.inject.Named;
 import org.primefaces.event.RowEditEvent;
 import pojo.Person;
 import Controller.LPerson;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Locale;
 import javax.faces.bean.ManagedBean;
@@ -42,36 +43,47 @@ public class PersonBean implements Serializable {
     }
 
     /**
-     * Metodo para insertar un nuevo usuario
+     * Metodo para insertar un nuevo Cliente
      *
      * @throws SQLException
+     * @throws java.io.IOException
      */
-    public void AddPerson() throws SQLException {
+    public void AddPerson() throws SQLException, IOException {
         LPerson.addPerson(pers.getIdperson(), pers.getNamePer(), pers.getAddress(), pers.getPhone(), pers.getEmail(), pers.getIdperson(), 4);
         FacesMessage msg = new FacesMessage("Persona Insertada", pers.getNamePer());
         FacesContext.getCurrentInstance().addMessage(null, msg);
+        FacesContext.getCurrentInstance().getExternalContext().redirect("faces/pets.xhtml");
+
     }
 
     /**
      * Metodo para actualizar usuario
      *
+     * @param event
      * @throws SQLException
+     * @throws IOException
      */
-    public void UpdatePerson() throws SQLException {
+    public void UpdatePerson(RowEditEvent event) throws SQLException, IOException {
         LPerson.updatePerson(pers.getIdperson(), pers.getNamePer(), pers.getAddress(), pers.getPhone(), pers.getEmail(), pers.getPassword(), 4);
-        FacesMessage msg = new FacesMessage("Persona Actualizada", pers.getNamePer());
+        FacesMessage msg = new FacesMessage("Persona Actualizada", ((PersonBean) event.getObject()).getNamePer());
         FacesContext.getCurrentInstance().addMessage(null, msg);
+        FacesContext.getCurrentInstance().getExternalContext().redirect("faces/pets.xhtml");
+
     }
 
     /**
      * Metodo para eliminar usuario
      *
+     * @param idpers
      * @throws SQLException
+     * @throws IOException
      */
-    public void DeletePerson() throws SQLException {
-        LPerson.deletePerson(pers.getIdperson());
+    public void DeletePerson(String idpers) throws SQLException, IOException {
+        LPerson.deletePerson(idpers);
         FacesMessage msg = new FacesMessage("Persona Eliminada", pers.getNamePer());
         FacesContext.getCurrentInstance().addMessage(null, msg);
+        FacesContext.getCurrentInstance().getExternalContext().redirect("faces/pets.xhtml");
+
     }
 
     public void onRowEdit(RowEditEvent event) throws SQLException {
