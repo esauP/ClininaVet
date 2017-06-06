@@ -70,22 +70,14 @@ public class PetsBean implements Serializable {
      * @throws java.io.IOException
      */
     public void addPet() throws SQLException, IOException {
-        LPets.addPet(petM.getNamepet(), petM.getAnimal(), petM.getGender(), petM.getRace(), petM.getColour(), petM.getBirthDate(), IdPerson);
-        FacesMessage msg = new FacesMessage("Mascota Insertada", petM.getNamepet());
-        FacesContext.getCurrentInstance().addMessage(null, msg);
-        FacesContext.getCurrentInstance().getExternalContext().redirect("faces/pets.xhtml");
-
-    }
-
-    /**
-     * Metodo para actualizar mascota
-     *
-     * @throws SQLException
-     * @throws java.io.IOException
-     */
-    public void updatePet() throws SQLException, IOException {
-        LPets.updatePet(petM.getIdpets(), petM.getNamepet(), petM.getAnimal(), petM.getGender(), petM.getRace(), petM.getColour(), petM.getBirthDate());
-        FacesMessage msg = new FacesMessage("Mascota Actualizada", petM.getNamepet());
+        Boolean res;
+        FacesMessage msg;
+        res = LPets.addPet(petM.getNamepet(), petM.getAnimal(), petM.getGender(), petM.getRace(), petM.getColour(), petM.getBirthDate(), IdPerson);
+        if (res) {
+            msg = new FacesMessage("Mascota Insertada: " + petM.getNamepet());
+        } else {
+            msg = new FacesMessage("Mascota No Insertada: " + petM.getNamepet() + " Ha surgido un problema");
+        }
         FacesContext.getCurrentInstance().addMessage(null, msg);
         FacesContext.getCurrentInstance().getExternalContext().redirect("faces/pets.xhtml");
 
@@ -99,23 +91,41 @@ public class PetsBean implements Serializable {
      * @throws java.io.IOException
      */
     public void deletePet(int idpet) throws SQLException, IOException {
-        LPets.deletePet(idpet);
-        FacesMessage msg = new FacesMessage("Mascota Eliminada", petM.getNamepet());
+        Boolean res = false;
+        FacesMessage msg;
+        res = LPets.deletePet(idpet);
+        if (res) {
+            msg = new FacesMessage("Mascota Eliminada: " + petM.getNamepet());
+        } else {
+            msg = new FacesMessage("Mascota No Eliminada: " + petM.getNamepet() + " Ha surgido un problema");
+        }
         FacesContext.getCurrentInstance().addMessage(null, msg);
         FacesContext.getCurrentInstance().getExternalContext().redirect("faces/pets.xhtml");
 
     }
 
+    /**
+     * Metodo para actualizar mascotas
+     *
+     * @param event
+     * @throws SQLException
+     */
     public void onRowEdit(RowEditEvent event) throws SQLException {
+        Boolean res = false;
+        FacesMessage msg;
         Pets petMo = (Pets) event.getObject();
-        FacesMessage msg = new FacesMessage("Persona Editada", petMo.getNamepet());
-        LPets.updatePet(petM.getIdpets(), petM.getNamepet(), petM.getAnimal(), petM.getGender(), petM.getRace(), petM.getColour(), petM.getBirthDate());
-        LPerson.updatePersonPets(IdPerson, namePer, address, phone, email, 4);
+        res = LPets.updatePet(petMo.getIdpets(), petMo.getNamepet(), petMo.getAnimal(), petMo.getGender(), petMo.getRace(), petMo.getColour(), petMo.getBirthDate());
+
+        if (res) {
+            msg = new FacesMessage("Mascota Editada: " + petMo.getNamepet());
+        } else {
+            msg = new FacesMessage("Mascota No Editada: " + petMo.getNamepet() + " Ha surgido un problema");
+        }
         FacesContext.getCurrentInstance().addMessage(null, msg);
     }
 
     public void onRowCancel(RowEditEvent event) {
-        FacesMessage msg = new FacesMessage("Edicion Cancellada", ((Pets) event.getObject()).getNamepet());
+        FacesMessage msg = new FacesMessage("Edicion Cancelada: " + ((Pets) event.getObject()).getNamepet());
         FacesContext.getCurrentInstance().addMessage(null, msg);
     }
 

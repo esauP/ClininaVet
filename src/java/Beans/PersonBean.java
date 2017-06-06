@@ -49,23 +49,15 @@ public class PersonBean implements Serializable {
      * @throws java.io.IOException
      */
     public void AddPerson() throws SQLException, IOException {
-        LPerson.addPerson(pers.getIdperson(), pers.getNamePer(), pers.getAddress(), pers.getPhone(), pers.getEmail(), pers.getIdperson(), 4);
-        FacesMessage msg = new FacesMessage("Persona Insertada", pers.getNamePer());
-        FacesContext.getCurrentInstance().addMessage(null, msg);
-        FacesContext.getCurrentInstance().getExternalContext().redirect("faces/pets.xhtml");
 
-    }
-
-    /**
-     * Metodo para actualizar usuario
-     *
-     * @param event
-     * @throws SQLException
-     * @throws IOException
-     */
-    public void UpdatePerson(RowEditEvent event) throws SQLException, IOException {
-        LPerson.updatePerson(pers.getIdperson(), pers.getNamePer(), pers.getAddress(), pers.getPhone(), pers.getEmail(), pers.getPassword(), 4);
-        FacesMessage msg = new FacesMessage("Persona Actualizada", ((PersonBean) event.getObject()).getNamePer());
+        Boolean res;
+        FacesMessage msg;
+        res = LPerson.addPerson(pers.getIdperson(), pers.getNamePer(), pers.getAddress(), pers.getPhone(), pers.getEmail(), pers.getIdperson(), 4);
+        if (res) {
+            msg = new FacesMessage("Persona Insertada: ", pers.getNamePer());
+        } else {
+            msg = new FacesMessage("Persona No Insertada: ", pers.getNamePer() + " Ha surgido un problema");
+        }
         FacesContext.getCurrentInstance().addMessage(null, msg);
         FacesContext.getCurrentInstance().getExternalContext().redirect("faces/pets.xhtml");
 
@@ -79,22 +71,41 @@ public class PersonBean implements Serializable {
      * @throws IOException
      */
     public void DeletePerson(String idpers) throws SQLException, IOException {
-        LPerson.deletePerson(idpers);
-        FacesMessage msg = new FacesMessage("Persona Eliminada", pers.getNamePer());
+
+        Boolean res;
+        FacesMessage msg;
+        res = LPerson.deletePerson(idpers);
+        if (res) {
+            msg = new FacesMessage("Persona Eliminada: " + pers.getNamePer());
+        } else {
+            msg = new FacesMessage("Persona No Eliminada: " + pers.getNamePer() + " Ha surgido un problema");
+        }
+
         FacesContext.getCurrentInstance().addMessage(null, msg);
         FacesContext.getCurrentInstance().getExternalContext().redirect("faces/pets.xhtml");
 
     }
 
     public void onRowEdit(RowEditEvent event) throws SQLException {
-        Person personaM = (Person) event.getObject();
-        FacesMessage msg = new FacesMessage("Persona Editada", personaM.getNamePer());
-        LPerson.updatePerson(personaM.getIdperson(), personaM.getNamePer(), personaM.getAddress(), personaM.getPhone(), personaM.getEmail(), personaM.getPassword(), 4);
+        Person perM = (Person) event.getObject();
+        FacesMessage msg;
+        Boolean res;
+
+        res = LPerson.updatePerson(perM.getIdperson(), perM.getNamePer(), perM.getAddress(), perM.getPhone(), perM.getEmail(), perM.getPassword(), 4);
+
+        if (res) {
+            msg = new FacesMessage("Persona Editada: " + perM.getNamePer());
+        } else {
+            msg = new FacesMessage("Persona No Editada: " + perM.getNamePer() + " Ha surgido un problema");
+        }
+
         FacesContext.getCurrentInstance().addMessage(null, msg);
     }
 
     public void onRowCancel(RowEditEvent event) {
-        FacesMessage msg = new FacesMessage("Edicion Cancellada", ((Person) event.getObject()).getIdperson());
+        Person per;
+        per = ((Person) event.getObject());
+        FacesMessage msg = new FacesMessage("Edicion Cancelada: " + per.getNamePer());
         FacesContext.getCurrentInstance().addMessage(null, msg);
     }
 
