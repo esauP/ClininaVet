@@ -5,6 +5,10 @@
  */
 package Utilities;
 
+import java.io.File;
+import java.io.FileReader;
+import javax.swing.JFileChooser;
+
 /**
  *
  * @author neuhaus
@@ -15,13 +19,29 @@ class ExecDemo {
         Runtime r = Runtime.getRuntime();
         Process p = null;
         try {
-            p = r.exec("explorer.exe C:\\Documents\\"+namefile);
+            p = r.exec("explorer.exe C:\\Documents\\" + namefile);
         } catch (Exception e) {
             System.out.println("Error al ejecutar");
         }
     }
 
+    public static String selectFile() {
+        String aux = "";
+        //Creamos el objeto JFileChooser
+        JFileChooser fc = new JFileChooser();
+        //Abrimos la ventana, guardamos la opcion seleccionada por el usuario
+        int seleccion = fc.showDialog(null, "Holi");
+        //Si el usuario, pincha en aceptar
+        if (seleccion == JFileChooser.APPROVE_OPTION) {
+            //Seleccionamos el fichero
+            File fichero = fc.getSelectedFile();
+            aux = fichero.getName();
+        }
+        return aux;
+    }
+
     public static void main(String args[]) {
-        viewPhoto("tomamoreno.gif");
+        System.out.println("Resultado final: "+selectFile());
+                
     }
 }

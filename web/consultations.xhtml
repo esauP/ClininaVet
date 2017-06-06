@@ -14,6 +14,23 @@
         <link href="css/flexslider.css" rel="stylesheet" />
         <link href="css/style.css" rel="stylesheet" />
         <f:event type="preRenderView" listener="#{loginBean.validarSesionConsultation()}"/>
+        <script>
+            function handleFileSelect(evt) {
+                var files = evt.target.files; // FileList object
+
+                // files is a FileList of File objects. List some properties.
+                var output = [];
+                for (var i = 0, f; f = files[i]; i++) {
+                    output.push('<li><strong>', escape(f.name), '</strong> (', f.type || 'n/a', ') - ',
+                            f.size, ' bytes, last modified: ',
+                            f.lastModifiedDate.toLocaleDateString(), '</li>');
+                }
+                document.getElementById('list').innerHTML = '<ul>' + output.join('') + '</ul>';
+            document.getElementById('formularioD:filed').setValue = 'holi';
+            document.getElementById('filed').setValue = 'holi';
+            }
+            document.getElementById('files').addEventListener('change', handleFileSelect, false);
+        </script>
     </h:head>
     <h:body>
         <div id="wrapper">
@@ -222,12 +239,14 @@
                                             </td>
                                             <td>
                                                 <p:outputLabel for="filed" value="Fichero adjunto" />
-                                                <p:fileUpload id="filed" value="#{docBean.file}" mode="simple" required="true"/>
+                                                <p:inputText id="filed" /> 
+                                                <input type="file" id="files" name="files[]"/>
                                             </td>
                                         </tr>
                                     </table>
                                     <p:commandButton value="Añadir nuevo doc" actionListener="#{docBean.addDoc()}"  />
                                     <p:commandButton value="Cerrar Ventana" actionListener="#{docBean.listar}" oncomplete="PF('wdlgDatosd').hide()" update=":tablaD:ConsultasD"/>
+
                                 </h:form>
                             </p:dialog>
                         </div>

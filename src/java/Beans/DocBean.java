@@ -8,6 +8,7 @@ package Beans;
 import Controller.LConsultation;
 import Controller.LDocument;
 import java.awt.event.ActionEvent;
+import java.io.File;
 import java.sql.SQLException;
 import java.util.List;
 import javafx.scene.control.TableColumn;
@@ -45,11 +46,18 @@ public class DocBean {
     }
 
     public void upload() {
-        if (file != null) {
-            FacesMessage message = new FacesMessage("Succesful", file.getFileName() + " is uploaded.");
-            FacesContext.getCurrentInstance().addMessage(null, message);
-            docu.setFileattached(String.valueOf(file.getFileName()));
+        String aux = "";
+        //Creamos el objeto JFileChooser
+        JFileChooser fc = new JFileChooser();
+        //Abrimos la ventana, guardamos la opcion seleccionada por el usuario
+        int seleccion = fc.showDialog(null, "Selecciona el fichero");
+        //Si el usuario, pincha en aceptar
+        if (seleccion == JFileChooser.APPROVE_OPTION) {
+            //Seleccionamos el fichero
+            File fichero = fc.getSelectedFile();
+            aux = fichero.getName();
         }
+        docu.setFileattached(aux);
     }
 
      public void viewDoc(String aux) throws Exception{
