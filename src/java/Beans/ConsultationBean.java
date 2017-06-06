@@ -37,6 +37,7 @@ public class ConsultationBean {
     private String observation;
 
     private List<Consultation> listaconsultas;
+    private List<Consultation> listaConsultasPets;
     private Consultation consult = new Consultation();
     private List<String> listapets;
 
@@ -51,7 +52,8 @@ public class ConsultationBean {
 
     /**
      * Método para la editar el valor de una fila en el xhtml
-     * @param event 
+     *
+     * @param event
      */
     public void onRowEdit(RowEditEvent event) {
         LConsultation dao = new LConsultation();
@@ -107,7 +109,20 @@ public class ConsultationBean {
             System.out.println(e.getMessage());
         }
     }
- 
+
+    
+    public void getListaConsPets(int idpet) throws SQLException{
+        this.listaConsultasPets = LConsultation.getConsultationId(idpet);
+    }
+    
+    public List<Consultation> getListaConsultasPets() {
+        return listaConsultasPets;
+    }
+
+    public void setListaConsultasPets(List<Consultation> listaConsultasPets) {
+        this.listaConsultasPets = listaConsultasPets;
+    }
+
     public List listar() throws SQLException {
         LConsultation dao = new LConsultation();
         return dao.getConsultation();

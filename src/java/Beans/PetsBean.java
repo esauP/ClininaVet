@@ -129,12 +129,6 @@ public class PetsBean implements Serializable {
         FacesContext.getCurrentInstance().addMessage(null, msg);
     }
 
-    public void getconsultationidPet(Integer idpet) throws SQLException {
-        List<Consultation> aux = new ArrayList<Consultation>();
-        aux = LPets.getHistorial(idpet);
-        this.listconsult = aux;
-    }
-
     public void PasarVariable(int idpet) {
         RequestContext context = RequestContext.getCurrentInstance();
         FacesContext fcontext = FacesContext.getCurrentInstance();

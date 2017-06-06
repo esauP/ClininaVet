@@ -172,8 +172,15 @@ public class LConsultation {
         return listconsult;
     }
 
-    public List<Consultation> getConsultationId(int idpet) throws SQLException {
-        List<Consultation> listaconsultas = new ArrayList<Consultation>();
+    /**
+     *
+     * @param idpet
+     * @return
+     * @throws SQLException
+     */
+    public static List<Consultation> getConsultationId(int idpet) throws SQLException {
+        List<Consultation> listaconsultas;
+        listaconsultas = new ArrayList<>();
         ConexionDB conn = new ConexionDB();
         try {
             String sql = "Select idcons, idpet, date_consultation, reason, diagnosis, treatment, observation from consultation where idpet=" + idpet + ";";

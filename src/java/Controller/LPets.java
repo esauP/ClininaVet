@@ -250,35 +250,6 @@ public class LPets extends ConexionDB {
         return listapets;
     }
 
-    public static List<Consultation> getHistorial(int idpet) throws SQLException {
-        List<Consultation> listPetConsult = new ArrayList<Consultation>();
-        ConexionDB conn = new ConexionDB();
-
-        try {
-            String sql = "Select date_consultation, reason, diagnosis, treatment, observation FROM consultation where idpet='" + idpet + "'";
-            PreparedStatement ps = conn.getConexion().prepareStatement(sql);
-            ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-                Consultation aux = new Consultation();
-                aux.setDate(rs.getString("date_consultation"));
-                aux.setReason(rs.getString("reason"));
-                aux.setDiagnosis(rs.getString("diagnosis"));
-                aux.setTreatment(rs.getString("treatment"));
-                aux.setObservation(rs.getString("observation"));
-                listPetConsult.add(aux);
-            }
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-            System.out.println(e.getCause());
-            System.out.println(e.getSQLState());
-            e.printStackTrace();
-
-        } finally {
-            conn.desconectar();
-        }
-        return listPetConsult;
-    }
-
     public static Pets getPet(int idpet) {
         Pets pet = new Pets();
         ConexionDB conn = new ConexionDB();

@@ -234,7 +234,7 @@
                                         </p:column>
 
                                         <p:column headerText="Histórico">
-                                            <p:commandLink value="Histórico"  actionListener="#{petsBean.getconsultationidPet(pet.idpets)}" onclick="PF('wdlgDatos').show();" />
+                                            <p:commandLink value="Histórico"  actionListener="#{consultationBean.getListaConsPets(pet.idpets)}" onclick="PF('wdlgDatos').show();" />
                                         </p:column>
 
                                         <p:column headerText="Factura">
@@ -245,13 +245,10 @@
 
                                     <p:dialog header="DatosH" widgetVar="wdlgDatos" id="dlgDatos">
                                         <h:form id="tablaH">
-                                            <p:dataTable id="Consultas" var="conslt" value="#{consultationBean.listaconsultas}" editable="true" style="margin-bottom:20px">
+                                            <p:dataTable id="Consultas" var="conslt" value="#{consultationBean.listaConsultasPets}" editable="true" style="margin-bottom:20px">
                                                 <f:facet name="header">Historial clínico de la mascota</f:facet>
-                                                <p:column headerText="IdConsulta">
+                                                <p:column headerText="IdConsulta #{conslt.idpets}">
                                                     <h:outputText value="#{conslt.idcons}" />
-                                                </p:column>
-                                                <p:column headerText="idMascota">
-                                                    <f:facet name="output"><h:outputText value="#{conslt.idpets}" /></f:facet>
                                                 </p:column>
                                                 <p:column headerText="Fecha_Consulta">
                                                     <f:facet name="output"><h:outputText value="#{conslt.date}" /></f:facet>
