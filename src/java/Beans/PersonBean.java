@@ -91,7 +91,7 @@ public class PersonBean implements Serializable {
         FacesMessage msg;
         Boolean res;
 
-        res = LPerson.updatePerson(perM.getIdperson(), perM.getNamePer(), perM.getAddress(), perM.getPhone(), perM.getEmail(), perM.getPassword(), 4);
+        res = LPerson.updatePerson(perM.getIdperson(), perM.getNamePer(), perM.getAddress(), perM.getPhone(), perM.getEmail());
 
         if (res) {
             msg = new FacesMessage("Persona Editada: " + perM.getNamePer());

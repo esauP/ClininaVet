@@ -103,17 +103,15 @@ public class LPerson {
      * @param address
      * @param phone
      * @param email
-     * @param password
-     * @param role
-     * @return
+     * @return Boolean
      * @throws java.sql.SQLException
      */
-    public static boolean updatePerson(String idperson, String name, String address, String phone, String email, String password, int role) throws SQLException {
+    public static boolean updatePerson(String idperson, String name, String address, String phone, String email) throws SQLException {
         boolean success = false;
         ConexionDB conn = new ConexionDB();
         try {
             //Llamada a la funcion
-            String sql = "{ ? = call updatePerson (?,?,?,?,?,?,?) }";
+            String sql = "{ ? = call updatePerson (?,?,?,?,?) }";
             CallableStatement cStmt = conn.getConexion().prepareCall(sql);
             cStmt.registerOutParameter(1, java.sql.Types.INTEGER);
 
@@ -123,8 +121,7 @@ public class LPerson {
             cStmt.setString(4, address);
             cStmt.setString(5, phone);
             cStmt.setString(6, email);
-            cStmt.setString(7, password);
-            cStmt.setInt(8, role);
+       
             //se ejecuta la funcion
             cStmt.execute();
 

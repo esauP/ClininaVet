@@ -1,8 +1,10 @@
 <!DOCTYPE html>
-<html lang="es" xmlns="http://www.w3.org/1999/xhtml"
+<html lang="es" 
+      xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      >
     <h:head>
 
         <meta charset="utf-8"/>
@@ -68,17 +70,33 @@
                                 <h:form id = "formPerson">
                                     <h3>Datos del Responsable</h3>
                                     <p>
-                                        <p:inputText id="nombreperson" value="#{personBean.pers.namePer}" placeholder="* Nombre y Apellidos" required="true"/>
+                                        <p:inputText id="regname" value="#{personBean.pers.namePer}" placeholder="* Nombre y Apellidos" required="true">
+                                            <f:validateLength minimum="2" maximum="45"/>
+                                        </p:inputText>
+                                        <p:spacer width="20" height="0"/>
+                                        <p:inputText id = "regdni" title="Formato admitido: '12345678A'" value = "#{personBean.pers.idperson}" required ="true" placeholder = "* DNI" >
+                                            <f:validateRegex pattern="[0-9]{8}+[A-Z]{1}"/>
+                                        </p:inputText>
                                         <p:spacer width="20"  height="0"/>
-                                        <p:inputText id = "dni" value = "#{personBean.pers.idperson}" required ="true" placeholder = "* DNI" />
-                                        <p:spacer width="20"  height="0"/>
-                                        <p:inputText id = "mail" value = "#{personBean.pers.email}"  placeholder = "* Correo Electrónico" />
+                                        <p:inputText id = "regmail" title="Formato admitido: 'ejemplo@dominio.es/com'" value = "#{personBean.pers.email}"  placeholder = "* Correo Electrónico" >
+                                            <f:validateRegex pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$"/>
+                                        </p:inputText>
                                     </p>
                                     <p>
-                                        <p:inputText id = "addres" value = "#{personBean.pers.address}" required ="true" placeholder = "* Dirección" size = "48" />
+                                        <p:inputText id = "regaddres" value = "#{personBean.pers.address}" required ="true" placeholder = "* Dirección" >
+                                            <f:validateLength minimum="1" maximum="45"/>
+                                        </p:inputText>
                                         <p:spacer width="20"  height="0"/>
-                                        <p:inputText id = "text" value = "#{personBean.pers.phone}"  required = "true" placeholder = "* Teléfono" />
+                                        <p:inputText id = "regphone" title="Formato admitido: '+00 000 000 000'" value = "#{personBean.pers.phone}"  required = "true" placeholder = "* Teléfono" > 
+                                            <f:validateRegex pattern="[\+]+[0-9]{2}\ +[0-9]{3}\ +[0-9]{3}\ +[0-9]{3}"  />
+                                        </p:inputText>
+
                                     </p>
+                                    <p:tooltip id="tooltipDNI" for="regdni" showEvent="focus" hideEvent="blur" showEffect="clip" hideDelay="2"  />
+                                    <p:tooltip id="tooltipEmail" for="regmail" showEvent="focus" hideEvent="blur" showEffect="clip" hideDelay="2"  />
+                                    <p:tooltip id="tooltipPhone" for="regphone" showEvent="focus" hideEvent="blur" showEffect="clip" hideDelay="2"  />
+
+
                                     <div>
                                         <p:commandButton value="Registrar" actionListener="#{personBean.AddPerson()}" update=":regis"/>
                                     </div>
@@ -99,7 +117,12 @@
                                                       headerText="Nombre">
                                                 <p:cellEditor>
                                                     <f:facet name="output"><h:outputText value="#{per.namePer}" /></f:facet>
-                                                    <f:facet name="input"><p:inputText value="#{per.namePer}" style="width:100%" label="Nombre"/></f:facet>
+                                                    <f:facet name="input">
+                                                        <p:inputText id="name" value="#{per.namePer}" style="width:100%" label="Nombre"> 
+                                                            <f:validateLength minimum="2" maximum="45"/>
+                                                        </p:inputText>
+                                                        <p:message for="name" id="namemsg" />
+                                                    </f:facet>
                                                 </p:cellEditor>
                                             </p:column>
                                             <p:column filterBy="#{per.idperson}"  filterMatchMode="contains"
@@ -112,7 +135,14 @@
                                                       headerText="Teléfono">
                                                 <p:cellEditor>
                                                     <f:facet name="output"><h:outputText value="#{per.phone}" /></f:facet>
-                                                    <f:facet name="input"><p:inputText value="#{per.phone}" style="width:100%" label="Raza"/></f:facet>
+                                                    <f:facet name="input">
+                                                        <p:inputText id="tlfedit" title="Formato admitido: '+00 000 000 000'" value="#{per.phone}" style="width:100%" label="Teléfono">
+                                                            <f:validateRegex pattern="[\+]+[0-9]{2}\ +[0-9]{3}\ +[0-9]{3}\ +[0-9]{3}"  />
+                                                        </p:inputText>
+                                                        <p:message for="tlfedit" id="tlfmsg"/>
+                                                        <p:tooltip id="tooltiptlfedit" for="tlfedit" showEvent="focus" hideEvent="blur" showEffect="clip" hideDelay="2"  />
+
+                                                    </f:facet>
                                                 </p:cellEditor>
                                             </p:column>
                                             <p:column filterBy="#{per.email}" filterMatchMode="contains"
@@ -120,7 +150,14 @@
                                                       headerText="Email">
                                                 <p:cellEditor>
                                                     <f:facet name="output"><h:outputText value="#{per.email}" /></f:facet>
-                                                    <f:facet name="input"><p:inputText value="#{per.email}" style="width:100%" label="Color"/></f:facet>
+                                                    <f:facet name="input">
+                                                        <p:inputText id="emailedit" title="Formato admitido: 'ejemplo@dominio.es/com'" value="#{per.email}" style="width:100%" label="Color">
+                                                            <f:validateRegex pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$"/>
+                                                        </p:inputText>
+                                                        <p:message for="emailedit" id="emaileditmsg" display="icon" />
+                                                        <p:tooltip id="tooltipmailedit" for="emailedit" showEvent="focus" hideEvent="blur" showEffect="clip" hideDelay="2"  />
+
+                                                    </f:facet>
                                                 </p:cellEditor>
                                             </p:column>
                                             <p:column filterBy="#{per.address}" filterMatchMode="contains"
@@ -128,8 +165,15 @@
                                                       headerText="Dirección">
                                                 <p:cellEditor>
                                                     <f:facet name="output"><h:outputText value="#{per.address}" /></f:facet>
-                                                    <f:facet name="input"><p:inputText value="#{per.address}" style="width:100%" label="Fecha Nacimiento"/></f:facet>
+                                                    <f:facet name="input">
+                                                        <p:inputText id="addressedit" value="#{per.address}" style="width:100%" label="Fecha Nacimiento" >
+                                                            <f:validateLength minimum="2" maximum="15"/>
+                                                        </p:inputText>
+                                                        <p:message for="addressedit" id="addresseditmsg" display="icon" />
+
+                                                    </f:facet>
                                                 </p:cellEditor>
+
                                             </p:column>
 
                                             <p:column headerText="Opciones">
@@ -139,6 +183,7 @@
 
                                             </p:column>
                                         </p:dataTable>
+
                                     </h:form>
                                 </div>
                                 <div>
@@ -153,7 +198,9 @@
                                             <p:spacer width="20"  height="0"/>
                                             <p:inputText id="color" value="#{petsBean.petM.colour}" required="true" placeholder="* Color"/>
                                             <p:spacer width="20"  height="0"/>
-                                            <p:inputMask id="birth" value="#{petsBean.petM.birthDate}" required="true" placeholder="* Fecha Nac" mask="99-99-9999"/>
+                                            <p:inputMask id="birth" value="#{petsBean.petM.birthDate}" required="true" placeholder="* Fecha Nac" mask="99-99-9999" >
+
+                                            </p:inputMask>
                                         </p>
                                         <p>
                                             <p:selectOneRadio id="genderRadio" value="#{petsBean.petM.gender}" required="true">
@@ -322,7 +369,7 @@
         <!-- <script>
              // Get the modal
              var modal = document.getElementById('id01');
- 
+    
              // When the user clicks anywhere outside of the modal, close it
              window.onclick = function (event) {
                  if (event.target === modal) {
