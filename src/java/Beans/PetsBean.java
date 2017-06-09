@@ -130,11 +130,9 @@ public class PetsBean implements Serializable {
     }
 
     public void PasarVariable(int idpet) {
-        RequestContext context = RequestContext.getCurrentInstance();
         FacesContext fcontext = FacesContext.getCurrentInstance();
 
         FacesMessage message = null;
-        boolean loggedIn = false;
         Pets pet = new Pets();
         try {
             pet = LPets.getPet(idpet);
@@ -149,25 +147,20 @@ public class PetsBean implements Serializable {
             e.printStackTrace();
         }
         FacesContext.getCurrentInstance().addMessage(null, message);
-        context.addCallbackParam("Logeado", loggedIn);
     }
 
     public int recogeId() {
-//        FacesContext fcontext = FacesContext.getCurrentInstance();
-//        Pets aux = new Pets();
-//        aux = (Pets) fcontext.getExternalContext().getSessionMap().get("mascotaFactura");
-//        return aux.getIdpets();
-        int var = 0;
-        return var;
+        FacesContext fcontext = FacesContext.getCurrentInstance();
+        Pets aux = new Pets();
+        aux = (Pets) fcontext.getExternalContext().getSessionMap().get("mascotaFactura");
+        return aux.getIdpets();
     }
 
     public String recogeNombre() {
-//        FacesContext fcontext = FacesContext.getCurrentInstance();
-//        Pets aux = new Pets();
-//        aux = (Pets) fcontext.getExternalContext().getSessionMap().get("mascotaFactura");
-//        return aux.getName();
-        String var = "hola";
-        return var;
+        FacesContext fcontext = FacesContext.getCurrentInstance();
+        Pets aux = new Pets();
+        aux = (Pets) fcontext.getExternalContext().getSessionMap().get("mascotaFactura");
+        return aux.getNamepet();
     }
 
     /**

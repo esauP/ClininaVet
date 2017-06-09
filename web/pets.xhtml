@@ -32,7 +32,7 @@
                                 <span class="icon-bar"></span>
                                 <span class="icon-bar"></span>
                             </button>
-                            <a class="navbar-brand" href="adminHome.html"><img src="img/logo.png" alt="logo"/></a>
+                            <a class="navbar-brand" href="adminHome.xhtml"><img src="img/logo.png" alt="logo"/></a>
                         </div>
                         <div class="navbar-collapse collapse ">
                             <ul class="nav navbar-nav">
@@ -74,11 +74,13 @@
                                             <f:validateLength minimum="2" maximum="45"/>
                                         </p:inputText>
                                         <p:spacer width="20" height="0"/>
-                                        <p:inputText id = "regdni" title="Formato admitido: '12345678A'" value = "#{personBean.pers.idperson}" required ="true" placeholder = "* DNI" >
+                                        <p:inputText id = "regdni" title="Formato admitido: '12345678A'" value = "#{personBean.pers.idperson}" 
+                                                     required ="true" placeholder = "* DNI" requiredMessage="No cumple el formato admitido." >
                                             <f:validateRegex pattern="[0-9]{8}+[A-Z]{1}"/>
                                         </p:inputText>
                                         <p:spacer width="20"  height="0"/>
-                                        <p:inputText id = "regmail" title="Formato admitido: 'ejemplo@dominio.es/com'" value = "#{personBean.pers.email}"  placeholder = "* Correo Electrónico" >
+                                        <p:inputText id = "regmail" title="Formato admitido: 'ejemplo@dominio.es/com'" value = "#{personBean.pers.email}"  
+                                                     placeholder = "* Correo Electrónico" requiredMessage="No cumple el formato admitido." >
                                             <f:validateRegex pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$"/>
                                         </p:inputText>
                                     </p>
@@ -87,7 +89,8 @@
                                             <f:validateLength minimum="1" maximum="45"/>
                                         </p:inputText>
                                         <p:spacer width="20"  height="0"/>
-                                        <p:inputText id = "regphone" title="Formato admitido: '+00 000 000 000'" value = "#{personBean.pers.phone}"  required = "true" placeholder = "* Teléfono" > 
+                                        <p:inputText id = "regphone" title="Formato admitido: '+00 000 000 000'" value = "#{personBean.pers.phone}"  
+                                                     required = "true" placeholder = "* Teléfono" requiredMessage="No cumple el formato admitido." > 
                                             <f:validateRegex pattern="[\+]+[0-9]{2}\ +[0-9]{3}\ +[0-9]{3}\ +[0-9]{3}"  />
                                         </p:inputText>
 
@@ -95,7 +98,6 @@
                                     <p:tooltip id="tooltipDNI" for="regdni" showEvent="focus" hideEvent="blur" showEffect="clip" hideDelay="2"  />
                                     <p:tooltip id="tooltipEmail" for="regmail" showEvent="focus" hideEvent="blur" showEffect="clip" hideDelay="2"  />
                                     <p:tooltip id="tooltipPhone" for="regphone" showEvent="focus" hideEvent="blur" showEffect="clip" hideDelay="2"  />
-
 
                                     <div>
                                         <p:commandButton value="Registrar" actionListener="#{personBean.AddPerson()}" update=":regis"/>
@@ -136,12 +138,12 @@
                                                 <p:cellEditor>
                                                     <f:facet name="output"><h:outputText value="#{per.phone}" /></f:facet>
                                                     <f:facet name="input">
-                                                        <p:inputText id="tlfedit" title="Formato admitido: '+00 000 000 000'" value="#{per.phone}" style="width:100%" label="Teléfono">
+                                                        <p:inputText id="tlfedit" title="Formato admitido: '+00 000 000 000'" value="#{per.phone}" 
+                                                                     style="width:100%" label="Teléfono" requiredMessage="No cumple el formato admitido.">
                                                             <f:validateRegex pattern="[\+]+[0-9]{2}\ +[0-9]{3}\ +[0-9]{3}\ +[0-9]{3}"  />
                                                         </p:inputText>
-                                                        <p:message for="tlfedit" id="tlfmsg"/>
+                                                        <p:message for="tlfedit" id="tlfmsg" display="icon" />
                                                         <p:tooltip id="tooltiptlfedit" for="tlfedit" showEvent="focus" hideEvent="blur" showEffect="clip" hideDelay="2"  />
-
                                                     </f:facet>
                                                 </p:cellEditor>
                                             </p:column>
@@ -151,12 +153,12 @@
                                                 <p:cellEditor>
                                                     <f:facet name="output"><h:outputText value="#{per.email}" /></f:facet>
                                                     <f:facet name="input">
-                                                        <p:inputText id="emailedit" title="Formato admitido: 'ejemplo@dominio.es/com'" value="#{per.email}" style="width:100%" label="Color">
+                                                        <p:inputText id="emailedit" title="Formato admitido: 'ejemplo@dominio.es/com'" value="#{per.email}" 
+                                                                     style="width:100%" label="Color" requiredMessage="No cumple el formato admitido." >
                                                             <f:validateRegex pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$"/>
                                                         </p:inputText>
                                                         <p:message for="emailedit" id="emaileditmsg" display="icon" />
                                                         <p:tooltip id="tooltipmailedit" for="emailedit" showEvent="focus" hideEvent="blur" showEffect="clip" hideDelay="2"  />
-
                                                     </f:facet>
                                                 </p:cellEditor>
                                             </p:column>
@@ -190,18 +192,36 @@
                                     <h:form id = "formPet">
                                         <h3>Datos de la Mascota</h3>
                                         <p>
-                                            <p:inputText id="namePet" value="#{petsBean.petM.namepet}" required="true" placeholder="* Nombre Mascota" />
+                                            <p:inputText id="regnamePet" value="#{petsBean.petM.namepet}" required="true" placeholder="* Nombre Mascota"
+                                                         requiredMessage="No cumple el formato admitido." >
+                                                <f:validateLength minimum="2" maximum="15"/>
+                                            </p:inputText>
                                             <p:spacer width="20"  height="0"/>
-                                            <p:inputText id="especie" value="#{petsBean.petM.animal}" required="true" placeholder="* Especie"/>
+                                            <p:inputText id="regespecie" value="#{petsBean.petM.animal}" required="true" placeholder="* Especie" 
+                                                         requiredMessage="No cumple el formato admitido." >
+                                                <f:validateLength minimum="2" maximum="15"/>
+                                            </p:inputText>
                                             <p:spacer width="20"  height="0"/>
-                                            <p:inputText id="race" value="#{petsBean.petM.race}" required="true" placeholder="* Raza"/>
+                                            <p:inputText id="regrace" value="#{petsBean.petM.race}" required="true" placeholder="* Raza" 
+                                                         requiredMessage="No cumple el formato admitido." >
+                                                <f:validateLength minimum="2" maximum="15"/>
+                                            </p:inputText>
                                             <p:spacer width="20"  height="0"/>
-                                            <p:inputText id="color" value="#{petsBean.petM.colour}" required="true" placeholder="* Color"/>
+                                            <p:inputText id="regcolor" value="#{petsBean.petM.colour}" required="true" placeholder="* Color" 
+                                                         requiredMessage="No cumple el formato admitido." >
+                                                <f:validateLength minimum="2" maximum="15"/>
+                                            </p:inputText>
                                             <p:spacer width="20"  height="0"/>
-                                            <p:inputMask id="birth" value="#{petsBean.petM.birthDate}" required="true" placeholder="* Fecha Nac" mask="99-99-9999" >
-
+                                            <p:inputMask id="regbirth" value="#{petsBean.petM.birthDate}" required="true" placeholder="* Fecha Nac" mask="99-99-9999" 
+                                                         requiredMessage="No cumple el formato admitido." >
+                                                <f:validateLength minimum="10" maximum="10" />
                                             </p:inputMask>
                                         </p>
+                                        <p:message for="regespecie" id="especiemsg" />
+                                        <p:message for="regnamePet" id="namepetmsg" />
+                                        <p:message for="regrace" id="namemsg" />
+                                        <p:message for="regcolor" id="colormsg" />
+                                        <p:message for="regbirth" id="birthmsg" />
                                         <p>
                                             <p:selectOneRadio id="genderRadio" value="#{petsBean.petM.gender}" required="true">
                                                 <f:selectItem itemLabel="Femenino" itemValue="0" />
@@ -234,7 +254,13 @@
                                                   headerText="Nombre Mascota">
                                             <p:cellEditor>
                                                 <f:facet name="output"><h:outputText value="#{pet.namepet}" /></f:facet>
-                                                <f:facet name="input"><p:inputText value="#{pet.namepet}" style="width:100%" label="Nombre"/></f:facet>
+                                                <f:facet name="input">
+                                                    <p:inputText id="namepetedit" value="#{pet.namepet}" style="width:100%" label="Nombre" requiredMessage="No cumple el formato admitido." >
+                                                        <f:validateLength minimum="1" maximum="45" />
+                                                    </p:inputText>
+                                                    <p:message for="namepetedit" id="editnamemsg" />
+                                                    <p:tooltip id="tooltipNamePetedit" for="namepetedit" showEvent="focus" hideEvent="blur" showEffect="clip" hideDelay="2"  />
+                                                </f:facet>
                                             </p:cellEditor>
                                         </p:column>
                                         <p:column filterBy="#{pet.animal}"  filterMatchMode="contains"
@@ -242,7 +268,13 @@
                                                   headerText="Especie">
                                             <p:cellEditor>
                                                 <f:facet name="output"><h:outputText value="#{pet.animal}" /></f:facet>
-                                                <f:facet name="input"><p:inputText value="#{pet.animal}" style="width:100%" label="Especie"/></f:facet>
+                                                <f:facet name="input">
+                                                    <p:inputText id="specieedit" value="#{pet.animal}" style="width:100%" label="Especie" requiredMessage="No cumple el formato admitido." >
+                                                        <f:validateLength minimum="1" maximum="45" />
+                                                    </p:inputText>
+                                                    <p:message for="specieedit" id="editspeciemsg" />
+                                                    <p:tooltip id="tooltipSpecieedit" for="specieedit" showEvent="focus" hideEvent="blur" showEffect="clip" hideDelay="2"  />                                                    
+                                                </f:facet>
                                             </p:cellEditor>
                                         </p:column>
                                         <p:column filterBy="#{pet.race}" filterMatchMode="contains"
@@ -250,7 +282,13 @@
                                                   headerText="Raza">
                                             <p:cellEditor>
                                                 <f:facet name="output"><h:outputText value="#{pet.race}" /></f:facet>
-                                                <f:facet name="input"><p:inputText value="#{pet.race}" style="width:100%" label="Raza"/></f:facet>
+                                                <f:facet name="input">
+                                                    <p:inputText id="raceedit" value="#{pet.race}" style="width:100%" label="Raza" requiredMessage="No cumple el formato admitido." >
+                                                        <f:validateLength minimum="1" maximum="45" />
+                                                    </p:inputText>
+                                                    <p:message for="raceedit" id="editracemsg" />
+                                                    <p:tooltip id="tooltipRaceedit" for="raceedit" showEvent="focus" hideEvent="blur" showEffect="clip" hideDelay="2"  />
+                                                </f:facet>
                                             </p:cellEditor>
                                         </p:column>
                                         <p:column filterBy="#{pet.colour}" filterMatchMode="contains"
@@ -258,7 +296,13 @@
                                                   headerText="Color">
                                             <p:cellEditor>
                                                 <f:facet name="output"><h:outputText value="#{pet.colour}" /></f:facet>
-                                                <f:facet name="input"><p:inputText value="#{pet.colour}" style="width:100%" label="Color"/></f:facet>
+                                                <f:facet name="input">
+                                                    <p:inputText id="coloredit" value="#{pet.colour}" style="width:100%" label="Color" requiredMessage="No cumple el formato admitido.">
+                                                        <f:validateLength minimum="1" maximum="45" />
+                                                    </p:inputText>
+                                                    <p:message for="coloredit" id="editcolormsg" />
+                                                    <p:tooltip id="tooltipColoredit" for="coloredit" showEvent="focus" hideEvent="blur" showEffect="clip" hideDelay="2"  />
+                                                </f:facet>
                                             </p:cellEditor>
                                         </p:column>
                                         <p:column filterBy="#{pet.birthDate}" filterMatchMode="contains"
@@ -266,7 +310,12 @@
                                                   headerText="Fecha Nacimiento">
                                             <p:cellEditor>
                                                 <f:facet name="output"><h:outputText value="#{pet.birthDate}" /></f:facet>
-                                                <f:facet name="input"><p:inputText value="#{pet.birthDate}" style="width:100%" label="Fecha Nacimiento"/></f:facet>
+                                                <f:facet name="input">
+                                                    <p:inputMask id="birthedit" mask="99-99-9999" value="#{pet.birthDate}" style="width:100%" label="Fecha Nacimiento" requiredMessage="No cumple el formato admitido."  >
+                                                        <f:validateLength minimum="10" maximum="10" />                                                    </p:inputMask>
+                                                    <p:message for="birthedit" id="birtheditmsg" />
+                                                    <p:tooltip id="tooltipBirthedit" for="birthedit" showEvent="focus" hideEvent="blur" showEffect="clip" hideDelay="2"  />
+                                                </f:facet>
                                             </p:cellEditor>
                                         </p:column>
                                         <p:column filterBy="#{pet.person.namePer}" filterMatchMode="contains"
@@ -281,7 +330,7 @@
                                         </p:column>
 
                                         <p:column headerText="Histórico">
-                                            <p:commandLink value="Histórico"  actionListener="#{consultationBean.getListaConsPets(pet.idpets)}" onclick="PF('wdlgDatos').show();" />
+                                            <p:commandLink value="Histórico"  actionListener="#{consultationBean.getListaConsPets(pet.idpets)}" update=":dlgDatos" oncomplete="PF('wdlgDatos').show();" />
                                         </p:column>
 
                                         <p:column headerText="Factura">
@@ -289,33 +338,36 @@
                                         </p:column>
 
                                     </p:dataTable>
-
-                                    <p:dialog header="DatosH" widgetVar="wdlgDatos" id="dlgDatos">
-                                        <h:form id="tablaH">
-                                            <p:dataTable id="Consultas" var="conslt" value="#{consultationBean.listaConsultasPets}" editable="true" style="margin-bottom:20px">
-                                                <f:facet name="header">Historial clínico de la mascota</f:facet>
-                                                <p:column headerText="IdConsulta #{conslt.idpets}">
-                                                    <h:outputText value="#{conslt.idcons}" />
-                                                </p:column>
-                                                <p:column headerText="Fecha_Consulta">
-                                                    <f:facet name="output"><h:outputText value="#{conslt.date}" /></f:facet>
-                                                </p:column>
-                                                <p:column headerText="Motivo">
-                                                    <f:facet name="output"><h:outputText value="#{conslt.reason}" /></f:facet>
-                                                </p:column>
-                                                <p:column headerText="Diagnóstico">
-                                                    <f:facet name="output"><h:outputText value="#{conslt.diagnosis}" /></f:facet>
-                                                </p:column>
-                                                <p:column headerText="Tratamiento">
-                                                    <f:facet name="output"><h:outputText value="#{conslt.treatment}" /></f:facet>
-                                                </p:column>
-                                                <p:column headerText="Observaciones">
-                                                    <f:facet name="output"><h:outputText value="#{conslt.observation}" /></f:facet>
-                                                </p:column>
-                                            </p:dataTable>
-                                        </h:form>
-                                    </p:dialog>
                                 </h:form>
+                                <p:dialog header="Datos Historico" widgetVar="wdlgDatos" id="dlgDatos" width="75%" draggable="true" resizable="false" >
+                                    <h:form id="tablaH">
+                                        <p:dataTable id="Consultas" var="conslt" value="#{consultationBean.listaConsultasPets}" lazy="false" rows = "5" paginator = "true" paginatorAlwaysVisible="false" 
+                                                     paginatorTemplate = "{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                                     style="margin-bottom:20px">
+                                            <f:facet name="header">Historial clínico de la mascota</f:facet>
+                                            <f:facet name="sourceCaption">#{conslt.idpets}</f:facet>
+                                            <p:column headerText="IdConsulta">
+                                                <h:outputText value="#{conslt.idcons}" />
+                                            </p:column>
+                                            <p:column headerText="Fecha_Consulta">
+                                                <h:outputText value="#{conslt.date}" />
+                                            </p:column>
+                                            <p:column headerText="Motivo">
+                                                <h:outputText value="#{conslt.reason}" />
+                                            </p:column>
+                                            <p:column headerText="Diagnóstico">
+                                                <h:outputText value="#{conslt.diagnosis}" />
+                                            </p:column>
+                                            <p:column headerText="Tratamiento">
+                                                <h:outputText value="#{conslt.treatment}" />
+                                            </p:column>
+                                            <p:column headerText="Observaciones">
+                                                <h:outputText value="#{conslt.observation}" />
+                                            </p:column>
+                                        </p:dataTable>
+                                        <p:commandButton value="Cerrar Ventana" oncomplete="PF('wdlgDatos').hide()" />
+                                    </h:form>
+                                </p:dialog>
                             </div>
                         </div>
                     </div>

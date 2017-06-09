@@ -49,10 +49,17 @@ public class LoginBean implements Serializable {
 
             if (pers == null) {
                 fcontext.getExternalContext().redirect("error.html");
+                message = new FacesMessage("Error en la autentificación");
 
             } else {
-                fcontext.getExternalContext().getSessionMap().put("usuario", pers);
-                fcontext.getExternalContext().redirect("faces/adminHome.xhtml");
+                if (pers.getIdperson().equals(username) && pers.getPassword().equals(password)) {
+                    fcontext.getExternalContext().getSessionMap().put("usuario", pers);
+                    message = new FacesMessage("Exito en la autentificación");
+                    fcontext.getExternalContext().redirect("faces/adminHome.xhtml");
+                } else {
+                    fcontext.getExternalContext().redirect("error.html");
+                    message = new FacesMessage("Error en la autentificación");
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();

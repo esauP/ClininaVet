@@ -4,7 +4,7 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
-        
+
         <meta charset="utf-8"/>
         <title>Clínica Veterinaria</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -71,9 +71,10 @@
                                                  var="dat" value="#{datesBean.listacitas}"
                                                  rows="20"
                                                  paginator="true"
+                                                 paginatorAlwaysVisible="false"
                                                  rowsPerPageLabel="5,10,15,20,25"                                                 
                                                  >
-                                        <f:facet name="header">Agenda del Día</f:facet>
+                                        <f:facet name="header">Agenda del Día</f:facet>                                                            
                                         <p:column headerText="Fecha">
                                             <h:outputText value="#{dat.date}"/>
                                         </p:column>
