@@ -11,14 +11,13 @@ import javax.inject.Named;
 import pojo.Products;
 import pojo.BillLines;
 import Controller.LBillLine;
+import Controller.LPets;
 import java.util.StringTokenizer;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
-import org.primefaces.context.RequestContext;
 import org.primefaces.event.RowEditEvent;
-import pojo.Person;
 import pojo.Pets;
 
 /**
@@ -44,10 +43,16 @@ public class BillLineBeans {
     private int idpet;
     private String namepet;
     private List<BillLines> listalineasfac;
+    private List<Pets> listamascotasPers;
+
     private BillLines blines = new BillLines();
 
     public BillLineBeans() throws SQLException {
         listalineasfac = LBillLine.getList();
+    }
+
+    public void BuscaMascotas(String IdPersona) throws SQLException {
+        listamascotasPers = LPets.getPets(IdPersona);
     }
 
     public void onRowEdit(RowEditEvent event) throws SQLException {
@@ -102,19 +107,16 @@ public class BillLineBeans {
     }
 
     public void KeepSelection(String idpers) {
-        
+
         FacesContext fcontext = FacesContext.getCurrentInstance();
         FacesMessage message = new FacesMessage("Mascota Fijada");
-
+        Pets petk;
         try {
 
-            StringTokenizer ft = new StringTokenizer(this.pet, "-");
-            this.idpet = Integer.parseInt(ft.nextToken());
-            this.namepet = ft.nextToken();
-            Pets pets = new Pets(idpers, idpet, namepet);
+            petk = LPets.getPet(this.idpet);
 
-            if ((pets.getIdpets()) != 0) {
-                fcontext.getExternalContext().getSessionMap().put("mascotaFac", pets);
+            if ((petk.getIdpets()) != 0) {
+                fcontext.getExternalContext().getSessionMap().put("mascotaFac", petk);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -243,4 +245,11 @@ public class BillLineBeans {
         this.blines = blines;
     }
 
+    public List<Pets> getListamascotasPers() {
+        return listamascotasPers;
+    }
+
+    public void setListamascotasPers(List<Pets> listamascotasPers) {
+        this.listamascotasPers = listamascotasPers;
+    }
 }

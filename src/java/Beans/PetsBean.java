@@ -46,7 +46,6 @@ public class PetsBean implements Serializable {
     private final List<Pets> listamascotas;
     private List<Person> listapersonas;
     private List<Consultation> listconsult;
-    private List<Pets> listamascotasPers;
 
     /**
      * Creates a new instance of PetsBean
@@ -59,9 +58,7 @@ public class PetsBean implements Serializable {
 
     }
 
-    public void BuscaMascotas(String IdPersona) throws SQLException {
-        listamascotasPers = LPets.getPets(IdPersona);
-    }
+   
 
     /**
      * Metodo para insertar mascota
@@ -302,11 +299,5 @@ public class PetsBean implements Serializable {
         this.listconsult = listconsult;
     }
 
-    public List<Pets> getListamascotasPers() {
-        return listamascotasPers;
-    }
-
-    public void setListamascotasPers(List<Pets> listamascotasPers) {
-        this.listamascotasPers = listamascotasPers;
-    }
+  
 }

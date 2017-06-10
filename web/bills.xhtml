@@ -66,12 +66,17 @@
                                             <p:growl id = "msgs" showDetail = "true" />
                                             <h:panelGrid columns="12" cellpadding="5">
                                                 <p:autoComplete value="#{billBean.idper}" completeMethod="#{personBean.AutocompletarID}" placeholder="* Nombre Apellidos"  />
-                                                <p:commandButton value="Buscar" actionListener="#{petsBean.BuscaMascotas(billBean.idper)}" update="tablaFacturas" />
-                                                <p:selectOneMenu id="ComboMascotas" value="#{billLineBeans.pet}" required="true" >
+                                                
+                                                <p:commandButton value="Buscar" actionListener="#{billLineBeans.BuscaMascotas(billBean.idper)}" update="tablaFacturas" />
+                                                
+                                                <p:selectOneMenu id="ComboMascotas" value="#{billLineBeans.idpet}" required="true" >
                                                     <f:selectItem itemLabel="- selecciona una mascota -" itemValue="0"/>
-                                                    <f:selectItems value="#{petsBean.listamascotasPers}" />
+                                                    <f:selectItems value="#{billLineBeans.listamascotasPers}" var="petsk"
+                                                                   itemLabel="#{petsk.namepet}"
+                                                                   itemValue="#{petsk.idpets}"
+                                                                   />
                                                 </p:selectOneMenu>
-                                                <p:commandButton value="Fijar" action="#{billLineBeans.KeepSelection(billBean.idper)}"/>
+                                                <h:commandButton value="Fijar" action="#{billLineBeans.KeepSelection(billBean.idper)}" />
                                                 <h:outputText value="Factura:" />
                                                 <h:outputText id = "idBill" value = "#{billBean.idbill}" />
                                                 <!-- fecha del día para la factura -->
@@ -97,14 +102,14 @@
                                                 <p:inputText id="Precio-Producto" value="#{billLineBeans.price}" placeholder="* Precio" required="true" />
                                                 <p:inputText id="Impuestos-Producto" value="#{billLineBeans.taxes}" placeholder="* IVA" required="true" />
                                                 <p:inputText id="Descuento-Producto" value="#{billLineBeans.discount}" placeholder="* Descuento" required="true" />
-                                                <h:commandButton value="Añadir Linea"  actionListener="#{billLineBeans.Addcart()}"  />
+                                                <p:commandButton value="Añadir Linea"  actionListener="#{billLineBeans.Addcart()}" ajax="false" />
 
                                             </p:panelGrid>
 
 
                                             <p:dataTable id="Facturas" var="fact" value="#{billLineBeans.listalineasfac}" editable="true" style="margin-bottom:20px" paginator = "true"
                                                          paginatorTemplate = "{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                                                         rowsPerPageTemplate = "5,10,15,20,25">
+                                                         paginatorAlwaysVisible="false" rows="5" rowsPerPageTemplate = "5,10,15,20,25">
                                                 <f:facet name="header">Factura</f:facet>
 
                                                 <p:ajax event="rowEdit" listener="#{billLineBeans.onRowEdit}"  update=":tablaFacturas:Facturas" />

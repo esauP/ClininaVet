@@ -250,6 +250,11 @@ public class LPets extends ConexionDB {
         return listapets;
     }
 
+    /**
+     * Metodo que nos devolvera la mascota dado su id
+     * @param idpet
+     * @return Pets
+     */
     public static Pets getPet(int idpet) {
         Pets pet = new Pets();
         ConexionDB conn = new ConexionDB();
@@ -272,6 +277,11 @@ public class LPets extends ConexionDB {
         }
         return pet;
     }
+    /**
+     * Metodo que devolvera la mascota dado su nombre
+     * @param name
+     * @return 
+     */
      public static Pets getPet(String name) {
         Pets pet = new Pets();
         ConexionDB conn = new ConexionDB();

@@ -116,6 +116,6 @@ public class Pets implements java.io.Serializable {
 
     @Override
     public String toString() {
-        return idpets + "-" + namepet;
+        return namepet;
     }
 }
