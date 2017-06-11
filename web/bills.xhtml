@@ -66,16 +66,13 @@
                                             <p:growl id = "msgs" showDetail = "true" />
                                             <h:panelGrid columns="12" cellpadding="5">
                                                 <p:autoComplete value="#{billBean.idper}" completeMethod="#{personBean.AutocompletarID}" placeholder="* Nombre Apellidos"  />
-                                                
+
                                                 <p:commandButton value="Buscar" actionListener="#{billLineBeans.BuscaMascotas(billBean.idper)}" update="tablaFacturas" />
-                                                
-                                                <p:selectOneMenu id="ComboMascotas" value="#{billLineBeans.idpet}" required="true" >
-                                                    <f:selectItem itemLabel="- selecciona una mascota -" itemValue="0"/>
-                                                    <f:selectItems value="#{billLineBeans.listamascotasPers}" var="petsk"
-                                                                   itemLabel="#{petsk.namepet}"
-                                                                   itemValue="#{petsk.idpets}"
-                                                                   />
+
+                                                <p:selectOneMenu id="ComboMascotas" value="#{billLineBeans.namepet}" >
+                                                    <f:selectItems value="#{billLineBeans.listamascotasPers}" />
                                                 </p:selectOneMenu>
+                                                
                                                 <h:commandButton value="Fijar" action="#{billLineBeans.KeepSelection(billBean.idper)}" />
                                                 <h:outputText value="Factura:" />
                                                 <h:outputText id = "idBill" value = "#{billBean.idbill}" />

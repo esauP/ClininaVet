@@ -16,6 +16,7 @@ import java.util.StringTokenizer;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import org.primefaces.event.RowEditEvent;
 import pojo.Pets;
@@ -25,8 +26,9 @@ import pojo.Pets;
  * @author macarena jbenitez
  */
 @Named(value = "billLineBeans")
-@ManagedBean
+
 @RequestScoped
+@SessionScoped
 public class BillLineBeans {
 
     private int id;
@@ -89,20 +91,26 @@ public class BillLineBeans {
     public void Addcart() {
 
         FacesContext fcontext = FacesContext.getCurrentInstance();
+        FacesMessage message = new FacesMessage("Producto añadido.");
 
-        StringTokenizer st = new StringTokenizer(prod, "-");
+        StringTokenizer st = new StringTokenizer(this.prod, "-");
         this.idprod = Integer.parseInt(st.nextToken());
         this.nameprod = st.nextToken();
 
-        try {
-            Pets petf = (Pets) fcontext.getExternalContext().getSessionMap().get("mascotaFac");
-            this.idpet = petf.getIdpets();
-            this.namepet = petf.getNamepet();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        StringTokenizer sp = new StringTokenizer(this.pet, "-");
+        this.idpet = Integer.parseInt(sp.nextToken());
+        this.namepet = sp.nextToken();
+
+//        try {
+//            Pets petf = (Pets) fcontext.getExternalContext().getSessionMap().get("mascotaFac");
+//            this.idpet = petf.getIdpets();
+//            this.namepet = petf.getNamepet();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
         BillLines fact = new BillLines(this.idpet, this.namepet, this.idprod, this.nameprod, this.quantity, this.price, this.taxes, this.discount);
         this.listalineasfac.add(fact);
+        fcontext.addMessage(null, message);
         System.out.println("Añadir carrito");
     }
 
@@ -237,19 +245,19 @@ public class BillLineBeans {
         this.listalineasfac = listalineasfac;
     }
 
-    public BillLines getBlines() {
-        return blines;
-    }
-
-    public void setBlines(BillLines blines) {
-        this.blines = blines;
-    }
-
     public List<Pets> getListamascotasPers() {
         return listamascotasPers;
     }
 
     public void setListamascotasPers(List<Pets> listamascotasPers) {
         this.listamascotasPers = listamascotasPers;
+    }
+
+    public BillLines getBlines() {
+        return blines;
+    }
+
+    public void setBlines(BillLines blines) {
+        this.blines = blines;
     }
 }

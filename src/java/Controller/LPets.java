@@ -81,11 +81,11 @@ public class LPets extends ConexionDB {
      * Metodo que devuelve la lista de mascotas asociadas a un dueño
      *
      * @param idperson
-     * @return List <Pets>
+     * @return List Pets
      * @throws SQLException
      */
     public static List<Pets> getPets(String idperson) throws SQLException {
-        List<Pets> listamascotas = new ArrayList<Pets>();
+        List<Pets> listamascotas = new ArrayList<>();
         ConexionDB conn = new ConexionDB();
 
         try {
@@ -122,7 +122,6 @@ public class LPets extends ConexionDB {
             System.out.println(e.getMessage());
             System.out.println(e.getCause());
             System.out.println(e.getSQLState());
-            e.printStackTrace();
 
         } finally {
             conn.desconectar();

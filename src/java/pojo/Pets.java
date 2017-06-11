@@ -19,13 +19,13 @@ public class Pets implements java.io.Serializable {
     public Pets() {
     }
 
-    public Pets(String idpers, int idpet, String namepet){
+    public Pets(String idpers, int idpet, String namepet) {
         this.idpers = idpers;
         this.idpets = idpet;
         this.namepet = namepet;
-        
+
     }
-    
+
     public Pets(Person person, String namepet, String animal) {
         this.person = person;
         this.namepet = namepet;
@@ -65,7 +65,7 @@ public class Pets implements java.io.Serializable {
     public void setIdpers(String idpers) {
         this.idpers = idpers;
     }
-    
+
     public String getNamepet() {
         return this.namepet;
     }
