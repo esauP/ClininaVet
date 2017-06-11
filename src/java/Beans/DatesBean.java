@@ -6,9 +6,16 @@
 package Beans;
 
 import Controller.Ldate;
+import java.io.IOException;
+import java.io.Serializable;
+import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import javax.enterprise.context.RequestScoped;
+import javax.faces.application.FacesMessage;
+import javax.faces.bean.ManagedBean;
+import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import pojo.Dates;
 
@@ -17,8 +24,10 @@ import pojo.Dates;
  * @author esaup
  */
 @Named(value = "datesBean")
+@ManagedBean
 @RequestScoped
-public class DatesBean {
+
+public class DatesBean implements Serializable{
 
     private int id;
     private String date;
@@ -27,6 +36,44 @@ public class DatesBean {
     private String nameper;
     private String namepet;
     private List<Dates> listacitas;
+    private String idper;
+    private Dates dateD = new Dates();
+    
+    
+    /**
+     * MÃ©todo que filtra las citas segÃºn el dÃ­a
+     * @param value
+     * @param filter
+     * @param locale
+     * @return 
+     */
+    public boolean filterByDay(Object value, Object filter, Locale locale) {
+        String filterText = (filter == null) ? null : filter.toString().trim();
+        if (filterText == null || filterText.equals("")) {
+            return true;
+        }
+
+        if (value == null) {
+            return false;
+        }
+
+        String dayDate = value.toString().toUpperCase();
+        filterText = filterText.toUpperCase();
+
+        if (dayDate.contains(filterText)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public String getIdper() {
+        return idper;
+    }
+
+    public void setIdper(String idper) {
+        this.idper = idper;
+    }
 
     public DatesBean() {
         this.listacitas = Ldate.getDatesDay();
@@ -86,6 +133,29 @@ public class DatesBean {
 
     public void setListacitas(List<Dates> listacitas) {
         this.listacitas = listacitas;
+    }
+    
+    /**
+     * Metodo para eliminar usuario
+     *
+     * @param idDate
+     * @throws SQLException
+     * @throws IOException
+     */
+    public void deleteDate(int idDate) throws SQLException, IOException {
+
+        Boolean res;
+        FacesMessage msg;
+        res = Ldate.deleteDate(idDate);
+        if (res) {
+            msg = new FacesMessage("Cita eliminada para: " + dateD.getNamepet());
+        } else {
+            msg = new FacesMessage("Cita no eliminada para: " + dateD.getNamepet()+ " Ha surgido un problema");
+        }
+
+        FacesContext.getCurrentInstance().addMessage(null, msg);
+        FacesContext.getCurrentInstance().getExternalContext().redirect("faces/dates.xhtml");
+
     }
 
 }

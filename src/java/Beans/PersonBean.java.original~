@@ -38,11 +38,6 @@ public class PersonBean implements Serializable {
     private List<Person> listapersonas;
     private Person pers = new Person();
 
-    /**
-     * Creates a new instance of PersonBean
-     *
-     * @throws java.sql.SQLException
-     */
     public PersonBean() throws SQLException {
         listapersonas = LPerson.getPeople();
     }
@@ -91,11 +86,6 @@ public class PersonBean implements Serializable {
 
     }
 
-    /**
-     * Metodo para actualizar personas a travÃ©s de un evento de ediciÃ³n en la celda de la tabla
-     * @param event
-     * @throws SQLException 
-     */
     public void onRowEdit(RowEditEvent event) throws SQLException {
         Person perM = (Person) event.getObject();
         FacesMessage msg;
@@ -112,10 +102,6 @@ public class PersonBean implements Serializable {
         FacesContext.getCurrentInstance().addMessage(null, msg);
     }
 
-    /**
-     * MÃ©todo para cancelar la ediciÃ³n desde la celda de la tabla
-     * @param event 
-     */
     public void onRowCancel(RowEditEvent event) {
         Person per;
         per = ((Person) event.getObject());
@@ -123,7 +109,6 @@ public class PersonBean implements Serializable {
         FacesContext.getCurrentInstance().addMessage(null, msg);
     }
 
-    
     public void onCellEdit(CellEditEvent event) {
         Object oldValue = event.getOldValue();
         Object newValue = event.getNewValue();
@@ -170,13 +155,6 @@ public class PersonBean implements Serializable {
         return queried;
     }
 
-    /**
-     * MÃ©todo que filtra las personas recogidas en la base de datos por su nombre
-     * @param value
-     * @param filter
-     * @param locale
-     * @return 
-     */
     public boolean filterByName(Object value, Object filter, Locale locale) {
         String filterText = (filter == null) ? null : filter.toString().trim();
         if (filterText == null || filterText.equals("")) {

@@ -109,7 +109,7 @@
                                         <p:dataTable id = "tablaHomeAdminPers" var = "per" value = "#{personBean.listapersonas}" rows = "5" paginator = "true"
                                                      paginatorTemplate = "{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                                      rowsPerPageTemplate = "5,10,15,20,25" editable="true" style="width: 100%">
-                                            <f:facet name = "header">Listado de Clientes</f:facet>
+                                            <f:facet name = "header">Listado de Mascotas con relacion de Responsable</f:facet>
 
                                             <p:ajax event="rowEdit" listener="#{personBean.onRowEdit}" />
                                             <p:ajax event="rowEditCancel" listener="#{personBean.onRowCancel}" />
