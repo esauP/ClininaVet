@@ -5,6 +5,7 @@
  */
 package Beans;
 
+import Controller.LBill;
 import java.sql.SQLException;
 import java.util.List;
 import javax.inject.Named;
@@ -12,6 +13,9 @@ import pojo.Products;
 import pojo.BillLines;
 import Controller.LBillLine;
 import Controller.LPets;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.StringTokenizer;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
@@ -33,8 +37,8 @@ public class BillLineBeans {
 
     private int id;
     private int idbill;
-    private int quantity;
-    private int taxes;
+    private int quantity = 1;
+    private int taxes = 21;
     private int discount;
     private double price;
     private String observations;
@@ -44,13 +48,21 @@ public class BillLineBeans {
     private String pet;
     private int idpet;
     private String namepet;
-    private List<BillLines> listalineasfac;
+    private List<BillLines> listalineasfac = new ArrayList<>();
     private List<Pets> listamascotasPers;
 
     private BillLines blines = new BillLines();
 
     public BillLineBeans() throws SQLException {
-        listalineasfac = LBillLine.getList();
+        FacesContext fcontext = FacesContext.getCurrentInstance();
+
+        try {
+            Pets petf = (Pets) fcontext.getExternalContext().getSessionMap().get("mascotaFactura");
+            this.idpet = petf.getIdpets();
+            this.namepet = petf.getNamepet();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void BuscaMascotas(String IdPersona) throws SQLException {
@@ -64,16 +76,6 @@ public class BillLineBeans {
 
     public void onRowCancel(RowEditEvent event) {
         FacesMessage msg = new FacesMessage("Edicion Cancelada", ((Products) event.getObject()).getName());
-        FacesContext.getCurrentInstance().addMessage(null, msg);
-    }
-
-    public void AddLine() throws SQLException {
-
-        for (BillLines line : listalineasfac) {
-            LBillLine.addLinea(idbill, line.getIdprod(),
-                    line.getQuantity(), line.getPrice(), line.getTaxes(), line.getDiscount(), line.getIdpet(), line.getObservations());
-        }
-        FacesMessage msg = new FacesMessage("Línea Insertada");
         FacesContext.getCurrentInstance().addMessage(null, msg);
     }
 
@@ -92,45 +94,54 @@ public class BillLineBeans {
 
         FacesContext fcontext = FacesContext.getCurrentInstance();
         FacesMessage message = new FacesMessage("Producto añadido.");
+        List<BillLines> listafac = new ArrayList<>();
 
         StringTokenizer st = new StringTokenizer(this.prod, "-");
         this.idprod = Integer.parseInt(st.nextToken());
         this.nameprod = st.nextToken();
 
-        StringTokenizer sp = new StringTokenizer(this.pet, "-");
-        this.idpet = Integer.parseInt(sp.nextToken());
-        this.namepet = sp.nextToken();
-
-//        try {
-//            Pets petf = (Pets) fcontext.getExternalContext().getSessionMap().get("mascotaFac");
-//            this.idpet = petf.getIdpets();
-//            this.namepet = petf.getNamepet();
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-        BillLines fact = new BillLines(this.idpet, this.namepet, this.idprod, this.nameprod, this.quantity, this.price, this.taxes, this.discount);
-        this.listalineasfac.add(fact);
-        fcontext.addMessage(null, message);
-        System.out.println("Añadir carrito");
-    }
-
-    public void KeepSelection(String idpers) {
-
-        FacesContext fcontext = FacesContext.getCurrentInstance();
-        FacesMessage message = new FacesMessage("Mascota Fijada");
-        Pets petk;
         try {
-
-            petk = LPets.getPet(this.idpet);
-
-            if ((petk.getIdpets()) != 0) {
-                fcontext.getExternalContext().getSessionMap().put("mascotaFac", petk);
-            }
+            Pets petf = (Pets) fcontext.getExternalContext().getSessionMap().get("mascotaFactura");
+            this.idpet = petf.getIdpets();
+            this.namepet = petf.getNamepet();
         } catch (Exception e) {
             e.printStackTrace();
         }
-        FacesContext.getCurrentInstance().addMessage(null, message);
-        System.out.println("Fijar Mascota");
+        listafac = (List<BillLines>) fcontext.getExternalContext().getSessionMap().get("listafac");
+        if (listafac != null) {
+            this.listalineasfac = listafac;
+        }
+        BillLines fact = new BillLines(this.idpet, this.namepet, this.idprod, this.nameprod, this.quantity, this.price, this.taxes, this.discount);
+        this.listalineasfac.add(fact);
+
+        fcontext.getExternalContext().getSessionMap().put("listafac", this.listalineasfac);
+
+        fcontext.addMessage(null, message);
+    }
+
+    public void Facturar(int idbillfac, String idperfac, String date_billfac, String observationsfac) throws SQLException {
+        FacesContext fcontext = FacesContext.getCurrentInstance();
+        List<BillLines> listafac = new ArrayList<>();
+        listafac = (List<BillLines>) fcontext.getExternalContext().getSessionMap().get("listafac");
+
+        Boolean facAdd = false;
+        FacesMessage msg;
+        facAdd = LBill.addBill(idperfac, date_billfac, observationsfac);
+        if (listafac != null) {
+
+            if (facAdd) {
+                for (BillLines line : listafac) {
+                    LBillLine.addLinea(idbillfac, line.getIdprod(),
+                            line.getQuantity(), line.getPrice(), line.getTaxes(), line.getDiscount(), line.getIdpet(), line.getObservations());
+                }
+                msg = new FacesMessage("Línea Insertada");
+            } else {
+                msg = new FacesMessage("Ha ocurrido un error");
+            }
+        } else {
+            msg = new FacesMessage("Ha ocurrido un error");
+        }
+        FacesContext.getCurrentInstance().addMessage(null, msg);
     }
 
     public int getId() {

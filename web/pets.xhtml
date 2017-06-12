@@ -39,7 +39,6 @@
                                 <li class="active"><a href="pets.xhtml">Mascotas</a></li>
                                 <li><a href="consultations.xhtml">Consulta | Historial</a></li>
                                 <li><a href="dates.xhtml">Citas</a></li>
-                                <li><a href="bills.xhtml">Facturación</a></li>
                                 <li><a href="vaccines.xhtml">Vacunas</a></li>
                                 <li>
                                     <a>
@@ -109,7 +108,7 @@
                                         <p:dataTable id = "tablaHomeAdminPers" var = "per" value = "#{personBean.listapersonas}" rows = "5" paginator = "true"
                                                      paginatorTemplate = "{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                                      rowsPerPageTemplate = "5,10,15,20,25" editable="true" style="width: 100%">
-                                            <f:facet name = "header">Listado de Clientes</f:facet>
+                                            <f:facet name = "header">Listado de Mascotas con relacion de Responsable</f:facet>
 
                                             <p:ajax event="rowEdit" listener="#{personBean.onRowEdit}" />
                                             <p:ajax event="rowEditCancel" listener="#{personBean.onRowCancel}" />
@@ -334,7 +333,7 @@
                                         </p:column>
 
                                         <p:column headerText="Factura">
-                                            <p:commandLink value="Facturar"  actionListener="#{petsBean.PasarVariable(pet.idpets)}" />
+                                            <p:commandLink value="Facturar"  actionListener="#{petsBean.PasarVariable(pet.idpets,pet.person.idperson)}" />
                                         </p:column>
 
                                     </p:dataTable>

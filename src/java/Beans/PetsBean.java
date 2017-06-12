@@ -8,7 +8,6 @@ package Beans;
 import Controller.LPerson;
 import Controller.LPets;
 import java.io.IOException;
-import javax.faces.event.ActionEvent;
 import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -17,9 +16,7 @@ import java.util.Locale;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
-import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
-import org.primefaces.context.RequestContext;
 import org.primefaces.event.RowEditEvent;
 import pojo.Consultation;
 import pojo.Person;
@@ -30,7 +27,6 @@ import pojo.Pets;
  * @author macarena jbenitez
  */
 @Named(value = "petsBean")
-@ManagedBean
 @RequestScoped
 public class PetsBean implements Serializable {
 
@@ -48,9 +44,6 @@ public class PetsBean implements Serializable {
     private final List<Pets> listamascotas;
     private List<Person> listapersonas;
     private List<Consultation> listconsult;
-    private List<Pets> listamascotasPers;
-    private List<Pets> listNamePets;
-    private List<String> listamaestra;
 
     /**
      * Creates a new instance of PetsBean
@@ -60,13 +53,7 @@ public class PetsBean implements Serializable {
     public PetsBean() throws SQLException {
         listamascotas = LPets.getPets();
         listapersonas = LPerson.getPeople();
-        listNamePets = LPets.getPets();
-        listamaestra = LPets.getListNamePets();
-    }
 
-    public List listPets() throws SQLException {
-        LPets lp = new LPets();
-        return lp.getPets();
     }
 
     /**
@@ -109,15 +96,6 @@ public class PetsBean implements Serializable {
         FacesContext.getCurrentInstance().getExternalContext().redirect("faces/pets.xhtml");
 
     }
-    
-    /**
-     * Método que devolverá una lista de los objetos mascota por cada persona
-     * @param IdPersona
-     * @throws SQLException 
-     */
-     public void BuscaMascotas(String IdPersona) throws SQLException {
-         listamascotasPers = LPets.getPets(IdPersona);
-     }
 
     /**
      * Metodo para actualizar mascotas
@@ -139,32 +117,29 @@ public class PetsBean implements Serializable {
         FacesContext.getCurrentInstance().addMessage(null, msg);
     }
 
-     /**
-     * Método para cancelar la edición desde la celda de la tabla
-     * @param event 
-     */
     public void onRowCancel(RowEditEvent event) {
         FacesMessage msg = new FacesMessage("Edicion Cancelada: " + ((Pets) event.getObject()).getNamepet());
         FacesContext.getCurrentInstance().addMessage(null, msg);
     }
 
-    /**
-     * Método que transfiere los datos de una mascota de una página a otra
-     * @param idpet 
-     */
-    public void PasarVariable(int idpet) {
+    public void PasarVariable(int idpet, String idper) {
         FacesContext fcontext = FacesContext.getCurrentInstance();
-
+        Pets petf = new Pets();
+        Person perf = new Person();
         FacesMessage message = null;
-        Pets pet = new Pets();
         try {
-            pet = LPets.getPet(idpet);
-            if (pet == null) {
-                fcontext.getExternalContext().redirect("error.html");
+            petf = LPets.getPet(idpet);
+            perf = LPerson.getPerson(idper);
+            if (petf != null && perf != null) {
+
+                message = new FacesMessage("Mascota para facturacion: " + petf.getNamepet() + " con responsable: " + perf.getNamePer());
+                fcontext.getExternalContext().getSessionMap().put("mascotaFactura", petf);
+                fcontext.getExternalContext().getSessionMap().put("personaFactura", perf);
+                fcontext.getExternalContext().redirect("faces/bills.xhtml");
 
             } else {
-                fcontext.getExternalContext().getSessionMap().put("mascotaFactura", pet);
-                fcontext.getExternalContext().redirect("faces/bills.xhtml");
+                fcontext.getExternalContext().redirect("error.html");
+                message = new FacesMessage("Ha ocurrido un error");
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -172,10 +147,6 @@ public class PetsBean implements Serializable {
         FacesContext.getCurrentInstance().addMessage(null, message);
     }
 
-    /**
-     * Método que recoge el identificador de la mascota
-     * @return 
-     */
     public int recogeId() {
         FacesContext fcontext = FacesContext.getCurrentInstance();
         Pets aux = new Pets();
@@ -183,32 +154,11 @@ public class PetsBean implements Serializable {
         return aux.getIdpets();
     }
 
-    /**
-     * Método que recoge el nombre de la mascota
-     * @return 
-     */
     public String recogeNombre() {
         FacesContext fcontext = FacesContext.getCurrentInstance();
         Pets aux = new Pets();
         aux = (Pets) fcontext.getExternalContext().getSessionMap().get("mascotaFactura");
         return aux.getNamepet();
-    }
-    
-    /**
-     * Método que nos realizará el autocompletado dentro del comboBox con el listado de los nombres de las mascotas
-     * @param text
-     * @return 
-     */
-    public List<String> AutoCompletePetName(String text) {
-        // Assumed search using the startsWith
-        List<String> queried = new ArrayList<>();
-        for (int i = 0; i < this.listamaestra.size(); i++) {
-            String namePet = this.listamaestra.get(i);
-            if (namePet.toLowerCase().startsWith(text) || namePet.startsWith(text)) {
-                queried.add(namePet);
-             }
-         }
-         return queried;
     }
 
     /**
@@ -350,27 +300,4 @@ public class PetsBean implements Serializable {
         this.listconsult = listconsult;
     }
 
-     public List<Pets> getListNamePets() {
-        return listNamePets;
-    }
-
-    public void setListNamePets(List<Pets> listNamePets) {
-        this.listNamePets = listNamePets;
-    }
-
-    public List<String> getListamaestra() {
-        return listamaestra;
-    }
-
-    public void setListamaestra(List<String> listamaestra) {
-        this.listamaestra = listamaestra;
-    }
-    public List<Pets> getListamascotasPers() {
-        return listamascotasPers;
-    }
-
-    public void setListamascotasPers(List<Pets> listamascotasPers) {
-        this.listamascotasPers = listamascotasPers;
-    }
- 
 }

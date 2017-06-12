@@ -12,6 +12,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.StringTokenizer;
 import pojo.Bill;
 
 /**
@@ -60,14 +61,21 @@ public class LBill {
         boolean success = false;
         ConexionDB conn = new ConexionDB();
         try {
+            String day, mon, year, date_fac;//creamos las variables necesarias
+            StringTokenizer g = new StringTokenizer(date, "-");//pasamos el stringTokenizer para separar los tres tokens 
+            day = g.nextToken();
+            mon = g.nextToken();
+            year = g.nextToken();// como sabemos que hay 3 tokens no necesitamos ninguna estructura reiterativa
+            date_fac = year + "-" + mon + "-" + day;//asi cambiamos el formato de fecha     
+            
             //Llamada a la funcion
-            String sql = "{ ? = call addBill (?,?,?,?) }";
+            String sql = "{ ? = call addBill (?,?,?) }";
             CallableStatement cStmt = conn.getConexion().prepareCall(sql);
             //establezco la salida de la funcion
             cStmt.registerOutParameter(1, java.sql.Types.INTEGER);
             //establezco los parámetros de entrada
             cStmt.setString(2, idPer);
-            cStmt.setString(3, date);
+            cStmt.setString(3, date_fac);
             cStmt.setString(4, obser);
             //se ejecuta la funcion
             cStmt.execute();

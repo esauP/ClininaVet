@@ -22,11 +22,6 @@ import java.util.logging.Logger;
  */
 public class LPerson {
 
-    /**
-     * Método que nos devuelve la lista de personas para rellenar la tabla
-     * @return
-     * @throws SQLException 
-     */
     public static List<Person> getPeople() throws SQLException {
         List<Person> listapersona = new ArrayList<Person>();
         ConexionDB conn = new ConexionDB();
@@ -65,7 +60,7 @@ public class LPerson {
      * @param email email
      * @param password contraseña
      * @param role rol de la persona
-     * @return Devuelve un boolean de control para saber si el método se ha realizado con éxito
+     * @return
      */
     public static boolean addPerson(String idperson, String name, String address, String phone, String email, String password, int role) throws SQLException {
         boolean success = false;
@@ -108,7 +103,7 @@ public class LPerson {
      * @param address
      * @param phone
      * @param email
-     * @return Devuelve un boolean de control para saber si el método se ha realizado con éxito
+     * @return Boolean
      * @throws java.sql.SQLException
      */
     public static boolean updatePerson(String idperson, String name, String address, String phone, String email) throws SQLException {
@@ -126,7 +121,7 @@ public class LPerson {
             cStmt.setString(4, address);
             cStmt.setString(5, phone);
             cStmt.setString(6, email);
-       
+
             //se ejecuta la funcion
             cStmt.execute();
 
@@ -151,7 +146,7 @@ public class LPerson {
      * @param phone
      * @param email
      * @param role
-     * @return Devuelve un boolean de control para saber si el método se ha realizado con éxito
+     * @return
      * @throws SQLException
      */
     public static boolean updatePersonPets(String idperson, String name, String address, String phone, String email, int role) throws SQLException {
@@ -189,7 +184,7 @@ public class LPerson {
      * Método para eliminar una persona de la base de datos
      *
      * @param idperson
-     * @return Devuelve un boolean de control para saber si el método se ha realizado con éxito
+     * @return
      */
     public static boolean deletePerson(String idperson) throws SQLException {
         boolean success = false;
@@ -213,5 +208,35 @@ public class LPerson {
             conn.desconectar();
         }
         return success;
+    }
+
+    /**
+     * Metodo que nos devuelve a la persona segun su identificacion
+     * @param idper
+     * @return Person
+     * @throws SQLException 
+     */
+    public static Person getPerson(String idper) throws SQLException {
+        ConexionDB conn = new ConexionDB();
+        Person per = new Person();
+        try {
+            String sql = "Select idperson, name_per, address, phone, email from person where idperson = '" + idper + "'";
+            PreparedStatement ps = conn.getConexion().prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                per.setIdperson(rs.getString("idperson"));
+                per.setNamePer(rs.getString("name_per"));
+                per.setAddress(rs.getString("address"));
+                per.setPhone(rs.getString("phone"));
+                per.setEmail(rs.getString("email"));
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+
+        } finally {
+            conn.desconectar();
+        }
+        return per;
     }
 }
