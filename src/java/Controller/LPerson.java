@@ -22,6 +22,11 @@ import java.util.logging.Logger;
  */
 public class LPerson {
 
+    /**
+     * Método que nos devuelve la lista de personas para rellenar la tabla
+     * @return
+     * @throws SQLException 
+     */
     public static List<Person> getPeople() throws SQLException {
         List<Person> listapersona = new ArrayList<Person>();
         ConexionDB conn = new ConexionDB();
@@ -60,7 +65,7 @@ public class LPerson {
      * @param email email
      * @param password contraseña
      * @param role rol de la persona
-     * @return
+     * @return Devuelve un boolean de control para saber si el método se ha realizado con éxito
      */
     public static boolean addPerson(String idperson, String name, String address, String phone, String email, String password, int role) throws SQLException {
         boolean success = false;
@@ -103,7 +108,7 @@ public class LPerson {
      * @param address
      * @param phone
      * @param email
-     * @return Boolean
+     * @return Devuelve un boolean de control para saber si el método se ha realizado con éxito
      * @throws java.sql.SQLException
      */
     public static boolean updatePerson(String idperson, String name, String address, String phone, String email) throws SQLException {
@@ -146,7 +151,7 @@ public class LPerson {
      * @param phone
      * @param email
      * @param role
-     * @return
+     * @return Devuelve un boolean de control para saber si el método se ha realizado con éxito
      * @throws SQLException
      */
     public static boolean updatePersonPets(String idperson, String name, String address, String phone, String email, int role) throws SQLException {
@@ -184,7 +189,7 @@ public class LPerson {
      * Método para eliminar una persona de la base de datos
      *
      * @param idperson
-     * @return
+     * @return Devuelve un boolean de control para saber si el método se ha realizado con éxito
      */
     public static boolean deletePerson(String idperson) throws SQLException {
         boolean success = false;

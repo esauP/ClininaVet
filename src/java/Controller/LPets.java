@@ -23,6 +23,11 @@ import pojo.Pets;
  */
 public class LPets extends ConexionDB {
 
+    /**
+     * Método que nos devuelve los datos de personas y sus mascotas para rellenar la tabla
+     * @return
+     * @throws SQLException 
+     */
     public static List<Pets> getPets() throws SQLException {
         List<Pets> listamascotas = new ArrayList<Pets>();
         ConexionDB conn = new ConexionDB();
@@ -129,6 +134,18 @@ public class LPets extends ConexionDB {
         return listamascotas;
     }
 
+    /**
+     * Método que añadirá una mascota a nuestra base de datos
+     * @param name_pt
+     * @param animal_pt
+     * @param gender_pt
+     * @param race_pt
+     * @param colour_pt
+     * @param birth_pt
+     * @param idper_pt
+     * @return Devuelve un boolean de control para saber si el método se ha realizado con éxito
+     * @throws SQLException 
+     */
     public static boolean addPet(String name_pt, String animal_pt, int gender_pt, String race_pt, String colour_pt, String birth_pt, String idper_pt) throws SQLException {
         boolean success = false;
         ConexionDB conn = new ConexionDB();
@@ -168,6 +185,18 @@ public class LPets extends ConexionDB {
         return success;
     }
 
+    /**
+     * Método que modifica los datos de una mascota
+     * @param idpets
+     * @param name_pt
+     * @param animal_pt
+     * @param gender_pt
+     * @param race_pt
+     * @param colour_pt
+     * @param birth_pt
+     * @return Devuelve un boolean de control para saber si el método se ha realizado con éxito
+     * @throws SQLException 
+     */
     public static boolean updatePet(int idpets, String name_pt, String animal_pt, int gender_pt, String race_pt, String colour_pt, String birth_pt) throws SQLException {
         boolean success = false;
         ConexionDB conn = new ConexionDB();
@@ -206,6 +235,12 @@ public class LPets extends ConexionDB {
         return success;
     }
 
+    /**
+     * Método que borra una mascota de nuestra base de datos
+     * @param idpets
+     * @return Devuelve un boolean de control para saber si el método se ha realizado con éxito
+     * @throws SQLException 
+     */
     public static boolean deletePet(int idpets) throws SQLException {
         boolean success = false;
         ConexionDB conn = new ConexionDB();
@@ -230,6 +265,11 @@ public class LPets extends ConexionDB {
         return success;
     }
 
+    /**
+     * Método que nos devuelve una lista de los identificadores de mascotas
+     * @return
+     * @throws SQLException 
+     */
     public List<String> getIdPets() throws SQLException {
         List<String> listapets = new ArrayList<String>();
         try {
@@ -247,6 +287,31 @@ public class LPets extends ConexionDB {
             this.desconectar();
         }
         return listapets;
+    }
+    
+     /**
+     * Método que nos devuelve un listado de los nombres de las mascotas almacenadas en la base de datos
+     * @return
+     * @throws SQLException 
+     */
+    public static List<String> getListNamePets() throws SQLException {
+        List<String> listamaestra = new ArrayList<String>();
+        ConexionDB conn = new ConexionDB();
+        try {
+            String sql = "SELECT name FROM pets ORDER BY name ASC";
+            PreparedStatement ps = conn.getConexion().prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                String text;
+                text = rs.getString("name");
+                listamaestra.add(text);
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        } finally {
+            conn.desconectar();
+        }
+        return listamaestra;
     }
 
     /**

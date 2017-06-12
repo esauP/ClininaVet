@@ -37,7 +37,6 @@
                                 <li><a href="pets.xhtml">Mascotas</a></li>
                                 <li><a href="consultations.xhtml">Consulta | Historial</a></li>
                                 <li class="active"><a href="dates.xhtml">Citas</a></li>
-                                <li><a href="bills.xhtml">Facturación</a></li>
                                 <li><a href="vaccines.xhtml">Vacunas</a></li>
                                 <li>
                                     <a>
@@ -53,240 +52,130 @@
             </header>
         </div>
         <!-- end header -->
-
-
         <section id="content">
             <div class="container">
                 <div class="row">
                     <div class="skill-home">
                         <div class="skill-home-solid clearfix">
-
                             <div class="col-md-12 text-left">
                                 <p:growl id="regis" showDetail="true" />
-                                <h:form id = "formPerson">
-
-                                    <h3>Datos del Responsable</h3>
-                                    <p>
-                                        <p:inputText id="nombreperson" value="#{personBean.pers.namePer}" placeholder="* Nombre y Apellidos" required="true"/>
-                                        <p:spacer width="20"  height="0"/>
-                                        <p:inputText id = "dni" value = "#{personBean.pers.idperson}" required ="true" placeholder = "* DNI" />
-                                        <p:spacer width="20"  height="0"/>
-                                        <p:inputText id = "mail" value = "#{personBean.pers.email}"  placeholder = "* Correo Electrónico" />
-                                    </p>
-                                    <p>
-                                        <p:inputText id = "addres" value = "#{personBean.pers.address}" required ="true" placeholder = "* Dirección" size = "48" />
-                                        <p:spacer width="20"  height="0"/>
-                                        <p:inputText id = "text" value = "#{personBean.pers.phone}"  required = "true" placeholder = "* Teléfono" />
-                                    </p>
-                                    <div>
-                                        <p:commandButton value="Registrar" actionListener="#{personBean.AddPerson()}" update=":regis"/>
-                                        <p:commandButton value="Modificar" actionListener="#{personBean.UpdatePerson()}" update=":regis"/>
-                                        <p:commandButton value="Eliminar" actionListener="#{personBean.DeletePerson()}" update=":regis"/>
-                                    </div>
-                                </h:form>
+                                <h3>Seleccionar Cita</h3>  
+                                    <p:panel>
+                                            <h:panelGrid columns="12" cellpadding="2">
+                                                <p:autoComplete value="#{datesBean.idper}" completeMethod="#{personBean.AutocompletarID}" placeholder="* Nombre Apellidos"  />
+                                                <p:commandButton value="Buscar" actionListener="#{petsBean.BuscaMascotas(datesBean.idper)}" update="formPet" />
+                                                <p:selectOneMenu id="ComboMascotas" value="#{datesBean.namepet}" required="true" >
+                                                        <f:selectItem itemLabel="- selecciona una mascota -" itemValue="0"/>
+                                                        <f:selectItems value="#{petsBean.listamascotasPers}" />
+                                                    </p:selectOneMenu>
+                                                <p:commandButton value="Fijar" action="#{datesBean.KeepSelection(datesBean.idper)}"/>
+                                            </h:panelGrid>
+                                    </p:panel>
                                 <br/>
                                 <div>
                                     <h:form id = "formPet">
-                                        <h3>Datos de la Mascota</h3>
-                                        <p>
-                                            <p:inputText id="namePet" value="#{petsBean.petM.namepet}" required="true" placeholder="* Nombre Mascota" />
-                                            <p:spacer width="20"  height="0"/>
-                                            <p:inputText id="especie" value="#{petsBean.petM.animal}" required="true" placeholder="* Especie"/>
-                                            <p:spacer width="20"  height="0"/>
-                                            <p:inputText id="race" value="#{petsBean.petM.race}" required="true" placeholder="* Raza"/>
-                                            <p:spacer width="20"  height="0"/>
-                                            <p:inputText id="color" value="#{petsBean.petM.colour}" required="true" placeholder="* Color"/>
-                                            <p:spacer width="20"  height="0"/>
-                                            <p:inputMask id="birth" value="#{petsBean.petM.birthDate}" required="true" placeholder="* Fecha Nac" mask="99-99-9999"/>
-                                        </p>
-                                        <p>
-                                            <p:selectOneRadio id="genderRadio" value="#{petsBean.petM.gender}" required="true">
-                                                <f:selectItem itemLabel="Femenino" itemValue="0" />
-                                                <f:selectItem itemLabel="Masculino" itemValue="1" />
-                                            </p:selectOneRadio>
-                                            <p:spacer width="20"  height="0"/>
-                                            <div>
-                                                <p:autoComplete value="#{petsBean.idPerson}" completeMethod="#{petsBean.AutocompletarID}" placeholder="* Dni Responsable" required="true" />
-                                            </div>
-                                        </p>
-                                        <br/>
-                                        <p>
-                                            <p:commandButton value="Registrar" actionListener="#{petsBean.addPet()}" update=":regis" />
-                                            <p:spacer width="20"  height="0"/>
-                                            <p:commandButton value="Modificar" actionListener="#{petsBean.updatePet()}" update=":regis" />
-                                            <p:spacer width="20"  height="0"/>
-                                            <p:commandButton value="Eliminar" actionListener="#{petsBean.deletePet()}" update=":regis" />
-                                        </p>
-
+                                        <p:panel>
+                                            <h:panelGrid columns="12" cellpadding="2">
+                                                    <p:calendar value="#{calendarView.date1}" required="true" placeholder="* Selecciona el día de la cita" pattern="dd/MM/yyyy" size = "50"/>
+                                                    <p:selectOneMenu id="ComboHours" value="#{datesBean.hour}" required="true" >
+                                                            <f:selectItem itemLabel="- selecciona una hora -" itemValue="10:00" />
+                                                        </p:selectOneMenu>
+                                                    <p:commandButton value="Registrar" actionListener="#{petsBean.addPet()}" update=":regis" />
+                                                </h:panelGrid>
+                                        </p:panel>
                                     </h:form>
                                 </div>
-                                <br/>
-                                <h:form id="tablepets">
-                                    <p:dataTable id = "tablaHomeAdmin" var = "pet" value = "#{petsBean.listamascotas}" rows = "5" paginator = "true"
-                                                 paginatorTemplate = "{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                                                 rowsPerPageTemplate = "5,10,15,20,25" editable="true" style="width: 100%">
-                                        <f:facet name = "header">Listado de Mascotas con relacion de Responsable</f:facet>
-
-                                        <p:ajax event="rowEdit" listener="#{petsBean.onRowEdit}" />
-                                        <p:ajax event="rowEditCancel" listener="#{petsBean.onRowCancel}" />
-
-                                        <p:column filterBy="#{pet.namepet}"  filterMatchMode="contains"
-                                                  filterFunction="#{personBean.filterByName}"
-                                                  headerText="Nombre Mascota">
-                                            <p:cellEditor>
-                                                <f:facet name="output"><h:outputText value="#{pet.namepet}" /></f:facet>
-                                                <f:facet name="input"><p:inputText value="#{pet.namepet}" style="width:100%" label="Nombre"/></f:facet>
-                                            </p:cellEditor>
-                                        </p:column>
-                                        <p:column filterBy="#{pet.animal}"  filterMatchMode="contains"
-                                                  filterFunction="#{petsBean.filterCase}"
-                                                  headerText="Especie">
-                                            <p:cellEditor>
-                                                <f:facet name="output"><h:outputText value="#{pet.animal}" /></f:facet>
-                                                <f:facet name="input"><p:inputText value="#{pet.animal}" style="width:100%" label="Especie"/></f:facet>
-                                            </p:cellEditor>
-                                        </p:column>
-                                        <p:column filterBy="#{pet.race}" filterMatchMode="contains"
-                                                  filterFunction="#{petsBean.filterCase}"
-                                                  headerText="Raza">
-                                            <p:cellEditor>
-                                                <f:facet name="output"><h:outputText value="#{pet.race}" /></f:facet>
-                                                <f:facet name="input"><p:inputText value="#{pet.race}" style="width:100%" label="Raza"/></f:facet>
-                                            </p:cellEditor>
-                                        </p:column>
-                                        <p:column filterBy="#{pet.colour}" filterMatchMode="contains"
-                                                  filterFunction="#{petsBean.filterCase}"
-                                                  headerText="Color">
-                                            <p:cellEditor>
-                                                <f:facet name="output"><h:outputText value="#{pet.colour}" /></f:facet>
-                                                <f:facet name="input"><p:inputText value="#{pet.colour}" style="width:100%" label="Color"/></f:facet>
-                                            </p:cellEditor>
-                                        </p:column>
-                                        <p:column filterBy="#{pet.birthDate}" filterMatchMode="contains"
-                                                  filterFunction="#{petsBean.filterCase}"
-                                                  headerText="Fecha Nacimiento">
-                                            <p:cellEditor>
-                                                <f:facet name="output"><h:outputText value="#{pet.birthDate}" /></f:facet>
-                                                <f:facet name="input"><p:inputText value="#{pet.birthDate}" style="width:100%" label="Fecha Nacimiento"/></f:facet>
-                                            </p:cellEditor>
-                                        </p:column>
-
-                                        <p:column style="width:32px">
-                                            <p:rowEditor />
-                                        </p:column>
-
-                                        <p:column headerText="Histórico">
-                                            <p:commandLink value="Histórico"  actionListener="#{petsBean.getconsultationidPet(pet.idpets)}" onclick="PF('wdlgDatos').show();" />
-                                        </p:column>
-
-                                        <p:column headerText="Factura">
-                                            <p:commandLink value="Facturar"  actionListener="#{petsBean.PasarVariable(pet.idpets)}" />
-                                        </p:column>
-
-                                    </p:dataTable>
-
-                                    <p:dialog header="DatosH" widgetVar="wdlgDatos" id="dlgDatos">
-                                        <h:form id="tablaH">
-                                            <p:dataTable id="Consultas" var="conslt" value="#{consultationBean.listaconsultas}" editable="true" style="margin-bottom:20px">
-                                                <f:facet name="header">Historial clínico de la mascota</f:facet>
-                                                <p:column headerText="IdConsulta">
-                                                    <h:outputText value="#{conslt.idcons}" />
+                                <div>
+                                    <h:form>     
+                                        <p:dataTable id = "tableDates" var = "dat" value = "#{datesBean.listacitas}" rows = "5" paginator = "true"
+                                                                                                           paginatorTemplate = "{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                                                                                           rowsPerPageTemplate = "5,10,15,20,25" editable="true" style="width: 100%">
+                                                <f:facet name = "header">Citas</f:facet>
+                                                <p:column filterBy="#{dat.date}"  filterMatchMode="contains"
+                                                                                                                 filterFunction="#{datesBean.filterByDay}"
+                                                                                                                 headerText="Día">
+                                                        <p:cellEditor>
+                                                                <f:facet name="output"><h:outputText value="#{dat.date}" /></f:facet>
+                                                                <f:facet name="input">
+                                                                        <p:inputText id="day" value="#{dat.date}" style="width:100%" label="Day"> 
+                                                                                <f:validateLength minimum="2" maximum="45"/>
+                                                                            </p:inputText>
+                                                                        <p:message for="day" id="daymsg" />
+                                                                    </f:facet>
+                                                        </p:cellEditor>
                                                 </p:column>
-                                                <p:column headerText="idMascota">
-                                                    <f:facet name="output"><h:outputText value="#{conslt.idpets}" /></f:facet>
+                                                <p:column filterBy="#{dat.hour}"  filterMatchMode="contains"
+                                                                                                                 filterFunction="#{dat.filterByDay}"
+                                                                                                                 headerText="Hora">
+                                                        <h:outputText value="#{dat.hour}" />
                                                 </p:column>
-                                                <p:column headerText="Fecha_Consulta">
-                                                    <f:facet name="output"><h:outputText value="#{conslt.date}" /></f:facet>
+                                                <p:column filterBy="#{dat.nameper}"  filterMatchMode="contains"
+                                                                                                                 filterFunction="#{dat.filterByDay}"
+                                                                                                                 headerText="Cliente">
+                                                        <h:outputText value="#{dat.nameper}" />
                                                 </p:column>
-                                                <p:column headerText="Motivo">
-                                                    <f:facet name="output"><h:outputText value="#{conslt.reason}" /></f:facet>
+                                                <p:column filterBy="#{dat.namepet}"  filterMatchMode="contains"
+                                                                                                                 filterFunction="#{dat.filterByDay}"
+                                                                                                                 headerText="Mascota">
+                                                        <h:outputText value="#{dat.namepet}" />
                                                 </p:column>
-                                                <p:column headerText="Diagnóstico">
-                                                    <f:facet name="output"><h:outputText value="#{conslt.diagnosis}" /></f:facet>
+                                                <p:column filterBy="#{dat.observations}"  filterMatchMode="contains"
+                                                                                                                 filterFunction="#{dat.filterByDay}"
+                                                                                                                 headerText="Observaciones">
+                                                        <h:outputText value="#{dat.observations}" />
                                                 </p:column>
-                                                <p:column headerText="Tratamiento">
-                                                    <f:facet name="output"><h:outputText value="#{conslt.treatment}" /></f:facet>
+                                                <p:column headerText="Opciones">
+                                                        <p:rowEditor />
+                                                        <p:commandLink value="Eliminar"  actionListener="#{datesBean.deleteDate(dat.id)}" update=":regis" />
                                                 </p:column>
-                                                <p:column headerText="Observaciones">
-                                                    <f:facet name="output"><h:outputText value="#{conslt.observation}" /></f:facet>
-                                                </p:column>
-                                            </p:dataTable>
-                                        </h:form>
-                                    </p:dialog>
-
-                                    <div><br/><button type="button" class="btn btn-default" data-toggle="modal" data-target="#myModal">Histórico Servicios</button></div>
-                                </h:form>
+                                        </p:dataTable>
+                                    </h:form>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-
-            <!-- Modal Consulta Histórico-->
-            <div class="modal fade" id="myModal" role="dialog">
-                <div class="modal-dialog">
-
-                    <!-- Modal content-->
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal"></button>
-                            <h4 class="modal-title">Histórico de la Mascota</h4>
-                        </div>
-                        <div class="modal-body">
-                            <div class="table-responsive">
-                                <!-- contenido -->
-
-                                <!-- contenido -->
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
         </section>
-
-        <div id="sub-footer">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-12">
-                        <ul class="social-network">
-                            <li><a href="#" data-placement="top" title="Facebook"><i class="fa fa-facebook"></i></a></li>
-                            <li><a href="#" data-placement="top" title="Twitter"><i class="fa fa-twitter"></i></a></li>
-                            <li><a href="#" data-placement="top" title="Google plus"><i class="fa fa-google-plus"></i></a></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <a href="#" class="scrollup"><i class="fa fa-angle-up active"></i></a>
-        <!-- javascript
-        ================================================== -->
-        <!-- Placed at the end of the document so the pages load faster -->
-        <!-- script que permite al usuario cerrar el dialogo cuando haga click fuera de el-->
-        <!-- <script>
-             // Get the modal
-             var modal = document.getElementById('id01');
- 
-             // When the user clicks anywhere outside of the modal, close it
-             window.onclick = function (event) {
-                 if (event.target === modal) {
-                     modal.style.display = "none";
-                 }
-             };
-         </script> -->
-        <script src="js/bootstrap.min.js"></script>
-        <!--<script src="js/jquery.js"></script>
-        <script src="js/jquery.easing.1.3.js"></script>
-        <script src="js/jquery.fancybox.pack.js"></script>
-        <script src="js/jquery.fancybox-media.js"></script>
-        <script src="js/portfolio/jquery.quicksand.js"></script>
-        <script src="js/portfolio/setting.js"></script>
-        <script src="js/jquery.flexslider.js"></script>
-        <script src="js/animate.js"></script>
-        <script src="js/custom.js"></script>
-        <script src="js/owl-carousel/owl.carousel.js"></script>-->
-    </h:body>
-</html>
+                                <div id="sub-footer">
+                                    <div class="container">
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <ul class="social-network">
+                                                    <li><a href="#" data-placement="top" title="Facebook"><i class="fa fa-facebook"></i></a></li>
+                                                    <li><a href="#" data-placement="top" title="Twitter"><i class="fa fa-twitter"></i></a></li>
+                                                    <li><a href="#" data-placement="top" title="Google plus"><i class="fa fa-google-plus"></i></a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <a href="#" class="scrollup"><i class="fa fa-angle-up active"></i></a>
+                                <!-- javascript
+                                ================================================== -->
+                                <!-- Placed at the end of the document so the pages load faster -->
+                                <!-- script que permite al usuario cerrar el dialogo cuando haga click fuera de el-->
+                                <!-- <script>
+                                     // Get the modal
+                                     var modal = document.getElementById('id01');
+                         
+                                     // When the user clicks anywhere outside of the modal, close it
+                                     window.onclick = function (event) {
+                                         if (event.target === modal) {
+                                             modal.style.display = "none";
+                                         }
+                                     };
+                                 </script> -->
+                                <script src="js/bootstrap.min.js"></script>
+                                <!--<script src="js/jquery.js"></script>
+                                <script src="js/jquery.easing.1.3.js"></script>
+                                <script src="js/jquery.fancybox.pack.js"></script>
+                                <script src="js/jquery.fancybox-media.js"></script>
+                                <script src="js/portfolio/jquery.quicksand.js"></script>
+                                <script src="js/portfolio/setting.js"></script>
+                                <script src="js/jquery.flexslider.js"></script>
+                                <script src="js/animate.js"></script>
+                                <script src="js/custom.js"></script>
+                                <script src="js/owl-carousel/owl.carousel.js"></script>-->
+                                </h:body>
+                                </html>

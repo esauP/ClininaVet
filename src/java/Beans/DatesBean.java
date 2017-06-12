@@ -5,6 +5,7 @@
  */
 package Beans;
 
+import Controller.LPets;
 import Controller.Ldate;
 import java.io.IOException;
 import java.io.Serializable;
@@ -18,6 +19,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import pojo.Dates;
+import pojo.Pets;
 
 /**
  *
@@ -41,7 +43,7 @@ public class DatesBean implements Serializable{
     
     
     /**
-     * MÃ©todo que filtra las citas segÃºn el dÃ­a
+     * Método que filtra las citas según el día
      * @param value
      * @param filter
      * @param locale
@@ -65,6 +67,25 @@ public class DatesBean implements Serializable{
         } else {
             return false;
         }
+    }
+    
+    public void KeepSelection(String idpers) {
+
+        FacesContext fcontext = FacesContext.getCurrentInstance();
+        FacesMessage message = new FacesMessage("Mascota Fijada");
+        Pets petk;
+        try {
+
+            petk = LPets.getPet(this.namepet);
+
+            if ((petk.getIdpets()) != 0) {
+                fcontext.getExternalContext().getSessionMap().put("mascotaFac", petk);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        FacesContext.getCurrentInstance().addMessage(null, message);
+        System.out.println("Fijar Mascota");
     }
 
     public String getIdper() {
@@ -136,7 +157,7 @@ public class DatesBean implements Serializable{
     }
     
     /**
-     * Metodo para eliminar usuario
+     * Metodo para eliminar una cita
      *
      * @param idDate
      * @throws SQLException

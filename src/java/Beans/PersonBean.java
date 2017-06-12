@@ -92,7 +92,7 @@ public class PersonBean implements Serializable {
     }
 
     /**
-     * Metodo para actualizar personas a travÃ©s de un evento de ediciÃ³n en la celda de la tabla
+     * Metodo para actualizar personas a través de un evento de edición en la celda de la tabla
      * @param event
      * @throws SQLException 
      */
@@ -113,7 +113,7 @@ public class PersonBean implements Serializable {
     }
 
     /**
-     * MÃ©todo para cancelar la ediciÃ³n desde la celda de la tabla
+     * Método para cancelar la edición desde la celda de la tabla
      * @param event 
      */
     public void onRowCancel(RowEditEvent event) {
@@ -171,7 +171,7 @@ public class PersonBean implements Serializable {
     }
 
     /**
-     * MÃ©todo que filtra las personas recogidas en la base de datos por su nombre
+     * Método que filtra las personas recogidas en la base de datos por su nombre
      * @param value
      * @param filter
      * @param locale
