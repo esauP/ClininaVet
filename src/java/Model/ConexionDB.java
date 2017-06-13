@@ -18,11 +18,18 @@ public class ConexionDB {
     
             
     private static Connection conexion;
+    //dam43
+    //admin
     private String user = "dam43";
+    //dam43_clinica
+    //clinica_local
     private String bd = "dam43_clinica";
+    //salesianas
+    //admin
     private String pass = "salesianas";
     //192.168.28.3
     //79.148.236.236
+    //localhost
     private String host = "79.148.236.236";
     private String server = "jdbc:mysql://" + host + "/" + bd;
 
