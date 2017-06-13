@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package Beans;
 
 import java.awt.event.ActionEvent;
@@ -15,10 +11,7 @@ import pojo.Person;
 import Model.Login;
 import javax.faces.bean.ManagedBean;
 
-/**
- *
- * @author esaup
- */
+//Anotaciones para que el xhtml pueda operar con ella
 @Named(value = "loginBean")
 @ManagedBean
 public class LoginBean implements Serializable {
@@ -68,6 +61,10 @@ public class LoginBean implements Serializable {
         context.addCallbackParam("Logeado", loggedIn);
     }
 
+    /**
+     * Método para controlar la acción de deslogarse
+     * @param event 
+     */
     public void desloguear(ActionEvent event) {
         FacesContext fcontext = FacesContext.getCurrentInstance();
         Person pers = new Person();
@@ -79,7 +76,10 @@ public class LoginBean implements Serializable {
             e.printStackTrace();
         }
     }
-
+    
+    /**
+     * Método para validar la sesión e impedir accesos no autorizados
+     */
     public void validarSesionAdminHome() {
         try {
             FacesContext context = FacesContext.getCurrentInstance();
@@ -103,7 +103,9 @@ public class LoginBean implements Serializable {
 
         }
     }
-
+    /**
+     * Método para validar la sesión de facturas
+     */
     public void validarSesionBills() {
         try {
             FacesContext context = FacesContext.getCurrentInstance();
@@ -126,7 +128,10 @@ public class LoginBean implements Serializable {
             e.printStackTrace();
         }
     }
-
+    
+    /**
+     * Método custome para valdiar la sesión de mascotas
+     */
     public void validarSesionPets() {
         try {
             FacesContext context = FacesContext.getCurrentInstance();
@@ -150,6 +155,9 @@ public class LoginBean implements Serializable {
         }
     }
 
+    /**
+     * Método custome para valdiar la sesión de consultas
+     */
     public void validarSesionConsultation() {
         try {
             FacesContext context = FacesContext.getCurrentInstance();
@@ -169,7 +177,10 @@ public class LoginBean implements Serializable {
             e.printStackTrace();
         }
     }
-
+    
+    /**
+     * Método custome para valdiar la sesión de citas
+     */
     public void validarSesionDates() {
         try {
             FacesContext context = FacesContext.getCurrentInstance();

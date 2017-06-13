@@ -23,10 +23,7 @@ import org.primefaces.event.RowEditEvent;
 import org.primefaces.model.UploadedFile;
 import pojo.*;
 
-/**
- *
- * @author neuhaus
- */
+//Anotaciones para que el xhtml pueda operar con ella
 @Named(value = "docBean")
 @ManagedBean
 @RequestScoped
@@ -45,6 +42,9 @@ public class DocBean {
         listaconsult = lc.getidConsult();
     }
 
+    /**
+     * Método para lanzar un filechooser filepicker
+     */
     public void upload() {
         String aux = "";
         //Creamos el objeto JFileChooser
@@ -60,6 +60,11 @@ public class DocBean {
         docu.setFileattached(aux);
     }
 
+    /**
+     * Método para abrir un documento enlazado
+     * @param aux
+     * @throws Exception 
+     */
      public void viewDoc(String aux) throws Exception{
         Runtime r = Runtime.getRuntime();
         Process p = null;
@@ -70,22 +75,41 @@ public class DocBean {
         }
     }
 
+    /**
+     * Método para añadir un documento
+     * @throws SQLException 
+     */
     public void addDoc() throws SQLException {
         LDocument ld = new LDocument();
         ld.addDoc(docu.getIdcons(), docu.getDate_doc(), docu.getDescription(), docu.getFileattached());
     }
 
+    /**
+     * Método para eliminar un documento
+     * @param Iddoc
+     * @throws SQLException 
+     */
     public void deleteDoc(int Iddoc) throws SQLException {
         LDocument ld = new LDocument();
         ld.deleteDoc(Iddoc);
     }
 
+    /**
+     * Método para lista los documentos existentes
+     * @return
+     * @throws SQLException 
+     */
     public List listar() throws SQLException {
         LDocument ld = new LDocument();
         return ld.getDocuments();
     }
 
-    //methods of buttons into the table
+    /**
+     * Método para modificar datos cambiados en la tabla de datos de la web
+     * que es modificable
+     * @param event
+     * @throws SQLException 
+     */
     public void onRowEdit(RowEditEvent event) throws SQLException {
         LDocument ld = new LDocument();
         Doc docum = (Doc) event.getObject();
@@ -94,6 +118,10 @@ public class DocBean {
         FacesContext.getCurrentInstance().addMessage(null, msg);
     }
 
+    /**
+     * Método para cancelar la edición de la tupla
+     * @param event 
+     */
     public void onRowCancel(RowEditEvent event) {
         FacesMessage msg = new FacesMessage("Edición Cancelada", String.valueOf(((Doc) event.getObject()).getIddoc())); //Se ha casteado el id que estaba en integer
         FacesContext.getCurrentInstance().addMessage(null, msg);

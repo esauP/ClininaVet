@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Beans;
 
 import Controller.LVaccinecal;
@@ -20,10 +15,7 @@ import org.primefaces.event.RowEditEvent;
 import pojo.Vaccinecal;
 import pojo.Vaccines;
 
-/**
- *
- * @author neuhaus
- */
+//Anotaciones para que el xhtml pueda operar con ella
 @Named(value = "vaccinesBean")
 @ManagedBean
 @RequestScoped
@@ -56,6 +48,12 @@ public class VaccinesBean {
         lv.deleteVacines(idvac);
     }
 
+      /**
+     * Método para modificar datos cambiados en la tabla de datos de la web
+     * que es modificable
+     * @param event
+     * @throws SQLException 
+     */
     public void onRowEdit(RowEditEvent event) throws SQLException {
         LVaccines lv = new LVaccines();
         Vaccines vacuna = (Vaccines) event.getObject();
@@ -64,11 +62,19 @@ public class VaccinesBean {
         FacesContext.getCurrentInstance().addMessage(null, msg);
     }
 
+    /**
+     * Método para cancelar la edición de la tupla
+     * @param event 
+     */
     public void onRowCancel(RowEditEvent event) {
         FacesMessage msg = new FacesMessage("Edicion Cancelada", String.valueOf(((Vaccines) event.getObject()).getIdvac())); //Se ha casteado el id que estaba en integer
         FacesContext.getCurrentInstance().addMessage(null, msg);
     }
 
+    /**
+     * Método para actualizar celda
+     * @param event 
+     */
     public void onCellEdit(TableColumn.CellEditEvent event) {
         Object oldValue = event.getOldValue();
         Object newValue = event.getNewValue();

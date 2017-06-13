@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package Beans;
 
 import Controller.LPerson;
@@ -22,10 +18,7 @@ import pojo.Consultation;
 import pojo.Person;
 import pojo.Pets;
 
-/**
- *
- * @author macarena jbenitez
- */
+//Anotaciones para que el xhtml pueda operar con ella
 @Named(value = "petsBean")
 @RequestScoped
 public class PetsBean implements Serializable {
@@ -122,6 +115,11 @@ public class PetsBean implements Serializable {
         FacesContext.getCurrentInstance().addMessage(null, msg);
     }
 
+    /**
+     * Método para pasar variables globales entre xhtmls
+     * @param idpet
+     * @param idper 
+     */
     public void PasarVariable(int idpet, String idper) {
         FacesContext fcontext = FacesContext.getCurrentInstance();
         Pets petf = new Pets();
@@ -147,6 +145,10 @@ public class PetsBean implements Serializable {
         FacesContext.getCurrentInstance().addMessage(null, message);
     }
 
+    /**
+     * Método que recoge la id actual de la mascota de la factura
+     * @return 
+     */
     public int recogeId() {
         FacesContext fcontext = FacesContext.getCurrentInstance();
         Pets aux = new Pets();
@@ -154,6 +156,10 @@ public class PetsBean implements Serializable {
         return aux.getIdpets();
     }
 
+    /**
+     * Método que recoge el nombre de la mascota en la factura actual
+     * @return 
+     */
     public String recogeNombre() {
         FacesContext fcontext = FacesContext.getCurrentInstance();
         Pets aux = new Pets();

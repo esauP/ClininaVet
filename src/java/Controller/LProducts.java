@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package Controller;
 
 import Model.ConexionDB;
@@ -16,6 +12,12 @@ import pojo.Products;
 
 public class LProducts extends ConexionDB{
     
+    /**
+     * Método para obtener todos los productos de la base de datos y mapearlos en
+     * un list de objetos Productos
+     * @return
+     * @throws SQLException 
+     */
     public List<Products> getProducts() throws SQLException {
         List<Products> listaProductos = new ArrayList<Products>();
         try {
@@ -38,6 +40,14 @@ public class LProducts extends ConexionDB{
         return listaProductos;
     }
 
+    /**
+     * Método para añadir un nuevo producto en la base de datos
+     * @param name
+     * @param price
+     * @param taxes
+     * @return
+     * @throws SQLException 
+     */
     public boolean addProduct(String name, double price, int taxes) throws SQLException {
         boolean success = false;
         try {
@@ -63,6 +73,15 @@ public class LProducts extends ConexionDB{
         return success;
     }
 
+    /**
+     * Método para actualizar los productos en la base de datos
+     * @param idproducts
+     * @param name
+     * @param price
+     * @param taxes
+     * @return
+     * @throws SQLException 
+     */
     public boolean updateProduct(int idproducts, String name, double price, int taxes) throws SQLException {
         boolean success = false;
         try {
@@ -89,6 +108,12 @@ public class LProducts extends ConexionDB{
         return success;
     }
 
+    /**
+     * Método para eliminar un producto en la base de datos
+     * @param idproducts
+     * @return
+     * @throws SQLException 
+     */
     public boolean deleteProduct(int idproducts) throws SQLException {
         boolean success = false;
         try {
@@ -112,6 +137,12 @@ public class LProducts extends ConexionDB{
         return success;
     }
 
+    /**
+     * Método para obtener un listado de productos de la base de datos y parsearlos en
+     * objetos dentro de un list
+     * @return
+     * @throws SQLException 
+     */
     public List<String> getListProducts() throws SQLException {
         List<String> listamaestra = new ArrayList<String>();
         try {
@@ -131,6 +162,13 @@ public class LProducts extends ConexionDB{
         return listamaestra;
     }
     
+    /**
+     * Método para obtener los valores de un producto en una consulta a la base
+     * de datos, según la id del producto proporcionada
+     * @param id
+     * @return
+     * @throws SQLException 
+     */
     public Products getProduct(int id) throws SQLException{
         Products prod = new Products();
         

@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package Controller;
 
 import Model.ConexionDB;
@@ -15,12 +11,15 @@ import java.util.List;
 import java.util.StringTokenizer;
 import pojo.Bill;
 
-/**
- *
- * @author macarena jbenitez
- */
+
 public class LBill {
     
+    /**
+     * Método estático para cargar en un list todas las facturas contenidas
+     * en la base de datos y operar con ellas en el código como un List de objetos
+     * @return
+     * @throws SQLException 
+     */
     public static List<Bill> getList() throws SQLException {
         List<Bill> listafacturas = new ArrayList<Bill>();
         ConexionDB conn = new ConexionDB();
@@ -48,7 +47,7 @@ public class LBill {
         return listafacturas;
     }
     
-        /**
+     /**
      * Método para añadir una nueva factura
      * @param idBill
      * @param idPer
@@ -172,6 +171,12 @@ public class LBill {
         return success;
     }
     
+    /**
+     * Método para obtener el id de la siguiente línea de factura según una
+     * consulta a los metadatos de la tabla bills que lo contiene
+     * @return
+     * @throws SQLException 
+     */
     public static int GetNextIdBill() throws SQLException{
         ConexionDB conn = new ConexionDB();
         int id = 0;

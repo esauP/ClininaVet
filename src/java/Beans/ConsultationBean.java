@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package Beans;
 
 import Controller.LConsultation;
@@ -19,10 +15,7 @@ import javax.inject.Named;
 import org.primefaces.event.RowEditEvent;
 import pojo.Consultation;
 
-/**
- *
- * @author neuhaus
- */
+//Anotaciones para que el xhtml pueda operar con ella
 @Named(value = "consultationBean")
 @ManagedBean
 @RequestScoped

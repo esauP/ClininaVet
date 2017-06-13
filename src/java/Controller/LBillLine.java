@@ -1,29 +1,25 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package Controller;
 
 import Model.ConexionDB;
 import java.sql.CallableStatement;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-import pojo.Bill;
-import pojo.BillLines;
-import pojo.Pets;
-import pojo.Products;
 
-/**
- *
- * @author macarena jbenitez
- */
 public class LBillLine extends ConexionDB {
 
-    
+    /**
+     * Método para llamada a una rutina PLSQL que añade una nueva línea en una factura
+     * @param idBill
+     * @param idProd
+     * @param quantity
+     * @param price
+     * @param taxes
+     * @param discount
+     * @param idPet
+     * @param observations
+     * @return
+     * @throws SQLException 
+     */
     public static boolean addLinea(int idBill, int idProd, int quantity, double price, int taxes, int discount, int idPet, String observations) throws SQLException {
         boolean success = false;
         ConexionDB conn = new ConexionDB();
@@ -57,6 +53,12 @@ public class LBillLine extends ConexionDB {
         return success;
     }
 
+    /**
+     * Método para eliminar una línea de una factura según el id de la línea
+     * @param idbillLine
+     * @return
+     * @throws SQLException 
+     */
     public static boolean deleteBillLine(int idbillLine) throws SQLException {
         boolean success = false;
         ConexionDB conn = new ConexionDB();

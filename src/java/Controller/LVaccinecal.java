@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Controller;
 
 import Model.ConexionDB;
@@ -12,12 +7,15 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- *
- * @author neuhaus
- */
+
 public class LVaccinecal extends ConexionDB {
 
+    /**
+     * Método que carga y parse los datos de vacunas de la base de datos en
+     * un list de objetos de tipo vacunación
+     * @return
+     * @throws SQLException 
+     */
     public List<String> getVaccines() throws SQLException {
         List<String> listamaestra = new ArrayList<String>();
         try {

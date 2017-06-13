@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package Controller;
 
 import java.sql.PreparedStatement;
@@ -16,12 +12,14 @@ import java.util.ArrayList;
 import pojo.Dates;
 import java.text.SimpleDateFormat;
 
-/**
- *
- * @author esaup
- */
+
 public class Ldate extends ConexionDB {
 
+    /**
+     * Método para cargar todas las citas de la base de datos y cargarlas como
+     * objetos en una ArrayList, además realiza el parseo de formato de fecha
+     * @return 
+     */
     public ArrayList<Dates> getDates() {
         ArrayList<Dates> listaCitas = new ArrayList<>();
 
@@ -56,7 +54,7 @@ public class Ldate extends ConexionDB {
     }
     
     /**
-     * MÃ©todo para aÃ±adir una cita
+     * Método para añadir una nueva cita
      * @param dDate
      * @param hour
      * @param idPerson
@@ -93,7 +91,7 @@ public class Ldate extends ConexionDB {
     }
 
     /**
-     * MÃ©todo para eliminar una cita
+     * Método para eliminar una cita
      * @param idDate
      * @return
      * @throws SQLException 
@@ -122,6 +120,11 @@ public class Ldate extends ConexionDB {
         return success;
     }
     
+    /**
+     * Método para obtener todas las citas del día presente y almacenarlas como objetos
+     * en una ArrayList
+     * @return 
+     */
     public static ArrayList<Dates> getDatesDay() {
         ArrayList<Dates> lista = new ArrayList<>();
         ConexionDB conn = new ConexionDB();

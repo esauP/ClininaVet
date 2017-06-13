@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package Controller;
 
 import Model.ConexionDB;
@@ -16,12 +12,14 @@ import java.util.List;
 import java.util.StringTokenizer;
 import pojo.*;
 
-/**
- *
- * @author neuhaus
- */
+
 public class LDocument extends ConexionDB {
 
+    /**
+     * Método para obtener un list de objetos de la tabla documents de la base de datos
+     * @return
+     * @throws SQLException 
+     */
     public List<Doc> getDocuments() throws SQLException {
         List<Doc> listadoc = new ArrayList<Doc>();
         ConexionDB conn = new ConexionDB();
@@ -56,6 +54,15 @@ public class LDocument extends ConexionDB {
         return listadoc;
     }
 
+    /**
+     * Método para añadir un documento a la base de datos
+     * @param idcon
+     * @param date_doc
+     * @param description
+     * @param fileattached
+     * @return
+     * @throws SQLException 
+     */
     public boolean addDoc(int idcon, String date_doc, String description, String fileattached) throws SQLException {
         ConexionDB conn = new ConexionDB();
         boolean success = false;
@@ -90,6 +97,16 @@ public class LDocument extends ConexionDB {
         return success;
     }
 
+    /**
+     * Método para actualizar un documento
+     * @param iddoc
+     * @param idcon
+     * @param date_doc
+     * @param description
+     * @param fileattached
+     * @return
+     * @throws SQLException 
+     */
     public boolean updateDoc(int iddoc, int idcon, String date_doc, String description, String fileattached) throws SQLException {
         ConexionDB conn = new ConexionDB();
         boolean success = false;
@@ -126,6 +143,12 @@ public class LDocument extends ConexionDB {
         return success;
     }
 
+    /**
+     * Método para eliminar un documento según el id proporcionado 
+     * @param iddoc
+     * @return
+     * @throws SQLException 
+     */
     public boolean deleteDoc(int iddoc) throws SQLException {
         ConexionDB conn = new ConexionDB();
         boolean success = false;

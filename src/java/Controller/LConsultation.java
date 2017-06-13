@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package Controller;
 
 import Model.ConexionDB;
@@ -15,12 +11,14 @@ import java.util.List;
 import java.util.StringTokenizer;
 import pojo.*;
 
-/**
- *
- * @author neuhaus
- */
+
 public class LConsultation {
 
+    /**
+     * Método para obtener un List de objetos de consultas con una consulta a la base de datos
+     * @return
+     * @throws SQLException 
+     */
     public List<Consultation> getConsultation() throws SQLException {
         List<Consultation> listaconsultas = new ArrayList<Consultation>();
         ConexionDB conn = new ConexionDB();
@@ -61,6 +59,16 @@ public class LConsultation {
         return listaconsultas;
     }
 
+    /**
+     * Método para añadir una nueva consulta
+     * @param idpet
+     * @param date
+     * @param reason
+     * @param diagnosis
+     * @param treatment
+     * @param observation
+     * @return 
+     */
     public boolean addConsultation(int idpet, String date, String reason, String diagnosis, String treatment, String observation) {
         ConexionDB conn = new ConexionDB();
         boolean success = false;
@@ -96,6 +104,17 @@ public class LConsultation {
         return success;
     }
 
+    /**
+     * Método para actualizar una nueva consulta
+     * @param idcons
+     * @param idpet
+     * @param date
+     * @param reason
+     * @param diagnosis
+     * @param treatment
+     * @param observation
+     * @return 
+     */
     public boolean updateConsultation(int idcons, int idpet, String date, String reason, String diagnosis, String treatment, String observation) {
         boolean success = false;
         ConexionDB conn = new ConexionDB();
@@ -131,6 +150,10 @@ public class LConsultation {
         return success;
     }
 
+    /**
+     * Método para eliminar una consulta por su id
+     * @param idcons 
+     */
     public static void deleteConsultation(int idcons) {
         boolean success = false;
         ConexionDB conn = new ConexionDB();
@@ -152,6 +175,11 @@ public class LConsultation {
         }
     }
 
+    /**
+     * Método para obtener un list de ids de la tabla consultas por orden ascendente
+     * @return
+     * @throws SQLException 
+     */
     public List<String> getidConsult() throws SQLException {
         List<String> listconsult = new ArrayList<String>();
         ConexionDB conn = new ConexionDB();
@@ -172,12 +200,13 @@ public class LConsultation {
         return listconsult;
     }
 
-    /**
-     *
-     * @param idpet
-     * @return
-     * @throws SQLException
-     */
+/**
+ * Método para obtener un list de objetos de la tabla consultas según la id de pet
+ * proporcionada y que actua en la consulta como paciente.
+ * @param idpet
+ * @return
+ * @throws SQLException 
+ */
     public static List<Consultation> getConsultationId(int idpet) throws SQLException {
         List<Consultation> listaconsultas;
         listaconsultas = new ArrayList<>();

@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package Controller;
 
 import Model.ConexionDB;
@@ -15,12 +11,15 @@ import java.util.List;
 import java.util.StringTokenizer;
 import pojo.Vaccines;
 
-/**
- *
- * @author neuhaus
- */
+
 public class LVaccines extends ConexionDB {
 
+    /**
+     * Método para obtener los datos de vacunas en la base de datos y parsearlos en
+     * objetos contenidos en un List
+     * @return
+     * @throws SQLException 
+     */
     public List<Vaccines> getVaccines() throws SQLException {
         List<Vaccines> listavacunas = new ArrayList<Vaccines>();
         try {
@@ -54,6 +53,15 @@ public class LVaccines extends ConexionDB {
         return listavacunas;
     }
 
+    /**
+     * Método para añadir una nueva vacuna en la base de datos
+     * @param idpet
+     * @param date
+     * @param observations
+     * @param name
+     * @return
+     * @throws SQLException 
+     */
     public boolean addVacines(int idpet, String date, String observations, String name) throws SQLException {
         boolean success = false;
         try {
@@ -88,6 +96,16 @@ public class LVaccines extends ConexionDB {
         return success;
     }
 
+    /**
+     * Método para actualizar vacunas en la base de datos
+     * @param idvac
+     * @param idpet
+     * @param date
+     * @param observations
+     * @param name
+     * @return
+     * @throws SQLException 
+     */
     public boolean updateVacines(int idvac, int idpet, String date, String observations, String name) throws SQLException {
         boolean success = false;
         try {
@@ -123,6 +141,12 @@ public class LVaccines extends ConexionDB {
         return success;
     }
 
+    /**
+     * Método para eliminar una vacuna en la base de datos dada su id de vacuna
+     * @param idvac
+     * @return
+     * @throws SQLException 
+     */
     public boolean deleteVacines(int idvac) throws SQLException {
         boolean success = false;
         try {
@@ -146,17 +170,4 @@ public class LVaccines extends ConexionDB {
         return success;
     }
 
-//    public static void main(String[] args) {
-//        LVaccines d = new LVaccines();
-//        try {
-//            if (d.addVacines(1, "2020-01-01", "21:19", "Polivalente") == true) {
-//                System.out.println("bien");
-//            } else {
-//                System.out.println("error");
-//            }
-//        } catch (SQLException ex) {
-//            System.out.println(ex.getMessage());
-//
-//        }
-//    }
 }

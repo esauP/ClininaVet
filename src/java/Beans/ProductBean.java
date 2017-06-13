@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Beans;
 
 import Controller.LProducts;
@@ -18,10 +13,7 @@ import javax.faces.context.FacesContext;
 import org.primefaces.event.RowEditEvent;
 import pojo.Products;
 
-/**
- *
- * @author macarena jbenitez
- */
+//Anotaciones para que el xhtml pueda operar con ella
 @Named(value = "productBean")
 @ManagedBean
 @RequestScoped
@@ -42,11 +34,21 @@ public class ProductBean {
         listamaestra = lp.getListProducts();
     }
 
+    /**
+     * Método para lista productos
+     * @return
+     * @throws SQLException 
+     */
     public List listar() throws SQLException {
         LProducts lp = new LProducts();
         return lp.getProducts();
     }
 
+    /**
+     * Método para añadir un nuevo producto
+     * @throws SQLException
+     * @throws IOException 
+     */
     public void addProduct() throws SQLException, IOException {
         LProducts lp = new LProducts();
         lp.addProduct(prod.getName(), prod.getPrice(), prod.getTaxes());
@@ -54,6 +56,11 @@ public class ProductBean {
 
     }
 
+    /**
+     * 
+     * @param event
+     * @throws SQLException 
+     */
     public void onRowEdit(RowEditEvent event) throws SQLException {
         LProducts lv = new LProducts();
         Products producto = (Products) event.getObject();

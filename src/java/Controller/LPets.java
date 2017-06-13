@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package Controller;
 
 import Model.ConexionDB;
@@ -17,10 +13,7 @@ import pojo.Consultation;
 import pojo.Person;
 import pojo.Pets;
 
-/**
- *
- * @author macarena jbenitez
- */
+
 public class LPets extends ConexionDB {
 
     /**

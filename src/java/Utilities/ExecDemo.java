@@ -1,20 +1,17 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package Utilities;
 
 import java.io.File;
 import java.io.FileReader;
 import javax.swing.JFileChooser;
 
-/**
- *
- * @author neuhaus
- */
+
 class ExecDemo {
 
+    /**
+     * Método estático para cargar el explorador de archivos de windows
+     * @param namefile 
+     */
     public static void viewPhoto(String namefile) {
         Runtime r = Runtime.getRuntime();
         Process p = null;
@@ -25,6 +22,10 @@ class ExecDemo {
         }
     }
 
+    /**
+     * Método para abrir un filechooser
+     * @return 
+     */
     public static String selectFile() {
         String aux = "";
         //Creamos el objeto JFileChooser

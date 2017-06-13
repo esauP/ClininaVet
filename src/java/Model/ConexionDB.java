@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package Model;
 
 import java.sql.Connection;
@@ -10,8 +6,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 /**
- *
- * @author esaup
+ * Clase para gestionar la conexión con la base de datos
  */
 public class ConexionDB {
     
@@ -33,6 +28,7 @@ public class ConexionDB {
     private String host = "79.148.236.236";
     private String server = "jdbc:mysql://" + host + "/" + bd;
 
+    
     public ConexionDB() {
 
         try {

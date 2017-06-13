@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package Beans;
 
 import Controller.LBill;
@@ -26,12 +22,8 @@ import javax.faces.context.FacesContext;
 import org.primefaces.event.RowEditEvent;
 import pojo.Pets;
 
-/**
- *
- * @author macarena jbenitez
- */
+//Anotaciones para que el xhtml pueda operar con ella
 @Named(value = "billLineBeans")
-
 @RequestScoped
 @SessionScoped
 public class BillLineBeans {
@@ -67,20 +59,40 @@ public class BillLineBeans {
         }
     }
 
+    /**
+     * Método para carga un listado de mascotas asociados al id de una persona
+     * @param IdPersona
+     * @throws SQLException 
+     */
     public void BuscaMascotas(String IdPersona) throws SQLException {
         listamascotasPers = LPets.getPets(IdPersona);
     }
 
+    /**
+     * Método de primefaces para la modificación de valores en la tabla
+     * @param event
+     * @throws SQLException 
+     */
     public void onRowEdit(RowEditEvent event) throws SQLException {
         FacesMessage msg = new FacesMessage("Precio Editado");
         FacesContext.getCurrentInstance().addMessage(null, msg);
     }
 
+    /**
+     * Método para cancelar la edición de datos en la tabla
+     * @param event 
+     */
     public void onRowCancel(RowEditEvent event) {
         FacesMessage msg = new FacesMessage("Edicion Cancelada", ((Products) event.getObject()).getName());
         FacesContext.getCurrentInstance().addMessage(null, msg);
     }
 
+    /**
+     * Método para eliminar una línea
+     * @param idprod
+     * @param idpet
+     * @throws SQLException 
+     */
     public void DeleteLine(int idprod, int idpet) throws SQLException {
         List<BillLines> listafac = new ArrayList<>();
         FacesContext fcontext = FacesContext.getCurrentInstance();
@@ -98,7 +110,9 @@ public class BillLineBeans {
         FacesMessage msg = new FacesMessage("Línea Eliminada");
         FacesContext.getCurrentInstance().addMessage(null, msg);
     }
-
+    /**
+     * Método para añadir productos al carrito
+     */
     public void Addcart() {
 
         FacesContext fcontext = FacesContext.getCurrentInstance();
@@ -142,7 +156,14 @@ public class BillLineBeans {
 
         fcontext.addMessage(null, message);
     }
-
+    /**
+     * Método para finalizar la grabación de líneas y crear finalmente la factura
+     * @param idbillfac
+     * @param idperfac
+     * @param date_billfac
+     * @param observationsfac
+     * @throws SQLException 
+     */
     public void Facturar(int idbillfac, String idperfac, String date_billfac, String observationsfac) throws SQLException {
         FacesContext fcontext = FacesContext.getCurrentInstance();
         List<BillLines> listafac = new ArrayList<>();
@@ -167,7 +188,10 @@ public class BillLineBeans {
         }
         FacesContext.getCurrentInstance().addMessage(null, msg);
     }
-
+    /**
+     * Método para cancelar la operación
+     * @throws IOException 
+     */
     public void Cancelar() throws IOException {
         List<BillLines> listafac = new ArrayList<>();
         FacesContext fcontext = FacesContext.getCurrentInstance();
