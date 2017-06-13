@@ -83,7 +83,7 @@
                                 <h:form id="tablaV">
                                     <p:panel>
                                         <p:dataTable id="ConsultasV" var="vacc" value="#{vaccinesBean.listvaccines}" editable="true" style="margin-bottom:20px">
-                                            <f:facet name="header">Historial vacunas aplicadas</f:facet>
+                                            <f:facet name="header">Listado de Vacunas</f:facet>
 
                                             <p:ajax event="rowEdit" listener="#{vaccinesBean.onRowEdit}"  />
                                             <p:ajax event="rowEditCancel" listener="#{vaccinesBean.onRowCancel}" />
