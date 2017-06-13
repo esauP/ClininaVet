@@ -81,116 +81,116 @@ public class LoginBean implements Serializable {
     }
 
     public void validarSesionAdminHome() {
-//        try {
-//            FacesContext context = FacesContext.getCurrentInstance();
-//            Person pers = (Person) context.getExternalContext().getSessionMap().get("usuario");
-//
-//            if (pers == null) {
-//                context.getExternalContext().redirect("error.html");
-//            }
-//            if (pers.getRole() != 1) {
-//                if (pers.getRole() == 2) {
-//                    context.getExternalContext().redirect("nopermission.html");
-//                }
-//                if (pers.getRole() == 3) {
-//                    context.getExternalContext().redirect("nopermission.hmtl");
-//                }
-//                if (pers.getRole() == 4) {
-//                    context.getExternalContext().redirect("nopermission.html");
-//                }
-//            }
-//        } catch (Exception e) {
-//
-//        }
+        try {
+            FacesContext context = FacesContext.getCurrentInstance();
+            Person pers = (Person) context.getExternalContext().getSessionMap().get("usuario");
+
+            if (pers == null) {
+                context.getExternalContext().redirect("error.html");
+            }
+            if (pers.getRole() != 1) {
+                if (pers.getRole() == 2) {
+                    context.getExternalContext().redirect("nopermission.html");
+                }
+                if (pers.getRole() == 3) {
+                    context.getExternalContext().redirect("nopermission.hmtl");
+                }
+                if (pers.getRole() == 4) {
+                    context.getExternalContext().redirect("nopermission.html");
+                }
+            }
+        } catch (Exception e) {
+
+        }
     }
 
     public void validarSesionBills() {
-//        try {
-//            FacesContext context = FacesContext.getCurrentInstance();
-//            Person pers = (Person) context.getExternalContext().getSessionMap().get("usuario");
-//            if (pers == null) {
-//                context.getExternalContext().redirect("error.html");
-//            }
-//            if (pers.getRole() != 1) {
-//                if (pers.getRole() == 2) {
-//                    context.getExternalContext().redirect("");
-//                }
-//                if (pers.getRole() == 3) {
-//                    context.getExternalContext().redirect("");
-//                }
-//                if (pers.getRole() == 4) {
-//                    context.getExternalContext().redirect("nopermission.html");
-//                }
-//            }
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
+        try {
+            FacesContext context = FacesContext.getCurrentInstance();
+            Person pers = (Person) context.getExternalContext().getSessionMap().get("usuario");
+            if (pers == null) {
+                context.getExternalContext().redirect("error.html");
+            }
+            if (pers.getRole() != 1) {
+                if (pers.getRole() == 2) {
+                    context.getExternalContext().redirect("");
+                }
+                if (pers.getRole() == 3) {
+                    context.getExternalContext().redirect("");
+                }
+                if (pers.getRole() == 4) {
+                    context.getExternalContext().redirect("nopermission.html");
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void validarSesionPets() {
-//        try {
-//            FacesContext context = FacesContext.getCurrentInstance();
-//            Person pers = (Person) context.getExternalContext().getSessionMap().get("usuario");
-//            if (pers == null) {
-//                context.getExternalContext().redirect("error.html");
-//            }
-//            if (pers.getRole() != 1) {
-//                if (pers.getRole() == 2) {
-//                    context.getExternalContext().redirect("");
-//                }
-//                if (pers.getRole() == 3) {
-//                    context.getExternalContext().redirect("");
-//                }
-//                if (pers.getRole() == 4) {
-//                    context.getExternalContext().redirect("nopermission.html");
-//                }
-//            }
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
+        try {
+            FacesContext context = FacesContext.getCurrentInstance();
+            Person pers = (Person) context.getExternalContext().getSessionMap().get("usuario");
+            if (pers == null) {
+                context.getExternalContext().redirect("error.html");
+            }
+            if (pers.getRole() != 1) {
+                if (pers.getRole() == 2) {
+                    context.getExternalContext().redirect("");
+                }
+                if (pers.getRole() == 3) {
+                    context.getExternalContext().redirect("");
+                }
+                if (pers.getRole() == 4) {
+                    context.getExternalContext().redirect("nopermission.html");
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void validarSesionConsultation() {
-//        try {
-//            FacesContext context = FacesContext.getCurrentInstance();
-//            Person pers = (Person) context.getExternalContext().getSessionMap().get("usuario");
-//            if (pers == null) {
-//                context.getExternalContext().redirect("error.html");
-//            }
-//            if (pers.getRole() != 1) {
-//                if (pers.getRole() == 3) {
-//                    context.getExternalContext().redirect("nopermission.html");
-//                }
-//                if (pers.getRole() == 4) {
-//                    context.getExternalContext().redirect("nopermission.html");
-//                }
-//            }
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
+        try {
+            FacesContext context = FacesContext.getCurrentInstance();
+            Person pers = (Person) context.getExternalContext().getSessionMap().get("usuario");
+            if (pers == null) {
+                context.getExternalContext().redirect("error.html");
+            }
+            if (pers.getRole() != 1) {
+                if (pers.getRole() == 3) {
+                    context.getExternalContext().redirect("nopermission.html");
+                }
+                if (pers.getRole() == 4) {
+                    context.getExternalContext().redirect("nopermission.html");
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void validarSesionDates() {
-//        try {
-//            FacesContext context = FacesContext.getCurrentInstance();
-//            Person pers = (Person) context.getExternalContext().getSessionMap().get("usuario");
-//            if (pers == null) {
-//                context.getExternalContext().redirect("error.html");
-//            }
-//            if (pers.getRole() != 1) {
-//                if (pers.getRole() == 2) {
-//                    context.getExternalContext().redirect("");
-//                }
-//                if (pers.getRole() == 3) {
-//                    context.getExternalContext().redirect("");
-//                }
-//                if (pers.getRole() == 4) {
-//                    context.getExternalContext().redirect("nopermission.html");
-//                }
-//            }
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
+        try {
+            FacesContext context = FacesContext.getCurrentInstance();
+            Person pers = (Person) context.getExternalContext().getSessionMap().get("usuario");
+            if (pers == null) {
+                context.getExternalContext().redirect("error.html");
+            }
+            if (pers.getRole() != 1) {
+                if (pers.getRole() == 2) {
+                    context.getExternalContext().redirect("");
+                }
+                if (pers.getRole() == 3) {
+                    context.getExternalContext().redirect("");
+                }
+                if (pers.getRole() == 4) {
+                    context.getExternalContext().redirect("nopermission.html");
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public String getUsername() {

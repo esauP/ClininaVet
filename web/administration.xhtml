@@ -138,15 +138,15 @@
                                     <h:form id="formularioP">
 
                                         <p:outputLabel for="regnameProd" value="Nombre" />
-                                        <p:inputText id="regnameProd" value="#{productBean.name}" required="true" >
+                                        <p:inputText id="regnameProd" value="#{productBean.prod.name}" required="true" >
                                             <f:validateLength minimum="1" maximum="45" />
                                         </p:inputText>
 
                                         <p:outputLabel for="regprecProd" value="Precio" />
-                                        <p:inputText id="regprecProd" value="#{productBean.price}" required="true" />
+                                        <p:inputText id="regprecProd" value="#{productBean.prod.price}" required="true" />
 
                                         <p:outputLabel for="regtaxeprod" value="IVA" />
-                                        <p:inputText id="regtaxeprod" value="#{productBean.taxes}" required="true" />
+                                        <p:inputText id="regtaxeprod" value="#{productBean.prod.taxes}" required="true" />
 
                                         <p:commandButton value="Nuevo Producto" actionListener="#{productBean.addProduct()}" update=":tablaP:ConsultasP" />
                                         <p:commandButton value="Cerrar Ventan" actionListener="#{vaccinesBean.listar()}" oncomplete="PF('wdlgDatosP').hide()" update=":tablaP:ConsultasP"/>

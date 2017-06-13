@@ -14,10 +14,6 @@ import java.util.ArrayList;
 import java.util.List;
 import pojo.Products;
 
-/**
- *
- * @author macarena jbenitez
- */
 public class LProducts extends ConexionDB{
     
     public List<Products> getProducts() throws SQLException {
@@ -71,7 +67,7 @@ public class LProducts extends ConexionDB{
         boolean success = false;
         try {
             //Llamada a la funcion
-            String sql = "{ ? = call updateProducts (?,?,?,?,?) }";
+            String sql = "{ ? = call updateProducts (?,?,?,?) }";
             CallableStatement cStmt = this.getConexion().prepareCall(sql);
             //establezco la salida de la funcion
             cStmt.registerOutParameter(1, java.sql.Types.INTEGER);

@@ -6,12 +6,16 @@
 package Beans;
 
 import Controller.LProducts;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import javax.faces.application.FacesMessage;
 import javax.inject.Named;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
+import javax.faces.context.FacesContext;
+import org.primefaces.event.RowEditEvent;
 import pojo.Products;
 
 /**
@@ -31,22 +35,36 @@ public class ProductBean {
     private double price;
     private int taxes;
     private Products prod = new Products();
-    
-    
-    public ProductBean() throws SQLException{
+
+    public ProductBean() throws SQLException {
         LProducts lp = new LProducts();
         listproducts = lp.getProducts();
         listamaestra = lp.getListProducts();
     }
-    
+
     public List listar() throws SQLException {
         LProducts lp = new LProducts();
         return lp.getProducts();
     }
-    
-    public void addProduct() throws SQLException {
+
+    public void addProduct() throws SQLException, IOException {
         LProducts lp = new LProducts();
         lp.addProduct(prod.getName(), prod.getPrice(), prod.getTaxes());
+        FacesContext.getCurrentInstance().getExternalContext().redirect("faces/administration.xhtml");
+
+    }
+
+    public void onRowEdit(RowEditEvent event) throws SQLException {
+        LProducts lv = new LProducts();
+        Products producto = (Products) event.getObject();
+        FacesMessage msg = new FacesMessage("Producto Editado", String.valueOf(producto.getIdproducts()));
+        lv.updateProduct(producto.getIdproducts(), producto.getName(), producto.getPrice(), producto.getTaxes());
+        FacesContext.getCurrentInstance().addMessage(null, msg);
+    }
+
+    public void onRowCancel(RowEditEvent event) {
+        FacesMessage msg = new FacesMessage("Edicion Cancelada", String.valueOf(((Products) event.getObject()).getIdproducts())); //Se ha casteado el id que estaba en integer
+        FacesContext.getCurrentInstance().addMessage(null, msg);
     }
 
     public void deleteProduct(int idprod) throws SQLException {
@@ -109,9 +127,7 @@ public class ProductBean {
     public void setTaxes(int taxes) {
         this.taxes = taxes;
     }
-    
-    
-    
+
     public List<String> AutocompletarNameProd(String text) {
         // Assumed search using the startsWith
         List<String> queried = new ArrayList<>();
@@ -123,5 +139,5 @@ public class ProductBean {
         }
         return queried;
     }
-    
+
 }
