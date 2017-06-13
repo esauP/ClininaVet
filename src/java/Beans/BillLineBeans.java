@@ -14,6 +14,7 @@ import pojo.BillLines;
 import Controller.LBillLine;
 import Controller.LPets;
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.StringTokenizer;
@@ -48,6 +49,7 @@ public class BillLineBeans {
     private String pet;
     private int idpet;
     private String namepet;
+    private Double totpagar = 0.0;
     private List<BillLines> listalineasfac = new ArrayList<>();
     private List<Pets> listamascotasPers;
 
@@ -80,8 +82,15 @@ public class BillLineBeans {
     }
 
     public void DeleteLine(int idprod, int idpet) throws SQLException {
+        List<BillLines> listafac = new ArrayList<>();
+        FacesContext fcontext = FacesContext.getCurrentInstance();
 
-        for (BillLines line : listalineasfac) {
+        listafac = (List<BillLines>) fcontext.getExternalContext().getSessionMap().get("listafac");
+        if (listafac != null) {
+            this.listalineasfac = listafac;
+        }
+
+        for (BillLines line : this.listalineasfac) {
             if (line.getIdpet() == idpet && line.getIdprod() == idprod) {
                 listalineasfac.remove(line);
             }
@@ -116,6 +125,21 @@ public class BillLineBeans {
 
         fcontext.getExternalContext().getSessionMap().put("listafac", this.listalineasfac);
 
+        if (this.listalineasfac != null) {
+            for (BillLines line : this.listalineasfac) {
+                double precio = line.getPrice();
+                int tax = line.getTaxes();
+                float impuesto;
+                impuesto = (float) tax / 100;
+                double pretax = precio * impuesto;
+                double precto = precio + pretax;
+                DecimalFormat df = new DecimalFormat("#.00");
+                String preciotot = df.format(precto);
+
+                this.totpagar += Double.parseDouble(preciotot.replace(",", "."));
+            }
+        }
+
         fcontext.addMessage(null, message);
     }
 
@@ -142,6 +166,18 @@ public class BillLineBeans {
             msg = new FacesMessage("Ha ocurrido un error");
         }
         FacesContext.getCurrentInstance().addMessage(null, msg);
+    }
+
+    public void Cancelar() throws IOException {
+        List<BillLines> listafac = new ArrayList<>();
+        FacesContext fcontext = FacesContext.getCurrentInstance();
+
+        listafac = (List<BillLines>) fcontext.getExternalContext().getSessionMap().get("listafac");
+        this.listalineasfac = listafac;
+        this.listalineasfac.clear();
+        fcontext.getExternalContext().getSessionMap().put("listafac", this.listalineasfac);
+        FacesContext.getCurrentInstance().getExternalContext().redirect("faces/pets.xhtml");
+
     }
 
     public int getId() {
@@ -271,4 +307,13 @@ public class BillLineBeans {
     public void setBlines(BillLines blines) {
         this.blines = blines;
     }
+
+    public Double getTotpagar() {
+        return totpagar;
+    }
+
+    public void setTotpagar(Double totpagar) {
+        this.totpagar = totpagar;
+    }
+
 }

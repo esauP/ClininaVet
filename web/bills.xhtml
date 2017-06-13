@@ -29,15 +29,10 @@
                                 <span class="icon-bar"></span>
                                 <span class="icon-bar"></span>
                             </button>
-                            <a class="navbar-brand" href="adminHome.xhtml"><img src="img/logo.png" alt="logo"/></a>
                         </div>
                         <div class="navbar-collapse collapse ">
                             <ul class="nav navbar-nav">
-                                <li><a href="pets.xhtml">Mascotas</a></li>
-                                <li><a href="consultations.xhtml">Consulta | Historial</a></li>
-                                <li><a href="dates.xhtml">Citas</a></li>
-                                <li class="active"><a href="bills.xhtml">Facturación</a></li>
-                                <li><a href="vaccines.xhtml">Vacunas</a></li>
+                                <li class="active"><a>Facturación</a></li>
                                 <li>
                                     <a>
                                         <h:form>
@@ -56,7 +51,8 @@
         <section id="content">
             <div class="container">
                 <div class="row">
-                    <div class="skill-home"> <div class="skill-home-solid clearfix">
+                    <div class="skill-home"> 
+                        <div class="skill-home-solid clearfix">
 
                             <div class="col-md-12 text-center">
                                 <div class="billInfo">
@@ -95,13 +91,14 @@
                                                 <p:commandButton value="Añadir Linea"  actionListener="#{billLineBeans.Addcart()}" ajax="false" />
 
                                             </p:panelGrid>
-
-
-                                            <p:dataTable id="Facturas" var="fact" value="#{billLineBeans.listalineasfac}" editable="true" style="margin-bottom:20px" paginator = "true"
-                                                         paginatorTemplate = "{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                                                         paginatorAlwaysVisible="false" rows="5" rowsPerPageTemplate = "5,10,15,20,25">
+                                            <p:dataTable id="Facturas" var="fact" value="#{billLineBeans.listalineasfac}" style="margin-bottom:20px" >
                                                 <f:facet name="header">Factura</f:facet>
-
+                                                <f:facet name="{Exporters}">
+                                                    <p:commandLink>
+                                                        <p:graphicImage name="/web/img/pdf.png" width="24"/>
+                                                        <p:dataExporter type="pdf" target="Facturas" fileName="Factura" />
+                                                    </p:commandLink>
+                                                </f:facet>
                                                 <p:ajax event="rowEdit" listener="#{billLineBeans.onRowEdit}"  update=":tablaFacturas:Facturas" />
                                                 <p:ajax event="rowEditCancel" listener="#{billLineBeans.onRowCancel}" update=":tablaFacturas:Facturas" />
 
@@ -144,18 +141,14 @@
                                                     </p:cellEditor>
                                                 </p:column>
 
-                                                <p:column style="width:32px">
-                                                    <p:rowEditor />
-                                                </p:column>
-
                                                 <p:column headerText="Eliminar">
                                                     <p:commandLink value="Eliminar"  actionListener="#{billLineBeans.DeleteLine(fact.idprod, fact.idpet)}" update=":tablaFacturas:Facturas"/>
                                                 </p:column>
-
+                                                <f:facet name="footer">Total Factura: <h:outputText value="#{billLineBeans.totpagar}" /></f:facet>
                                             </p:dataTable>
+
                                             <p:commandButton value="Facturar" actionListener="#{billLineBeans.Facturar(billBean.idbill, billBean.idper, billBean.date, billBean.observations)}" /><p:spacer width="20"  height="0"/>
-                                            <p:commandButton value="Imprimir Factura"  /><p:spacer width="20"  height="0"/>
-                                            <p:commandButton value="Salir sin guardar" /><p:spacer width="20"  height="0"/>
+                                            <p:commandButton value="Cancelar" actionListener="#{billLineBeans.Cancelar()}" /><p:spacer width="20"  height="0"/>
                                         </p:panel>
                                     </h:form>
                                 </div>

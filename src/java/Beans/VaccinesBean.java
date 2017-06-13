@@ -7,8 +7,6 @@ package Beans;
 
 import Controller.LVaccinecal;
 import Controller.LVaccines;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,10 +15,8 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
-import javax.faces.model.SelectItemGroup;
 import javax.inject.Named;
 import org.primefaces.event.RowEditEvent;
-import pojo.Person;
 import pojo.Vaccinecal;
 import pojo.Vaccines;
 
