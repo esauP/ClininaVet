@@ -37,7 +37,7 @@
                                 <li><a href="pets.xhtml">Mascotas</a></li>
                                 <li><a href="consultations.xhtml">Consulta | Historial</a></li>
                                 <li class="active"><a href="dates.xhtml">Citas</a></li>
-                                <li><a href="vaccines.xhtml">Vacunas</a></li>
+                                <li><a href="administration.xhtml">Administracion</a></li>
                                 <li>
                                     <a>
                                         <h:form>
@@ -60,17 +60,19 @@
                             <div class="col-md-12 text-left">
                                 <p:growl id="regis" showDetail="true" />
                                 <h3>Seleccionar Cita</h3>  
+                                <div>
                                     <p:panel>
-                                            <h:panelGrid columns="12" cellpadding="2">
-                                                <p:autoComplete value="#{datesBean.idper}" completeMethod="#{personBean.AutocompletarID}" placeholder="* Nombre Apellidos"  />
-                                                <p:commandButton value="Buscar" actionListener="#{petsBean.BuscaMascotas(datesBean.idper)}" update="formPet" />
-                                                <p:selectOneMenu id="ComboMascotas" value="#{datesBean.namepet}" required="true" >
-                                                        <f:selectItem itemLabel="- selecciona una mascota -" itemValue="0"/>
-                                                        <f:selectItems value="#{petsBean.listamascotasPers}" />
-                                                    </p:selectOneMenu>
-                                                <p:commandButton value="Fijar" action="#{datesBean.KeepSelection(datesBean.idper)}"/>
-                                            </h:panelGrid>
++                                       <h:panelGrid columns="12" cellpadding="2">
+                                            <p:autoComplete value="#{datesBean.idper}" completeMethod="#{datesBean.AutocompletarID}" placeholder="* Nombre Apellidos"  />
+                                            <p:commandButton value="Buscar" actionListener="#{datesBean.BuscaMascotas(datesBean.idper)}" update="formPet" />
+                                            <p:selectOneMenu id="ComboMascotas" value="#{datesBean.namepet}" required="true" >
+                                                    <f:selectItem itemLabel="- selecciona una mascota -" itemValue="0"/>
+                                                    <f:selectItems value="#{datesBean.listamascotasPers}" />
+                                                </p:selectOneMenu>
+                                            <p:commandButton value="Fijar" action="#{datesBean.KeepSelection(datesBean.idper)}"/>
+                                        </h:panelGrid>
                                     </p:panel>
+                                </div>
                                 <br/>
                                 <div>
                                     <h:form id = "formPet">
